@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.31)
+project(game_dice_cpp)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+
+# add my own executable
+# do not include test files here.
+add_executable(game_code main.cpp)
+
+#add_subdirectory(Google_tests)
