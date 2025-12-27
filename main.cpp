@@ -24,7 +24,9 @@
 // SOFTWARE.
 
 #include <iostream>
+#include <random>
 
+#include "src/Actions.h"
 #include "src/Dice.h"
 
 int main() {
@@ -33,4 +35,11 @@ int main() {
   auto d7 = game_dice::Dice(7);
   std::cout << "I have a shiny " << d7.GetNumSides() << "-sided die!"
             << std::endl;
+  // create a random number generator
+  std::mt19937_64 rand_generator;
+  // roll the dice a few times...
+  for (auto i = 0; i < 3; i++) {
+    auto result = game_dice::roll(d7, rand_generator);
+    std::cout << "\tRolled " << result << "!" << std::endl;
+  }
 }
