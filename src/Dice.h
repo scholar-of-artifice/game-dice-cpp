@@ -23,14 +23,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
+#ifndef GAME_DICE_CPP_SRC_DICE_H
+#define GAME_DICE_CPP_SRC_DICE_H
 
-#include "src/Dice.h"
+#include <limits>
 
-int main() {
-  std::cout << "Hello, world from game-dice-cpp!" << std::endl;
-  // make a d7
-  auto d7 = game_dice::Dice(7);
-  std::cout << "I have a shiny " << d7.GetNumSides() << "-sided die!"
-            << std::endl;
-}
+namespace game_dice {
+
+// An immutable descriptor of a die geometry.
+// The Dice class represents the physical properties of a dice (number of
+// sides). It is a lightweight, data-oriented structure that contains no rolling
+// logic or mutable state.
+class Dice {
+ private:
+  // The number of faces on this die.
+  int num_sides_;
+
+ public:
+  // Constructs a Dice with a specified number of sides.
+  //
+  // The number of sides is automatically clamped to a safe range.
+  //
+  // sides: The number of sides.
+  //  - minimum: 2 (example: a coin)
+  //  - maximum std::numeric_limits<int>::max() - 1
+  constexpr explicit Dice(int sides)
+    : num_sides_((sides < 2)? 2
+      : (sides >= std::numeric_limits<int>::max())
+        ? (std::numeric_limits<int>::max() - 1)
+        : sides ) {}
+  // Retrieves the number of sides.
+  [[nodiscard]] constexpr int GetNumSides() const noexcept {
+    return num_sides_; }
+};
+
+}  // namespace game_dice
+
+#endif  // GAME_DICE_CPP_SRC_DICE_H
