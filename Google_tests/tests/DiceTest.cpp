@@ -32,7 +32,7 @@ TEST(DiceConstructorTest, AssignsCorrectValueForValidInput) {
   for (int z = 2; z <= 2'000'000; z++) {
     // WHEN a Dice is constructed
     auto dz = game_dice::Dice(z);
-    // THEN there are no issues
+    // THEN there are the correct number of sides
     EXPECT_EQ(dz.GetNumSides(), z) << "FAILURE: Unexpected number of sides z["<< z <<"].";
   }
 }
