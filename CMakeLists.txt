@@ -14,4 +14,5 @@ add_executable(
         main.cpp
         src/Dice.h)
 
-#add_subdirectory(Google_tests)
+# --- the tests live here ---
+add_subdirectory(Google_tests)
