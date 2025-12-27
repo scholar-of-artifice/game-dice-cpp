@@ -23,41 +23,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef GAME_DICE_CPP_SRC_DICE_H
-#define GAME_DICE_CPP_SRC_DICE_H
+#ifndef GAME_DICE_CPP_SRC_ACTION_H
+#define GAME_DICE_CPP_SRC_ACTION_H
+#include <random>
 
-#include <limits>
+#include "Dice.h"
 
 namespace game_dice {
 
-// An immutable descriptor of a die geometry.
-// The Dice class represents the physical properties of a dice (number of
-// sides). It is a lightweight, data-oriented structure that contains no rolling
-// logic or mutable state.
-class Dice {
- private:
-  // The number of faces on this die.
-  int num_sides_;
-
- public:
-  // Constructs a Dice with a specified number of sides.
-  //
-  // The number of sides is automatically clamped to a safe range.
-  //
-  // sides: The number of sides.
-  //  - minimum: 2 (example: a coin)
-  //  - maximum std::numeric_limits<int>::max() - 1
-  constexpr explicit Dice(int sides)
-      : num_sides_((sides < 2) ? 2
-                   : (sides >= std::numeric_limits<int>::max())
-                       ? (std::numeric_limits<int>::max() - 1)
-                       : sides) {}
-  // Retrieves the number of sides.
-  [[nodiscard]] constexpr int GetNumSides() const noexcept {
-    return num_sides_;
-  }
-};
+// Roll a die to generate a random value.
+//
+// This function creates a uniform integer distribution based on the die
+// geometry and uses the provided engine to select a result.
+//
+// die: The die to roll (defines the range [1, N])
+// engine: A C++ STL compatible random number engine
+template <typename Engine>
+[[nodiscard]] int roll(const Dice& die, Engine& engine) {
+  // create the uniform distribution from 1->N on the stack
+  std::uniform_int_distribution<int> distribution(1, die.GetNumSides());
+  // pull a number from the distribution using the provided entropy source
+  return distribution(engine);
+}
 
 }  // namespace game_dice
 
-#endif  // GAME_DICE_CPP_SRC_DICE_H
+#endif  // GAME_DICE_CPP_SRC_ACTION_H
