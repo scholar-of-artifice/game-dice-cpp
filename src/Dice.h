@@ -48,13 +48,14 @@ class Dice {
   //  - minimum: 2 (example: a coin)
   //  - maximum std::numeric_limits<int>::max() - 1
   constexpr explicit Dice(int sides)
-    : num_sides_((sides < 2)? 2
-      : (sides >= std::numeric_limits<int>::max())
-        ? (std::numeric_limits<int>::max() - 1)
-        : sides ) {}
+      : num_sides_((sides < 2) ? 2
+                   : (sides >= std::numeric_limits<int>::max())
+                       ? (std::numeric_limits<int>::max() - 1)
+                       : sides) {}
   // Retrieves the number of sides.
   [[nodiscard]] constexpr int GetNumSides() const noexcept {
-    return num_sides_; }
+    return num_sides_;
+  }
 };
 
 }  // namespace game_dice
