@@ -36,3 +36,23 @@ TEST(DiceConstructorTest, AssignsCorrectValueForValidInput) {
     EXPECT_EQ(dz.GetNumSides(), z) << "FAILURE: Unexpected number of sides for Dice("<< z <<").";
   }
 }
+
+TEST(DiceConstructorTest, AssignsCorrectValueForSmallInput) {
+  // GIVEN an input number of sides z
+  // AND z is <= 2
+  for (int z = -2'000'000; z <= 2; z++) {
+    // WHEN a Dice is constructed
+    const auto dz = game_dice::Dice(z);
+    // THEN there are the correct number of sides
+    EXPECT_EQ(dz.GetNumSides(), 2) << "FAILURE: Unexpected number of sides for Dice("<< z <<").";
+  }
+}
+
+TEST(DiceConstructorTest, AssignsCorrectValueForLargeInput) {
+  // GIVEN an input number of sides z
+  // AND z is the numeric limit of an int
+  // WHEN a Dice is constructed
+  const auto dz = game_dice::Dice(std::numeric_limits<int>::max());
+  // THEN there are the correct number of sides
+  EXPECT_EQ(dz.GetNumSides(), std::numeric_limits<int>::max() - 1) << "FAILURE: Unexpected number of sides for Dice(large_value).";
+}
