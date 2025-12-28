@@ -27,11 +27,30 @@
 
 #include "StaticProbabilityTable.h"
 
-TEST(StaticProbabilityTableGetTotalWeightTest, AllPositiveWeightsHasTheCorrectTotalWeight) {
+TEST(StaticProbabilityTableGetTotalWeightTest,
+     AllPositiveWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 1);
+  // small cases
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, 1, 1);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 1);
+  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 3);
+  // medium cases
+  const auto table_D =
+    game_dice_cpp::StaticProbabilityTable<10>(1, 2, 3, 1, 8, 9, 22, 12, 1, 3);
+  const auto table_E = game_dice_cpp::StaticProbabilityTable<12>(
+      1, 2, 3, 1, 8, 9, 22, 12, 1, 3, 53, 33);
+  const auto table_F = game_dice_cpp::StaticProbabilityTable<20>(
+  1, 2, 3, 1, 8, 9, 22, 12, 1, 3, 53, 33, 12, 1, 15, 6, 81, 9, 10, 1);
+  // large cases
   // WHEN total_weight is called
   // THEN the total weight matches the sum of inputs
-  EXPECT_EQ(table_A.GetTotalWeight(), 4);
+  // small cases
+  EXPECT_EQ(table_A.GetTotalWeight(), 3);
+  EXPECT_EQ(table_B.GetTotalWeight(), 4);
+  EXPECT_EQ(table_C.GetTotalWeight(), 6);
+  // medium cases
+  EXPECT_EQ(table_D.GetTotalWeight(), 62);
+  EXPECT_EQ(table_E.GetTotalWeight(), 148);
+  EXPECT_EQ(table_F.GetTotalWeight(), 283);
 }
