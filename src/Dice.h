@@ -28,7 +28,7 @@
 
 #include <limits>
 
-namespace game_dice {
+namespace game_dice_cpp {
 
 // An immutable descriptor of a die geometry.
 // The Dice class represents the physical properties of a dice (number of
@@ -58,6 +58,6 @@ class Dice {
   }
 };
 
-}  // namespace game_dice
+}  // namespace game_dice_cpp
 
 #endif  // GAME_DICE_CPP_SRC_DICE_H

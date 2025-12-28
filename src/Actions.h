@@ -29,7 +29,7 @@
 
 #include "Dice.h"
 
-namespace game_dice {
+namespace game_dice_cpp {
 
 // Roll a die to generate a random value.
 //
@@ -46,6 +46,6 @@ template <typename Engine>
   return distribution(engine);
 }
 
-}  // namespace game_dice
+}  // namespace game_dice_cpp
 
 #endif  // GAME_DICE_CPP_SRC_ACTION_H

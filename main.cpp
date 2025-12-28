@@ -32,14 +32,14 @@
 int main() {
   std::cout << "Hello, world from game-dice-cpp!" << std::endl;
   // make a d7
-  auto d7 = game_dice::Dice(7);
+  auto d7 = game_dice_cpp::Dice(7);
   std::cout << "I have a shiny " << d7.GetNumSides() << "-sided die!"
             << std::endl;
   // create a random number generator
-  std::mt19937_64 rand_generator;
+  std::mt19937_64 rand_generator(43);
   // roll the dice a few times...
   for (auto i = 0; i < 3; i++) {
-    auto result = game_dice::roll(d7, rand_generator);
+    auto result = game_dice_cpp::roll(d7, rand_generator);
     std::cout << "\tRolled " << result << "!" << std::endl;
   }
 }
