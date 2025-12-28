@@ -15,7 +15,7 @@ add_library(
 target_include_directories(
         game_dice_cpp
         INTERFACE
-        src
+        "${CMAKE_CURRENT_SOURCE_DIR}/src"
 )
 
 # define an executable
