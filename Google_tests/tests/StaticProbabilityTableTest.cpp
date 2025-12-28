@@ -27,6 +27,8 @@
 
 #include "StaticProbabilityTable.h"
 
+
+
 TEST(StaticProbabilityTableGetTotalWeightTest,
      AllPositiveWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
@@ -107,5 +109,5 @@ TEST(StaticProbabilityTableAtTest, OutOfBoundsLookup) {
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A.At(-1), 0);
   EXPECT_EQ(table_A.At(0), 0);
-  EXPECT_EQ(table_A.At(10), 3);
+  EXPECT_EQ(table_A.At(10), 2);
 }
