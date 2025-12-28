@@ -38,6 +38,7 @@ class StaticProbabilityTable {
   [[nodiscard]] constexpr int GetTotalWeight() const { return total_weight_; }
   [[nodiscard]] constexpr int At(int value) const {
     // hybrid search strategy
+    // TODO: hardcoded NumberOfOutcomes check... probably hardware dependent
     if constexpr (NumberOfOutcomes <= 16) {
       // linear search for small tables
       for (size_t i = 0; i < NumberOfOutcomes; ++i) {
