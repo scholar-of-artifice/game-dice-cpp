@@ -25,6 +25,7 @@ add_executable(
 target_link_libraries(
         unit_test_suite
         GTest::gtest_main
+        game_dice_cpp
 )
 # register the tests so ctest can find them
 include(GoogleTest)
