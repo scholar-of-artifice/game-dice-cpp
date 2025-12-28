@@ -4,7 +4,9 @@
 
 #ifndef GAME_DICE_CPP_SRC_STATICPROBABILITYTABLE_H
 #define GAME_DICE_CPP_SRC_STATICPROBABILITYTABLE_H
+#include <algorithm>
 #include <array>
+#include <iterator>
 #include <numeric>
 
 namespace game_dice_cpp {
