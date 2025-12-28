@@ -86,3 +86,16 @@ TEST(StaticProbabilityTableGetTotalWeightTest,
   EXPECT_EQ(table_B.GetTotalWeight(), 2);
   EXPECT_EQ(table_C.GetTotalWeight(), 1);
 }
+
+TEST(StaticProbabilityTableAtTest, MapsToCorrectValue) {
+  // GIVEN a table defined with known weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 3);
+  // WHEN At is called
+  // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.At(1), 0);
+  EXPECT_EQ(table_A.At(2), 1);
+  EXPECT_EQ(table_A.At(3), 1);
+  EXPECT_EQ(table_A.At(4), 2);
+  EXPECT_EQ(table_A.At(5), 2);
+  EXPECT_EQ(table_A.At(6), 2);
+}
