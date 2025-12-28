@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.31)
 # name the project
 project(game_dice_cpp)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # define a library
 add_library(
         game_dice_cpp
@@ -16,6 +13,11 @@ target_include_directories(
         game_dice_cpp
         INTERFACE
         "${CMAKE_CURRENT_SOURCE_DIR}/src"
+)
+target_compile_features(
+        game_dice_cpp
+        INTERFACE
+        cxx_std_23
 )
 
 # define an executable
