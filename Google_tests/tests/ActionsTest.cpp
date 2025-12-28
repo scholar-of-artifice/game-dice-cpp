@@ -25,7 +25,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/Actions.h"
+#include "Actions.h"
 
 
 TEST(ActionsTest, RollAreEquivalentForEntropySourceWithSameSeed) {

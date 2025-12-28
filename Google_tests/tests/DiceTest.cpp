@@ -25,7 +25,7 @@
 
 #include <gtest/gtest.h>
 
-#include "../../src/Dice.h"
+#include "Dice.h"
 
 TEST(DiceConstructorTest, AssignsCorrectValueForValidInput) {
   // GIVEN an input number of sides z
