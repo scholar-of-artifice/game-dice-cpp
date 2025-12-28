@@ -96,3 +96,12 @@ TEST(DynamicProbabilityTableAtTest, MapsToCorrectValue) {
   EXPECT_EQ(table_A.At(5), 2);
   EXPECT_EQ(table_A.At(6), 2);
 }
+
+TEST(DynamicProbabilityTableAtTest, OutOfBoundsLookup) {
+  // GIVEN a table defined with known weights
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable({1, 2, 3});
+  // WHEN At is called
+  // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.At(0), 0);
+  EXPECT_EQ(table_A.At(10), 3);
+}
