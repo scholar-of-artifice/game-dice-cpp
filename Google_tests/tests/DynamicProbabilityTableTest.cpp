@@ -27,6 +27,15 @@
 
 #include "DynamicProbabilityTable.h"
 
+TEST(DynamicProbabilityTableGetTotalWeightTest, EmptyWeightsHasTheCorrectTotalWeight) {
+  // GIVEN a table defined with known weights
+  // AND all weights are positive
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable({});
+  // WHEN total_weight is called
+  // THEN the total weight matches the sum of inputs
+  EXPECT_EQ(table_A.GetTotalWeight(), 0);
+}
+
 TEST(DynamicProbabilityTableGetTotalWeightTest, AllPositiveWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
