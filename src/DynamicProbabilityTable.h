@@ -23,18 +23,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef GAME_DICE_CPP_SRC_PROBABILITYTABLE_H
-#define GAME_DICE_CPP_SRC_PROBABILITYTABLE_H
+#ifndef GAME_DICE_CPP_SRC_DYNAMICPROBABILITYTABLE_H
+#define GAME_DICE_CPP_SRC_DYNAMICPROBABILITYTABLE_H
+#include <algorithm>
+#include <numeric>
+#include <ranges>
 #include <vector>
 
 namespace game_dice_cpp {
-// A datstructure that maps a linear range [1, N] to a set of weight indeces.
+// A data structure that maps a linear range [1, N] to a set of weight indexes.
 //
-// The ProbabilityTable enforces "Explicity Probability".
-// As a user, you must provide integer weights. This guarantees that no outcome
-// witha  weight > 0 can be "rounded out" of existence.
-template <int TotalWeight>
-class ProbabilityTable {
+// You should choose DynamicProbabilityTable when the number of outcomes is
+// unknown until the game runs.
+//
+// Examples include:
+// - loading from external files
+// - variable-state mechanics
+// - modding support
+//
+// You should choose DynamicProbabilityTable if flexibility is more important
+// than raw memory performance.
+class DynamicProbabilityTable {
  private:
   // Cumulative upper bounds.
   std::vector<int> thresholds_;
@@ -43,25 +52,29 @@ class ProbabilityTable {
  public:
   // Explicit Weight Initialization
   // The user must define exactly the "shape" of the probability distribution.
-  explicit ProbabilityTable(const std::vector<int>& weights)
+  explicit DynamicProbabilityTable(const std::vector<int>& weights)
       : total_weight_(0) {
+    // create a view that sees only non-negative weights
+    auto safe_weights = weights | std::ranges::views::transform(
+                                      [](int w) { return std::max(w, 0); });
+    // fill the thresholds vector using the standard algorithm
     thresholds_.reserve(weights.size());
-    for (const auto& w : weights) {
-      auto safe_weight = std::max(w, 0);
-      total_weight_ += safe_weight;
-      thresholds_.push_back(total_weight_);
-    }
+    std::partial_sum(safe_weights.begin(), safe_weights.end(),
+                     std::back_inserter(thresholds_));
+    // the total is simply the final threshold... or 0 if it was empty
+    total_weight_ = thresholds_.empty() ? 0 : thresholds_.back();
   }
 
   // Returns the exact die size required to drive this table.
-  [[nodiscard]] int total_weight() const { return total_weight_; }
+  [[nodiscard]] int GetTotalWeight() const { return total_weight_; }
 
   // Maps a value (example: from a die roll) to an outcome index.
-  [[nodiscard]] int Map(int value) const {
-    const auto iter = std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
+  [[nodiscard]] int At(int value) const {
+    const auto iter =
+        std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
     return static_cast<int>(std::distance(thresholds_.begin(), iter));
   }
 };
 }  // namespace game_dice_cpp
 
-#endif  // PROBABILITYTABLE_H
+#endif  // GAME_DICE_CPP_SRC_DYNAMICPROBABILITYTABLE_H
