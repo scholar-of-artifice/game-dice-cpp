@@ -102,6 +102,7 @@ TEST(DynamicProbabilityTableAtTest, OutOfBoundsLookup) {
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({1, 2, 3});
   // WHEN At is called
   // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.At(-1), 0);
   EXPECT_EQ(table_A.At(0), 0);
   EXPECT_EQ(table_A.At(10), 3);
 }
