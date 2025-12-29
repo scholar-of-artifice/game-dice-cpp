@@ -196,6 +196,25 @@ TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithBinarySearch) {
   EXPECT_EQ(table_A.At(30), 15);
 }
 
+TEST(StaticProbabilityTableTest, CompileTimeChecksMixedSignedWeights) {
+  constexpr auto table = game_dice_cpp::StaticProbabilityTable<4>(1, -5, 0, 2);
+  static_assert(table.GetTotalWeight() == 3);
+  static_assert(table.At(1) == 0);
+  static_assert(table.At(2) == 3);
+}
+
+TEST(StaticProbabilityTableTest, CompileTimeChecksSingleWeight) {
+  constexpr auto single_table = game_dice_cpp::StaticProbabilityTable<1>(10);
+  static_assert(single_table.GetTotalWeight() == 10);
+  static_assert(single_table.At(5) == 0);
+}
+
+TEST(StaticProbabilityTableTest, CompileTimeChecksZeroWeights) {
+  constexpr auto single_table = game_dice_cpp::StaticProbabilityTable<3>(0);
+  static_assert(single_table.GetTotalWeight() == 0);
+  static_assert(single_table.At(1) == 2);
+}
+
 // TODO: compile-time negative weights
 // TODO: total weight zero
 // TODO: integer overflow safety
