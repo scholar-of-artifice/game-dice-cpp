@@ -59,12 +59,31 @@ class DynamicProbabilityTable {
   //
   [[nodiscard]] static std::optional<game_dice_cpp::DynamicProbabilityTable>
   Make(const std::vector<int>& weights) {
-    // pre-allocate storage
-    std::vector<int> calculated_thresholds;
-    calculated_thresholds.reserve(weights.size());
     // create a view that sees only non-negative weights
     auto safe_weights = weights | std::ranges::views::transform(
                                       [](int w) { return std::max(w, 0); });
+    // accumulate with check-as-you-go
+    // use std::optional<int> to carry the valid state through the loop
+    std::optional<int> total_weight = std::accumulate(
+        safe_weights.begin(), safe_weights.end(), std::optional<int>(0),
+        [](std::optional<int> accumulated, int weight) -> std::optional<int> {
+          // if a previous step failed...
+          if (!accumulated) {
+            return std::nullopt;
+          }
+          // check for overflow before it happens
+          if (weight > std::numeric_limits<int>::max() - *accumulated) {
+            return std::nullopt;
+          }
+          return *accumulated + weight;
+        });
+    // validation
+    if ( !total_weight.has_value() || *total_weight <= 0 ) {
+      return std::nullopt;
+    }
+    // pre-allocate storage
+    std::vector<int> calculated_thresholds;
+    calculated_thresholds.reserve(weights.size());
     std::partial_sum(safe_weights.begin(), safe_weights.end(),
                      std::back_inserter(calculated_thresholds));
     // check if the thresholds do not exist or sum to nothing

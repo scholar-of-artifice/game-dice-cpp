@@ -436,14 +436,13 @@ TEST(DynamicProbabilityTableTest, AtWithLargeWeightsHasCorrectIndexes) {
 }
 
 TEST(DynamicProbabilityTableTest,
-     GetTotalWeightWithLargeWeightsDoesNotOverflow) {
+     MakeWithOverflowWeightsDoesNotConstruct) {
   // GIVEN a table defined with known weights
-  const auto half_max = std::numeric_limits<int>::max() / 2;
   const auto table_A =
-      game_dice_cpp::DynamicProbabilityTable::Make({half_max, half_max, 2});
-  // WHEN At is called
+      game_dice_cpp::DynamicProbabilityTable::Make({std::numeric_limits<int>::max(), std::numeric_limits<int>::max(), std::numeric_limits<int>::max(), -1230});
+  // WHEN Make is called
   // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A->GetTotalWeight(), std::numeric_limits<int>::max());
+  EXPECT_FALSE(table_A.has_value());
 }
 
 TEST(DynamicProbabilityTableTest,
