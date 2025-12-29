@@ -48,6 +48,53 @@ TEST(DynamicProbabilityTableTest, AtWithEmptyWeightsReturnsCorrectIndexes) {
 }
 
 TEST(DynamicProbabilityTableTest,
+     ConstructorWithAllZeroWeightsHas0TotalWeight) {
+  // GIVEN a table defined with zero weights
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable({0});
+  const auto table_B = game_dice_cpp::DynamicProbabilityTable({0, 0});
+  const auto table_C = game_dice_cpp::DynamicProbabilityTable({0, 0, 0});
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of input values
+  EXPECT_EQ(table_A.GetTotalWeight(), 0);
+  EXPECT_EQ(table_B.GetTotalWeight(), 0);
+  EXPECT_EQ(table_C.GetTotalWeight(), 0);
+}
+
+TEST(DynamicProbabilityTableTest,
+     AtWithAllZeroWeightsReturnsCorrectValue) {
+  // GIVEN a table defined with unsorted negative weights
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable({0});
+  const auto table_B = game_dice_cpp::DynamicProbabilityTable({0, 0});
+  const auto table_C = game_dice_cpp::DynamicProbabilityTable({0, 0, 0});
+  // WHEN At is called
+  // THEN the correct index is returned
+  // Table A
+  EXPECT_EQ(table_A.At(-1), 0);
+  EXPECT_EQ(table_A.At(0), 0);
+  EXPECT_EQ(table_A.At(1), 1);
+  EXPECT_EQ(table_A.At(2), 1);
+  EXPECT_EQ(table_A.At(3), 1);
+  EXPECT_EQ(table_A.At(4), 1);
+  EXPECT_EQ(table_A.At(5), 1);
+  // Table B
+  EXPECT_EQ(table_B.At(-1), 0);
+  EXPECT_EQ(table_B.At(0), 0);
+  EXPECT_EQ(table_B.At(1), 2);
+  EXPECT_EQ(table_B.At(2), 2);
+  EXPECT_EQ(table_B.At(3), 2);
+  EXPECT_EQ(table_B.At(4), 2);
+  EXPECT_EQ(table_B.At(5), 2);
+  // Table C
+  EXPECT_EQ(table_C.At(-1), 0);
+  EXPECT_EQ(table_C.At(0), 0);
+  EXPECT_EQ(table_C.At(1), 3);
+  EXPECT_EQ(table_C.At(2), 3);
+  EXPECT_EQ(table_C.At(3), 3);
+  EXPECT_EQ(table_C.At(4), 3);
+  EXPECT_EQ(table_C.At(5), 3);
+}
+
+TEST(DynamicProbabilityTableTest,
      ConstructorWithSortedPositiveWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with sorted positive weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({1});
