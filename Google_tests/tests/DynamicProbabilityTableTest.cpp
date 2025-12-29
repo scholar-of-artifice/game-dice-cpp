@@ -61,7 +61,7 @@ TEST(DynamicProbabilityTableTest,
 }
 
 TEST(DynamicProbabilityTableTest,
-     AtWithAllZeroWeightsReturnsCorrectValue) {
+     AtWithAllZeroWeightsReturnsCorrectIndexes) {
   // GIVEN a table defined with unsorted negative weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({0});
   const auto table_B = game_dice_cpp::DynamicProbabilityTable({0, 0});
@@ -292,7 +292,7 @@ TEST(DynamicProbabilityTableTest,
 }
 
 TEST(DynamicProbabilityTableTest,
-     AtWithUnsortedPositiveWeightsHasCorrectTotalWeight) {
+     AtWithUnsortedPositiveWeightsHasCorrectIndexes) {
   // GIVEN a table defined with unsorted positive weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({1, 2, 1});
   const auto table_B = game_dice_cpp::DynamicProbabilityTable({2, 1, 1});
@@ -339,7 +339,7 @@ TEST(DynamicProbabilityTableTest,
 }
 
 TEST(DynamicProbabilityTableTest,
-     AtWithUnsortedNegativeWeightsHasCorrectTotalWeight) {
+     AtWithUnsortedNegativeWeightsHasCorrectIndexes) {
   // GIVEN a table defined with unsorted negative weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({-1, -2, -1});
   const auto table_B = game_dice_cpp::DynamicProbabilityTable({-2, -1, -1});
