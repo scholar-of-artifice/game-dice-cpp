@@ -71,8 +71,14 @@ class DynamicProbabilityTable {
 
   // Maps a value (example: from a die roll) to an outcome index.
   [[nodiscard]] int At(int value) const {
+    // binary search for the value
     const auto iter =
         std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
+    // clamp value within range of table
+    if (iter == thresholds_.end()) {
+      // this case happens when the input value is greater than the total_weight
+      return static_cast<int>(thresholds_.size() - 1);
+    }
     return static_cast<int>(std::distance(thresholds_.begin(), iter));
   }
 };
