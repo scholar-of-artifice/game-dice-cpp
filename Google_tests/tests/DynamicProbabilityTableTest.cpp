@@ -27,13 +27,25 @@
 
 #include "DynamicProbabilityTable.h"
 
-TEST(DynamicProbabilityTableTest, EmptyWeightsHasTheCorrectTotalWeight) {
+TEST(DynamicProbabilityTableTest, ConstructorWithEmptyWeightsHas0TotalWeight) {
+  // GIVEN a table defined with no weights
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable({});
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of inputs
+  EXPECT_EQ(table_A.GetTotalWeight(), 0);
+}
+
+TEST(DynamicProbabilityTableTest, AtWithEmptyWeightsReturnsCorrectIndexes) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({});
-  // WHEN total_weight is called
-  // THEN the total weight matches the sum of inputs
-  EXPECT_EQ(table_A.GetTotalWeight(), 0);
+  // WHEN At is called
+  // THEN a negative (out of bounds index) returns 0
+  EXPECT_EQ(table_A.At(-1), 0);
+  // AND a 0 (in bounds index) returns 0
+  EXPECT_EQ(table_A.At(0), 0);
+  // AND a positive (out of bounds index) returns 0
+  EXPECT_EQ(table_A.At(1), 0);
 }
 
 TEST(DynamicProbabilityTableTest, AllPositiveWeightsHasTheCorrectTotalWeight) {
