@@ -24,8 +24,7 @@
 // SOFTWARE.
 
 #include <gtest/gtest.h>
-
-#include "../../cmake-build-debug/_deps/googletest-src/googlemock/include/gmock/gmock-matchers.h"
+#include <gmock/gmock.h>
 #include "Actions.h"
 
 TEST(ActionsTest, RollSameSeedReturnsDeterministicResult) {
