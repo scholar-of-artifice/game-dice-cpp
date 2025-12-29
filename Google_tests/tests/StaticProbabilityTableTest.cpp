@@ -195,3 +195,7 @@ TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithBinarySearch) {
   EXPECT_EQ(table_A.At(29), 14);
   EXPECT_EQ(table_A.At(30), 15);
 }
+
+// TODO: compile-time negative weights
+// TODO: total weigth zero
+// TODO: integer overflow safety

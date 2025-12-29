@@ -106,3 +106,5 @@ TEST(DynamicProbabilityTableAtTest, OutOfBoundsLookup) {
   EXPECT_EQ(table_A.At(0), 0);
   EXPECT_EQ(table_A.At(10), 3);
 }
+
+// TODO: integer overflow safety
