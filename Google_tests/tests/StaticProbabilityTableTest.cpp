@@ -28,6 +28,15 @@
 #include "StaticProbabilityTable.h"
 
 
+TEST(StaticProbabilityTableGetTotalWeightTest,
+     EmptyWeightInitializationHasTheCorrectTotalWeight) {
+  // GIVEN a table defined with known weights
+  // AND the weights are empty
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<0>();
+  // WHEN total_weight is called
+  // THEN the total weight matches the sum of inputs
+  EXPECT_EQ(table_A.GetTotalWeight(), 0);
+}
 
 TEST(StaticProbabilityTableGetTotalWeightTest,
      AllPositiveWeightsHasTheCorrectTotalWeight) {
