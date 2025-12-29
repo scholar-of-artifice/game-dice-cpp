@@ -60,53 +60,20 @@ TEST(ActionsTest, RollDifferentSeedReturnsDeterministicResult) {
   EXPECT_EQ(result_b, 7) << "FAILURE: Roll value not correct.";
 }
 
-TEST(ActionsTest, RollAd6AlwaysProducesValueInRange) {
-  // GIVEN a d6...
-  auto d6 = game_dice_cpp::Dice(6);
-  // AND a random number generator
+TEST(ActionsTest, RollAnyDieProducesValueInRange) {
+  // GIVEN a random number generator
   // AND that rng is seeded with 42
   std::mt19937_64 rand_generator(42);
-  for (int trial = 0; trial <= 1'000'000; trial++) {
-    // WHEN the dice is rolled
-    auto result = game_dice_cpp::roll(d6, rand_generator);
-    // THEN the result is always in range
-    EXPECT_GE(result, 1)
-    << "FAILURE: Result less than 1.";
-    EXPECT_LE(result, 6)
-    << "FAILURE: Result greater than 6.";
-  }
-}
-
-TEST(ActionsTest, RollAd12AlwaysProducesValueInRange) {
-  // GIVEN a d12...
-  auto d12 = game_dice_cpp::Dice(12);
-  // AND a random number generator
-  // AND that rng is seeded with 42
-  std::mt19937_64 rand_generator(42);
-  for (int trial = 0; trial <= 1'000'000; trial++) {
-    // WHEN the dice is rolled
-    auto result = game_dice_cpp::roll(d12, rand_generator);
-    // THEN the result is always in range
-    EXPECT_GE(result, 1)
-    << "FAILURE: Result less than 1.";
-    EXPECT_LE(result, 12)
-    << "FAILURE: Result greater than 12.";
-  }
-}
-
-TEST(ActionsTest, RollProducesValueInRange) {
-  // GIVEN a d20...
-  auto d20 = game_dice_cpp::Dice(20);
-  // AND a random number generator
-  // AND that rng is seeded with 42
-  std::mt19937_64 rand_generator(42);
-  for (int trial = 0; trial <= 1'000'000; trial++) {
-    // WHEN the dice is rolled
-    auto result = game_dice_cpp::roll(d20, rand_generator);
-    // THEN the result is always in range
-    EXPECT_THAT(
-      result,
-      testing::AllOf(testing::Ge(1), testing::Le(20))
-      ) << "FAILURE: Value not in range.";
+  for (int sides = 2; sides < 20; sides++) {
+    // AND a dice...
+    auto dice = game_dice_cpp::Dice(sides);
+    for (int trial = 0; trial <= 100'000; trial++) {
+      // WHEN the dice is rolled
+      auto result = game_dice_cpp::roll(dice, rand_generator);
+      // THEN the result is always in range
+      EXPECT_THAT(
+        result,
+        testing::AllOf(testing::Ge(1), testing::Le(sides))) << "FAILURE: Value " << result << " not in range [1, " << sides << "].";
+    }
   }
 }
