@@ -456,6 +456,30 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_EQ(table_B.At(5), 3);
 }
 
+
+TEST(DynamicProbabilityTableTest,
+     GetTotalWeightWithLargeWeightHasCorrectTotalWeight) {
+  // GIVEN a table defined with a single large known weight
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable({std::numeric_limits<int>::max()});
+  // WHEN At is called
+  // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.GetTotalWeight(), 2147483647);
+}
+
+TEST(DynamicProbabilityTableTest,
+     AtWithLargeWeightHasCorrectIndexes) {
+  // GIVEN a table defined with a single large known weight
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable({std::numeric_limits<int>::max()});
+  // WHEN At is called
+  // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.At(-1), 0);
+  EXPECT_EQ(table_A.At(0), 0);
+  EXPECT_EQ(table_A.At(1), 0);
+  EXPECT_EQ(table_A.At(2147483647), 0);
+}
+
 TEST(DynamicProbabilityTableTest,
      GetTotalWeightWithLargeWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with known weights
