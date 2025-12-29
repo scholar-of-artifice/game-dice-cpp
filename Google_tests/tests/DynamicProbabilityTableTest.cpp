@@ -433,4 +433,12 @@ TEST(DynamicProbabilityTableTest, AtWithLargeWeightsHasCorrectIndexes) {
   EXPECT_EQ(table_A.At(half_max * 2 + 1), 2);
 }
 
-// TODO: integer overflow safety
+TEST(DynamicProbabilityTableTest, GetTotalWeightWithLargeWeightsDoesNotOverflow) {
+  // GIVEN a table defined with known weights
+  const auto half_max = std::numeric_limits<int>::max() / 2;
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable({half_max, half_max, 2});
+  // WHEN At is called
+  // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.GetTotalWeight(), std::numeric_limits<int>::max());
+}
