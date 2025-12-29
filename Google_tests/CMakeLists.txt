@@ -20,6 +20,8 @@ add_executable(
         unit_test_suite
         tests/DiceTest.cpp
         tests/ActionsTest.cpp
+        tests/DynamicProbabilityTableTest.cpp
+        tests/StaticProbabilityTableTest.cpp
 )
 # link the executable to the GoogleTest library
 target_link_libraries(
