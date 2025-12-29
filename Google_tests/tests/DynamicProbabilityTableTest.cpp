@@ -48,7 +48,7 @@ TEST(DynamicProbabilityTableTest, AtWithEmptyWeightsReturnsCorrectIndexes) {
 }
 
 TEST(DynamicProbabilityTableTest,
-     ConstructorWithAllSortedPositiveWeightsHasCorrectTotalWeight) {
+     ConstructorWithSortedPositiveWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with sorted positive weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({1});
   const auto table_B = game_dice_cpp::DynamicProbabilityTable({1, 2});
