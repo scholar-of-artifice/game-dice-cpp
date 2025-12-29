@@ -37,8 +37,7 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_A.GetTotalWeight(), 0);
 }
 
-TEST(StaticProbabilityTableTest,
-     AllPositiveWeightsHasTheCorrectTotalWeight) {
+TEST(StaticProbabilityTableTest, AllPositiveWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
   // small cases
@@ -65,8 +64,7 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_F.GetTotalWeight(), 283);
 }
 
-TEST(StaticProbabilityTableTest,
-     AllNegativeWeightsHasTheCorrectTotalWeight) {
+TEST(StaticProbabilityTableTest, AllNegativeWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
   // small cases
@@ -81,8 +79,7 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_C.GetTotalWeight(), 0);
 }
 
-TEST(StaticProbabilityTableTest,
-     MixedSignWeightsHasTheCorrectTotalWeight) {
+TEST(StaticProbabilityTableTest, MixedSignWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
   // small cases
@@ -198,8 +195,9 @@ TEST(StaticProbabilityTableTest, MapsToCorrectValueWithBinarySearch) {
 
 TEST(StaticProbabilityTableTest, HandlesLargeSafeWeights) {
   // GIVEN a table defined with known weights
-  const auto half_max = std::numeric_limits<int>::max()/2;
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<2>(half_max, half_max);
+  const auto half_max = std::numeric_limits<int>::max() / 2;
+  const auto table_A =
+      game_dice_cpp::StaticProbabilityTable<2>(half_max, half_max);
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A.At(0), 0);
@@ -220,7 +218,8 @@ TEST(StaticProbabilityTableTest, CompileTimeChecksSingleWeight) {
 }
 
 TEST(StaticProbabilityTableTest, CompileTimeChecksZeroWeights) {
-  constexpr auto single_table = game_dice_cpp::StaticProbabilityTable<3>(0, 0, 0);
+  constexpr auto single_table =
+      game_dice_cpp::StaticProbabilityTable<3>(0, 0, 0);
   static_assert(single_table.GetTotalWeight() == 0);
   static_assert(single_table.At(1) == 2);
 }

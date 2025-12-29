@@ -23,8 +23,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 #include "Actions.h"
 
 TEST(ActionsTest, RollSameSeedReturnsDeterministicResult) {
@@ -70,9 +71,9 @@ TEST(ActionsTest, RollAnyDieProducesValueInRange) {
       // WHEN the dice is rolled
       auto result = game_dice_cpp::roll(dice, rand_generator);
       // THEN the result is always in range
-      EXPECT_THAT(
-        result,
-        testing::AllOf(testing::Ge(1), testing::Le(sides))) << "FAILURE: Value " << result << " not in range [1, " << sides << "].";
+      EXPECT_THAT(result, testing::AllOf(testing::Ge(1), testing::Le(sides)))
+          << "FAILURE: Value " << result << " not in range [1, " << sides
+          << "].";
     }
   }
 }
