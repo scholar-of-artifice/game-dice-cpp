@@ -210,7 +210,7 @@ TEST(StaticProbabilityTableTest, CompileTimeChecksSingleWeight) {
 }
 
 TEST(StaticProbabilityTableTest, CompileTimeChecksZeroWeights) {
-  constexpr auto single_table = game_dice_cpp::StaticProbabilityTable<3>(0);
+  constexpr auto single_table = game_dice_cpp::StaticProbabilityTable<3>(0, 0, 0);
   static_assert(single_table.GetTotalWeight() == 0);
   static_assert(single_table.At(1) == 2);
 }
