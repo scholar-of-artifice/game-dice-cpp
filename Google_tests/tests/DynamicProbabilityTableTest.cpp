@@ -36,8 +36,7 @@ TEST(DynamicProbabilityTableTest, ConstructorWithEmptyWeightsHas0TotalWeight) {
 }
 
 TEST(DynamicProbabilityTableTest, AtWithEmptyWeightsReturnsCorrectIndexes) {
-  // GIVEN a table defined with known weights
-  // AND all weights are positive
+  // GIVEN a table defined with no weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({});
   // WHEN At is called
   // THEN a negative (out of bounds index) returns 0
