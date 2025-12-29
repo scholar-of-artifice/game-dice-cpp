@@ -27,7 +27,6 @@
 
 #include "StaticProbabilityTable.h"
 
-
 TEST(StaticProbabilityTableGetTotalWeightTest,
      EmptyWeightInitializationHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
@@ -48,11 +47,11 @@ TEST(StaticProbabilityTableGetTotalWeightTest,
   const auto table_C = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 3);
   // medium cases
   const auto table_D =
-    game_dice_cpp::StaticProbabilityTable<10>(1, 2, 3, 1, 8, 9, 22, 12, 1, 3);
+      game_dice_cpp::StaticProbabilityTable<10>(1, 2, 3, 1, 8, 9, 22, 12, 1, 3);
   const auto table_E = game_dice_cpp::StaticProbabilityTable<12>(
       1, 2, 3, 1, 8, 9, 22, 12, 1, 3, 53, 33);
   const auto table_F = game_dice_cpp::StaticProbabilityTable<20>(
-  1, 2, 3, 1, 8, 9, 22, 12, 1, 3, 53, 33, 12, 1, 15, 6, 81, 9, 10, 1);
+      1, 2, 3, 1, 8, 9, 22, 12, 1, 3, 53, 33, 12, 1, 15, 6, 81, 9, 10, 1);
   // large cases
   // WHEN total_weight is called
   // THEN the total weight matches the sum of inputs
@@ -119,4 +118,80 @@ TEST(StaticProbabilityTableAtTest, OutOfBoundsLookup) {
   EXPECT_EQ(table_A.At(-1), 0);
   EXPECT_EQ(table_A.At(0), 0);
   EXPECT_EQ(table_A.At(10), 2);
+}
+
+TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithLinearSearch) {
+  // GIVEN a table defined with known weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<16>(
+      1, 2, 3, 1, 2, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1);
+  // WHEN At is called
+  // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.At(1), 0);
+  EXPECT_EQ(table_A.At(2), 1);
+  EXPECT_EQ(table_A.At(3), 1);
+  EXPECT_EQ(table_A.At(4), 2);
+  EXPECT_EQ(table_A.At(5), 2);
+  EXPECT_EQ(table_A.At(6), 2);
+  EXPECT_EQ(table_A.At(7), 3);
+  EXPECT_EQ(table_A.At(8), 4);
+  EXPECT_EQ(table_A.At(9), 4);
+  EXPECT_EQ(table_A.At(10), 5);
+  EXPECT_EQ(table_A.At(11), 6);
+  EXPECT_EQ(table_A.At(12), 6);
+  EXPECT_EQ(table_A.At(13), 7);
+  EXPECT_EQ(table_A.At(14), 7);
+  EXPECT_EQ(table_A.At(15), 7);
+  EXPECT_EQ(table_A.At(16), 8);
+  EXPECT_EQ(table_A.At(17), 8);
+  EXPECT_EQ(table_A.At(18), 8);
+  EXPECT_EQ(table_A.At(19), 8);
+  EXPECT_EQ(table_A.At(20), 9);
+  EXPECT_EQ(table_A.At(21), 9);
+  EXPECT_EQ(table_A.At(22), 9);
+  EXPECT_EQ(table_A.At(23), 9);
+  EXPECT_EQ(table_A.At(24), 9);
+  EXPECT_EQ(table_A.At(25), 10);
+  EXPECT_EQ(table_A.At(26), 11);
+  EXPECT_EQ(table_A.At(27), 12);
+  EXPECT_EQ(table_A.At(28), 13);
+  EXPECT_EQ(table_A.At(29), 14);
+  EXPECT_EQ(table_A.At(30), 15);
+}
+
+TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithBinarySearch) {
+  // GIVEN a table defined with known weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<17>(
+      1, 2, 3, 1, 2, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1, 1);
+  // WHEN At is called
+  // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.At(1), 0);
+  EXPECT_EQ(table_A.At(2), 1);
+  EXPECT_EQ(table_A.At(3), 1);
+  EXPECT_EQ(table_A.At(4), 2);
+  EXPECT_EQ(table_A.At(5), 2);
+  EXPECT_EQ(table_A.At(6), 2);
+  EXPECT_EQ(table_A.At(7), 3);
+  EXPECT_EQ(table_A.At(8), 4);
+  EXPECT_EQ(table_A.At(9), 4);
+  EXPECT_EQ(table_A.At(10), 5);
+  EXPECT_EQ(table_A.At(11), 6);
+  EXPECT_EQ(table_A.At(12), 6);
+  EXPECT_EQ(table_A.At(13), 7);
+  EXPECT_EQ(table_A.At(14), 7);
+  EXPECT_EQ(table_A.At(15), 7);
+  EXPECT_EQ(table_A.At(16), 8);
+  EXPECT_EQ(table_A.At(17), 8);
+  EXPECT_EQ(table_A.At(18), 8);
+  EXPECT_EQ(table_A.At(19), 8);
+  EXPECT_EQ(table_A.At(20), 9);
+  EXPECT_EQ(table_A.At(21), 9);
+  EXPECT_EQ(table_A.At(22), 9);
+  EXPECT_EQ(table_A.At(23), 9);
+  EXPECT_EQ(table_A.At(24), 9);
+  EXPECT_EQ(table_A.At(25), 10);
+  EXPECT_EQ(table_A.At(26), 11);
+  EXPECT_EQ(table_A.At(27), 12);
+  EXPECT_EQ(table_A.At(28), 13);
+  EXPECT_EQ(table_A.At(29), 14);
+  EXPECT_EQ(table_A.At(30), 15);
 }
