@@ -197,5 +197,5 @@ TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithBinarySearch) {
 }
 
 // TODO: compile-time negative weights
-// TODO: total weigth zero
+// TODO: total weight zero
 // TODO: integer overflow safety
