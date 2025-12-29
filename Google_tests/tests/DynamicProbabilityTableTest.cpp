@@ -107,4 +107,15 @@ TEST(DynamicProbabilityTableAtTest, OutOfBoundsLookup) {
   EXPECT_EQ(table_A.At(10), 3);
 }
 
+
+TEST(DynamicProbabilityTableAtTest, HandlesLargeSafeWeights) {
+  // GIVEN a table defined with known weights
+  const auto half_max = std::numeric_limits<int>::max()/2;
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable({half_max, half_max});
+  // WHEN At is called
+  // THEN the returns the correct value from the table
+  EXPECT_EQ(table_A.At(0), 0);
+  EXPECT_EQ(table_A.At(half_max + 1), 1);
+}
+
 // TODO: integer overflow safety
