@@ -231,6 +231,53 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_EQ(table_F.At(22), 6);
 }
 
+TEST(DynamicProbabilityTableTest,
+     ConstructorWithUnsortedPositiveWeightsHasCorrectTotalWeight) {
+  // GIVEN a table defined with unsorted positive weights
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable({1, 2, 1});
+  const auto table_B = game_dice_cpp::DynamicProbabilityTable({2, 1, 1});
+  const auto table_C = game_dice_cpp::DynamicProbabilityTable({1, 1, 2});
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of input values
+  EXPECT_EQ(table_A.GetTotalWeight(), 4);
+  EXPECT_EQ(table_B.GetTotalWeight(), 4);
+  EXPECT_EQ(table_C.GetTotalWeight(), 4);
+}
+
+TEST(DynamicProbabilityTableTest,
+     AtWithUnsortedPositiveWeightsHasCorrectTotalWeight) {
+  // GIVEN a table defined with unsorted positive weights
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable({1, 2, 1});
+  const auto table_B = game_dice_cpp::DynamicProbabilityTable({2, 1, 1});
+  const auto table_C = game_dice_cpp::DynamicProbabilityTable({1, 1, 2});
+  // WHEN At is called
+  // THEN the correct index is returned
+  // Table A
+  EXPECT_EQ(table_A.At(-1), 0);
+  EXPECT_EQ(table_A.At(0), 0);
+  EXPECT_EQ(table_A.At(1), 0);
+  EXPECT_EQ(table_A.At(2), 1);
+  EXPECT_EQ(table_A.At(3), 1);
+  EXPECT_EQ(table_A.At(4), 2);
+  EXPECT_EQ(table_A.At(5), 3);
+  // Table B
+  EXPECT_EQ(table_B.At(-1), 0);
+  EXPECT_EQ(table_B.At(0), 0);
+  EXPECT_EQ(table_B.At(1), 0);
+  EXPECT_EQ(table_B.At(2), 0);
+  EXPECT_EQ(table_B.At(3), 1);
+  EXPECT_EQ(table_B.At(4), 2);
+  EXPECT_EQ(table_B.At(5), 3);
+  // Table C
+  EXPECT_EQ(table_C.At(-1), 0);
+  EXPECT_EQ(table_C.At(0), 0);
+  EXPECT_EQ(table_C.At(1), 0);
+  EXPECT_EQ(table_C.At(2), 1);
+  EXPECT_EQ(table_C.At(3), 2);
+  EXPECT_EQ(table_C.At(4), 2);
+  EXPECT_EQ(table_C.At(5), 3);
+}
+
 TEST(DynamicProbabilityTableTest, AllNegativeWeightsHasTotalWeightOfZero) {
   // GIVEN a table defined with known weights
   // AND all weights are negative
