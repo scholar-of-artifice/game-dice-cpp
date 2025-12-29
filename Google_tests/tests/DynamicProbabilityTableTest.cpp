@@ -27,7 +27,8 @@
 
 #include "DynamicProbabilityTable.h"
 
-TEST(DynamicProbabilityTableTest, GetTotalWeightWithEmptyWeightsHas0TotalWeight) {
+TEST(DynamicProbabilityTableTest,
+     GetTotalWeightWithEmptyWeightsHas0TotalWeight) {
   // GIVEN a table defined with no weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable({});
   // WHEN GetTotalWeight is called
@@ -121,7 +122,7 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_EQ(table_A.At(2), 1);
   EXPECT_EQ(table_A.At(3), 2);
   EXPECT_EQ(table_A.At(4), 2);
-  EXPECT_EQ(table_A.At(5), 2); // Table A - bound
+  EXPECT_EQ(table_A.At(5), 2);  // Table A - bound
   EXPECT_EQ(table_A.At(6), 3);
   // Table B
   EXPECT_EQ(table_B.At(-1), 0);
@@ -129,7 +130,7 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_EQ(table_B.At(1), 0);
   EXPECT_EQ(table_B.At(2), 2);
   EXPECT_EQ(table_B.At(3), 2);
-  EXPECT_EQ(table_B.At(4), 2); // Table B - bound
+  EXPECT_EQ(table_B.At(4), 2);  // Table B - bound
   EXPECT_EQ(table_B.At(5), 3);
   EXPECT_EQ(table_B.At(6), 3);
   // Table C
@@ -137,7 +138,7 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_EQ(table_C.At(0), 0);
   EXPECT_EQ(table_C.At(1), 0);
   EXPECT_EQ(table_C.At(2), 1);
-  EXPECT_EQ(table_C.At(3), 1); // Table C - bound
+  EXPECT_EQ(table_C.At(3), 1);  // Table C - bound
   EXPECT_EQ(table_C.At(4), 3);
   EXPECT_EQ(table_C.At(5), 3);
   EXPECT_EQ(table_C.At(6), 3);
@@ -455,7 +456,8 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_EQ(table_B.At(5), 3);
 }
 
-TEST(DynamicProbabilityTableTest, GetTotalWeightWithLargeWeightsHasCorrectTotalWeight) {
+TEST(DynamicProbabilityTableTest,
+     GetTotalWeightWithLargeWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   const auto half_max = std::numeric_limits<int>::max() / 2;
   const auto table_A =
@@ -483,7 +485,8 @@ TEST(DynamicProbabilityTableTest, AtWithLargeWeightsHasCorrectIndexes) {
   EXPECT_EQ(table_A.At(half_max * 2 + 1), 2);
 }
 
-TEST(DynamicProbabilityTableTest, GetTotalWeightWithLargeWeightsDoesNotOverflow) {
+TEST(DynamicProbabilityTableTest,
+     GetTotalWeightWithLargeWeightsDoesNotOverflow) {
   // GIVEN a table defined with known weights
   const auto half_max = std::numeric_limits<int>::max() / 2;
   const auto table_A =
