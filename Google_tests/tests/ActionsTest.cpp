@@ -25,8 +25,8 @@
 
 #include <gtest/gtest.h>
 
+#include "../../cmake-build-debug/_deps/googletest-src/googlemock/include/gmock/gmock-matchers.h"
 #include "Actions.h"
-
 
 TEST(ActionsTest, RollSameSeedReturnsDeterministicResult) {
   // GIVEN a d20...
@@ -94,8 +94,7 @@ TEST(ActionsTest, RollAd12AlwaysProducesValueInRange) {
   }
 }
 
-
-TEST(ActionsTest, RollAd20AlwaysProducesValueInRange) {
+TEST(ActionsTest, RollProducesValueInRange) {
   // GIVEN a d20...
   auto d20 = game_dice_cpp::Dice(20);
   // AND a random number generator
@@ -105,9 +104,9 @@ TEST(ActionsTest, RollAd20AlwaysProducesValueInRange) {
     // WHEN the dice is rolled
     auto result = game_dice_cpp::roll(d20, rand_generator);
     // THEN the result is always in range
-    EXPECT_GE(result, 1)
-    << "FAILURE: Result less than 1.";
-    EXPECT_LE(result, 20)
-    << "FAILURE: Result greater than 20.";
+    EXPECT_THAT(
+      result,
+      testing::AllOf(testing::Ge(1), testing::Le(20))
+      ) << "FAILURE: Value not in range.";
   }
 }
