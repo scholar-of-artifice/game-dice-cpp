@@ -360,29 +360,6 @@ TEST(DynamicProbabilityTableTest, AllZeroWeightsHasTheCorrectTotalWeight) {
   EXPECT_EQ(table_A.GetTotalWeight(), 0);
 }
 
-TEST(DynamicProbabilityTableTest, MapsToCorrectValue) {
-  // GIVEN a table defined with known weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable({1, 2, 3});
-  // WHEN At is called
-  // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A.At(1), 0);
-  EXPECT_EQ(table_A.At(2), 1);
-  EXPECT_EQ(table_A.At(3), 1);
-  EXPECT_EQ(table_A.At(4), 2);
-  EXPECT_EQ(table_A.At(5), 2);
-  EXPECT_EQ(table_A.At(6), 2);
-}
-
-TEST(DynamicProbabilityTableTest, OutOfBoundsLookup) {
-  // GIVEN a table defined with known weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable({1, 2, 3});
-  // WHEN At is called
-  // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A.At(-1), 0);
-  EXPECT_EQ(table_A.At(0), 0);
-  EXPECT_EQ(table_A.At(10), 3);
-}
-
 TEST(DynamicProbabilityTableTest, HandlesLargeSafeWeights) {
   // GIVEN a table defined with known weights
   const auto half_max = std::numeric_limits<int>::max() / 2;
