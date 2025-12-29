@@ -28,7 +28,7 @@
 #include "Actions.h"
 
 
-TEST(ActionsTest, RollAreEquivalentForEntropySourceWithSameSeed) {
+TEST(ActionsTest, RollSameSeedReturnsDeterministicResult) {
   // GIVEN a d20...
   auto d20 = game_dice_cpp::Dice(20);
   // AND two distinct random number generators
@@ -44,7 +44,7 @@ TEST(ActionsTest, RollAreEquivalentForEntropySourceWithSameSeed) {
   EXPECT_EQ(result_b, 9) << "FAILURE: Roll value not correct.";
 }
 
-TEST(ActionsTest, RollAreNotEquivalentForEntropySourceWithDifferentSeed) {
+TEST(ActionsTest, RollDifferentSeedReturnsDeterministicResult) {
   // GIVEN a d20...
   auto d20 = game_dice_cpp::Dice(20);
   // AND two distinct random number generators
