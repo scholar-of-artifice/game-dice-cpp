@@ -27,7 +27,7 @@
 
 #include "StaticProbabilityTable.h"
 
-TEST(StaticProbabilityTableGetTotalWeightTest,
+TEST(StaticProbabilityTableTest,
      EmptyWeightInitializationHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND the weights are empty
@@ -37,7 +37,7 @@ TEST(StaticProbabilityTableGetTotalWeightTest,
   EXPECT_EQ(table_A.GetTotalWeight(), 0);
 }
 
-TEST(StaticProbabilityTableGetTotalWeightTest,
+TEST(StaticProbabilityTableTest,
      AllPositiveWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
@@ -65,7 +65,7 @@ TEST(StaticProbabilityTableGetTotalWeightTest,
   EXPECT_EQ(table_F.GetTotalWeight(), 283);
 }
 
-TEST(StaticProbabilityTableGetTotalWeightTest,
+TEST(StaticProbabilityTableTest,
      AllNegativeWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
@@ -81,7 +81,7 @@ TEST(StaticProbabilityTableGetTotalWeightTest,
   EXPECT_EQ(table_C.GetTotalWeight(), 0);
 }
 
-TEST(StaticProbabilityTableGetTotalWeightTest,
+TEST(StaticProbabilityTableTest,
      MixedSignWeightsHasTheCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   // AND all weights are positive
@@ -97,7 +97,7 @@ TEST(StaticProbabilityTableGetTotalWeightTest,
   EXPECT_EQ(table_C.GetTotalWeight(), 1);
 }
 
-TEST(StaticProbabilityTableAtTest, MapsToCorrectValue) {
+TEST(StaticProbabilityTableTest, MapsToCorrectValue) {
   // GIVEN a table defined with known weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 3);
   // WHEN At is called
@@ -110,7 +110,7 @@ TEST(StaticProbabilityTableAtTest, MapsToCorrectValue) {
   EXPECT_EQ(table_A.At(6), 2);
 }
 
-TEST(StaticProbabilityTableAtTest, OutOfBoundsLookup) {
+TEST(StaticProbabilityTableTest, OutOfBoundsLookup) {
   // GIVEN a table defined with known weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 3);
   // WHEN At is called
@@ -120,7 +120,7 @@ TEST(StaticProbabilityTableAtTest, OutOfBoundsLookup) {
   EXPECT_EQ(table_A.At(10), 2);
 }
 
-TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithLinearSearch) {
+TEST(StaticProbabilityTableTest, MapsToCorrectValueWithLinearSearch) {
   // GIVEN a table defined with known weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<16>(
       1, 2, 3, 1, 2, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1);
@@ -158,7 +158,7 @@ TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithLinearSearch) {
   EXPECT_EQ(table_A.At(30), 15);
 }
 
-TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithBinarySearch) {
+TEST(StaticProbabilityTableTest, MapsToCorrectValueWithBinarySearch) {
   // GIVEN a table defined with known weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<17>(
       1, 2, 3, 1, 2, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1, 1);
@@ -196,7 +196,7 @@ TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithBinarySearch) {
   EXPECT_EQ(table_A.At(30), 15);
 }
 
-TEST(StaticProbabilityTableAtTest, HandlesLargeSafeWeights) {
+TEST(StaticProbabilityTableTest, HandlesLargeSafeWeights) {
   // GIVEN a table defined with known weights
   const auto half_max = std::numeric_limits<int>::max()/2;
   const auto table_A = game_dice_cpp::StaticProbabilityTable<2>(half_max, half_max);
