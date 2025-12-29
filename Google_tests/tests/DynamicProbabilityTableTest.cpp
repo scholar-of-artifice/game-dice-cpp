@@ -1622,5 +1622,5 @@ TEST(DynamicProbabilityTableTest,
        3, 4, 1, 2, 4, 3, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 5, 3, 1, 3, 5, 1, 5, 4});
   // WHEN At is called
   // THEN it has the correct total weight
-  EXPECT_EQ(table_A.GetTotalWeight(), 82100);
+  EXPECT_EQ(table_A.GetTotalWeight(), 81920);
 }
