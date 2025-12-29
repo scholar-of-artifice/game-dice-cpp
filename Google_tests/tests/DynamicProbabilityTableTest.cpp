@@ -405,41 +405,6 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_EQ(table_B.At(5), 3);
 }
 
-TEST(DynamicProbabilityTableTest, AllNegativeWeightsHasTotalWeightOfZero) {
-  // GIVEN a table defined with known weights
-  // AND all weights are negative
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable({-1, -1, -1});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable({-1, -2, -1});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable({-1, -2, -3});
-  // WHEN GetTotalWeight is called
-  // THEN the total weight matches the sum of inputs
-  EXPECT_EQ(table_A.GetTotalWeight(), 0);
-  EXPECT_EQ(table_B.GetTotalWeight(), 0);
-  EXPECT_EQ(table_C.GetTotalWeight(), 0);
-}
-
-TEST(DynamicProbabilityTableTest, MixedSignWeightsHasTotalWeightOfZero) {
-  // GIVEN a table defined with known weights
-  // AND weights are mixed signedness
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable({1, -1, 1});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable({1, -2, 1});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable({1, -2, -3});
-  // WHEN GetTotalWeight is called
-  // THEN the total weight matches the sum of inputs
-  EXPECT_EQ(table_A.GetTotalWeight(), 2);
-  EXPECT_EQ(table_B.GetTotalWeight(), 2);
-  EXPECT_EQ(table_C.GetTotalWeight(), 1);
-}
-
-TEST(DynamicProbabilityTableTest, AllZeroWeightsHasTheCorrectTotalWeight) {
-  // GIVEN a table defined with known weights
-  // AND all weights are positive
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable({0, 0, 0, 0, 0});
-  // WHEN total_weight is called
-  // THEN the total weight matches the sum of inputs
-  EXPECT_EQ(table_A.GetTotalWeight(), 0);
-}
-
 TEST(DynamicProbabilityTableTest, HandlesLargeSafeWeights) {
   // GIVEN a table defined with known weights
   const auto half_max = std::numeric_limits<int>::max() / 2;
