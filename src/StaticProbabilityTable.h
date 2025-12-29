@@ -6,6 +6,7 @@
 #define GAME_DICE_CPP_SRC_STATICPROBABILITYTABLE_H
 #include <algorithm>
 #include <array>
+#include <concepts>
 #include <iterator>
 #include <numeric>
 

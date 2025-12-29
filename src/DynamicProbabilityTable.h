@@ -26,6 +26,7 @@
 #ifndef GAME_DICE_CPP_SRC_DYNAMICPROBABILITYTABLE_H
 #define GAME_DICE_CPP_SRC_DYNAMICPROBABILITYTABLE_H
 #include <algorithm>
+#include <iterator>
 #include <numeric>
 #include <ranges>
 #include <vector>
