@@ -27,8 +27,7 @@
 
 #include "StaticProbabilityTable.h"
 
-TEST(StaticProbabilityTableTest,
-     MakeWithEmptyWeightsReturnsNullOpt) {
+TEST(StaticProbabilityTableTest, MakeWithEmptyWeightsReturnsNullOpt) {
   // GIVEN a table defined with no weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<0>::Make();
   // WHEN Make is called
@@ -36,8 +35,7 @@ TEST(StaticProbabilityTableTest,
   EXPECT_FALSE(table_A.has_value());
 }
 
-TEST(StaticProbabilityTableTest,
-     MakeWithAllZeroWeightsReturnsNullOpt) {
+TEST(StaticProbabilityTableTest, MakeWithAllZeroWeightsReturnsNullOpt) {
   // GIVEN a table defined with zero weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make(0);
   const auto table_B = game_dice_cpp::StaticProbabilityTable<2>::Make(0, 0);
@@ -334,8 +332,7 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_C->At(5), 2);
 }
 
-TEST(StaticProbabilityTableTest,
-     MakeWithNegativeWeightsReturnsNullOpt) {
+TEST(StaticProbabilityTableTest, MakeWithNegativeWeightsReturnsNullOpt) {
   // GIVEN a table defined with unsorted negative weights
   const auto table_A =
       game_dice_cpp::StaticProbabilityTable<3>::Make(-1, -2, -1);
@@ -387,8 +384,8 @@ TEST(StaticProbabilityTableTest,
 TEST(StaticProbabilityTableTest,
      GetTotalWeightWithLargeWeightHasCorrectTotalWeight) {
   // GIVEN a table defined with a single large known weight
-  const auto table_A =
-      game_dice_cpp::StaticProbabilityTable<1>::Make(std::numeric_limits<int>::max());
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make(
+      std::numeric_limits<int>::max());
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A->GetTotalWeight(), 2147483647);
@@ -396,8 +393,8 @@ TEST(StaticProbabilityTableTest,
 
 TEST(StaticProbabilityTableTest, AtWithLargeWeightHasCorrectIndexes) {
   // GIVEN a table defined with a single large known weight
-  const auto table_A =
-      game_dice_cpp::StaticProbabilityTable<1>::Make(std::numeric_limits<int>::max());
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make(
+      std::numeric_limits<int>::max());
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A->At(-1), 0);
@@ -435,11 +432,11 @@ TEST(StaticProbabilityTableTest, AtWithLargeWeightsHasCorrectIndexes) {
   EXPECT_EQ(table_A->At(half_max * 2 + 1), 1);
 }
 
-TEST(StaticProbabilityTableTest,
-     MakeWithOverflowWeightsDoesNotConstruct) {
+TEST(StaticProbabilityTableTest, MakeWithOverflowWeightsDoesNotConstruct) {
   // GIVEN a table defined with known weights
-  const auto table_A =
-      game_dice_cpp::StaticProbabilityTable<4>::Make(std::numeric_limits<int>::max(), std::numeric_limits<int>::max(), std::numeric_limits<int>::max(), -1230);
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<4>::Make(
+      std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
+      std::numeric_limits<int>::max(), -1230);
   // WHEN Make is called
   // THEN the returns the correct value from the table
   EXPECT_FALSE(table_A.has_value());
