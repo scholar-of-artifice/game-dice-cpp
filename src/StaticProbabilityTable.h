@@ -20,8 +20,6 @@ class StaticProbabilityTable {
  private:
   std::array<int, NumberOfOutcomes> thresholds_;
 
-  template <std::convertible_to<int>... Args>
-    requires(sizeof...(Args) == NumberOfOutcomes)
   constexpr explicit StaticProbabilityTable(
       const std::array<int, NumberOfOutcomes>& thresholds)
       : thresholds_(thresholds) {}
