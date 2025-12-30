@@ -445,13 +445,20 @@ TEST(StaticProbabilityTableTest,
   EXPECT_FALSE(table_A.has_value());
 }
 
-// TEST(StaticProbabilityTableTest,
-//      GetTotalWeightWithLargeLargeInputSizeHasCorrectTotalWeight) {
-//   // GIVEN a table defined with known weights
-//   const std::vector<int> large_weights_list(1'000'000, 1);
-//   const auto table_A =
-//       game_dice_cpp::StaticProbabilityTable<1>::Make(large_weights_list);
-//   // WHEN At is called
-//   // THEN it has the correct total weight
-//   EXPECT_EQ(table_A->GetTotalWeight(), 1'000'000);
-// }
+TEST(StaticProbabilityTableTest,
+     GetTotalWeightWithLargeLargeInputSizeHasCorrectTotalWeight) {
+  // GIVEN a table defined with known weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<220>::Make(
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+  // WHEN At is called
+  // THEN it has the correct total weight
+  EXPECT_EQ(table_A->GetTotalWeight(), 220);
+}
