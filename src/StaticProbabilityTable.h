@@ -10,6 +10,8 @@
 #include <iterator>
 #include <numeric>
 #include <ranges>
+#include <limits>
+#include <optional>
 
 namespace game_dice_cpp {
 
