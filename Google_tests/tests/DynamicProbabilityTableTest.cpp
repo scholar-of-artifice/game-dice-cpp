@@ -446,12 +446,23 @@ TEST(DynamicProbabilityTableTest,
 }
 
 TEST(DynamicProbabilityTableTest,
-     GetTotalWeightWithLargeLargeInputSizeHasCorrectTotalWeight) {
+     GetTotalWeightWithMediumInputSizeHasCorrectTotalWeight) {
+  // GIVEN a table defined with known weights
+  const std::vector<int> large_weights_list(220, 1);
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(large_weights_list);
+  // WHEN GetTotalWeight is called
+  // THEN it has the correct total weight
+  EXPECT_EQ(table_A->GetTotalWeight(), 220);
+}
+
+TEST(DynamicProbabilityTableTest,
+     GetTotalWeightWithLargeInputSizeHasCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   const std::vector<int> large_weights_list(1'000'000, 1);
   const auto table_A =
       game_dice_cpp::DynamicProbabilityTable::Make(large_weights_list);
-  // WHEN At is called
+  // WHEN GetTotalWeight is called
   // THEN it has the correct total weight
   EXPECT_EQ(table_A->GetTotalWeight(), 1'000'000);
 }
