@@ -9,6 +9,7 @@
 #include <concepts>
 #include <iterator>
 #include <numeric>
+#include <ranges>
 
 namespace game_dice_cpp {
 
@@ -16,48 +17,67 @@ template <size_t NumberOfOutcomes>
 class StaticProbabilityTable {
  private:
   std::array<int, NumberOfOutcomes> thresholds_;
-  int total_weight_;
 
- public:
   template <std::convertible_to<int>... Args>
     requires(sizeof...(Args) == NumberOfOutcomes)
-  constexpr explicit StaticProbabilityTable(Args... input_weights)
-      : total_weight_(0), thresholds_{} {
-    // pack arguments into temporary array for processing
+  constexpr explicit StaticProbabilityTable(
+      const std::array<int, NumberOfOutcomes>& thresholds)
+      : thresholds_(thresholds) {}
+
+ public:
+  //
+  template <std::convertible_to<int>... Args>
+    requires(sizeof...(Args) == NumberOfOutcomes)
+  [[nodiscard]] static std::optional<game_dice_cpp::StaticProbabilityTable>
+  Make(const Args&... input_weights) {
+    // pack arguments
     std::array<int, NumberOfOutcomes> weights = {
         static_cast<int>(input_weights)...};
-    // sanitize the input to remove negative values (in-place)
-    std::transform(weights.begin(), weights.end(), weights.begin(),
-                   [](int w) { return std::max(0, w); });
-    // accumulate
-    std::partial_sum(weights.begin(), weights.end(), thresholds_.begin());
-    // store total
-    if constexpr (NumberOfOutcomes > 0) {
-      total_weight_ = thresholds_.back();
+    // create a view that sees only non-negative weights
+    std::ranges::views::transform([](int w) { return std::max(w, 0); });
+    // accumulate with check-as-you-go overflow check
+    // use std::optional<int> to carry the valid state through the loop
+    std::optional<int> total_weight = std::accumulate(
+        weights.begin(), weights.end(), std::optional<int>(0),
+        [](std::optional<int> accumulated, int weight) -> std::optional<int> {
+          // if a previous step failed...
+          if (!accumulated) {
+            return std::nullopt;
+          }
+          // check for overflow before it happens
+          if (weight > std::numeric_limits<int>::max() - *accumulated) {
+            return std::nullopt;
+          }
+          return *accumulated + weight;
+        });
+    // validation
+    if (!total_weight.has_value() || *total_weight <= 0) {
+      return std::nullopt;
     }
+    // calculate thresholds
+    std::array<int, NumberOfOutcomes> thresholds{};
+    std::partial_sum(weights.begin(), weights.end(), thresholds.begin());
+    // check if the thresholds do not exist or sum to nothing
+    if (thresholds.empty() || thresholds.back() <= 0) {
+      return std::nullopt;
+    }
+    // construct and return
+    return StaticProbabilityTable(thresholds);
   }
-  [[nodiscard]] constexpr int GetTotalWeight() const { return total_weight_; }
+  [[nodiscard]] constexpr int GetTotalWeight() const {
+    return thresholds_.back();
+  }
   [[nodiscard]] constexpr int At(int value) const {
-    // hybrid search strategy
-    // TODO: hardcoded NumberOfOutcomes check... probably hardware dependent
-    if constexpr (NumberOfOutcomes <= 16) {
-      // linear search for small tables
-      for (size_t i = 0; i < NumberOfOutcomes; ++i) {
-        if (value <= thresholds_[i]) {
-          return static_cast<int>(i);
-        }
-      }
-      return static_cast<int>(NumberOfOutcomes - 1);
-    } else {
-      // binary search for larger tables
-      const auto iter =
-          std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
-      if (iter == thresholds_.end()) {
-        return static_cast<int>(NumberOfOutcomes - 1);
-      } else {
-        return static_cast<int>(std::distance(thresholds_.begin(), iter));
-      }
+    // TODO: small table optimization
+    // binary search for the value
+    const auto iter =
+        std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
+    // clamp value within range of table
+    if (iter == thresholds_.end()) {
+      // this case happens when the input value is greater than the total_weight
+      return static_cast<int>(thresholds_.size() - 1);
     }
+    return static_cast<int>(std::distance(thresholds_.begin(), iter));
   }
 };
 
