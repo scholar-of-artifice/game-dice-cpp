@@ -33,8 +33,8 @@ class StaticProbabilityTable {
     // pack arguments
     std::array<int, NumberOfOutcomes> weights = {
         static_cast<int>(input_weights)...};
-    // create a view that sees only non-negative weights
-    std::ranges::views::transform([](int w) { return std::max(w, 0); });
+    // transform in-place only non-negative weights
+    std::ranges::transform([](int w) { return std::max(w, 0); });
     // accumulate with check-as-you-go overflow check
     // use std::optional<int> to carry the valid state through the loop
     std::optional<int> total_weight = std::accumulate(
