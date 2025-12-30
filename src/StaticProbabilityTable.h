@@ -30,7 +30,7 @@ class StaticProbabilityTable {
   //
   template <std::convertible_to<int>... Args>
     requires(sizeof...(Args) == NumberOfOutcomes)
-  [[nodiscard]] static std::optional<game_dice_cpp::StaticProbabilityTable>
+  [[nodiscard]] static constexpr std::optional<game_dice_cpp::StaticProbabilityTable<NumberOfOutcomes>>
   Make(const Args&... input_weights) {
     // pack arguments
     std::array<int, NumberOfOutcomes> weights = {
