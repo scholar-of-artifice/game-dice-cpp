@@ -28,6 +28,7 @@
 #include <algorithm>
 #include <iterator>
 #include <numeric>
+#include <optional>
 #include <ranges>
 #include <vector>
 
@@ -48,31 +49,63 @@ class DynamicProbabilityTable {
  private:
   // Cumulative upper bounds.
   std::vector<int> thresholds_;
-  int total_weight_;
 
- public:
   // Explicit Weight Initialization
   // The user must define exactly the "shape" of the probability distribution.
-  explicit DynamicProbabilityTable(const std::vector<int>& weights)
-      : total_weight_(0) {
+  explicit DynamicProbabilityTable(std::vector<int>&& thresholds)
+      : thresholds_(std::move(thresholds)) {}
+
+ public:
+  //
+  [[nodiscard]] static std::optional<game_dice_cpp::DynamicProbabilityTable>
+  Make(const std::vector<int>& weights) {
     // create a view that sees only non-negative weights
     auto safe_weights = weights | std::ranges::views::transform(
                                       [](int w) { return std::max(w, 0); });
-    // fill the thresholds vector using the standard algorithm
-    thresholds_.reserve(weights.size());
+    // accumulate with check-as-you-go
+    // use std::optional<int> to carry the valid state through the loop
+    std::optional<int> total_weight = std::accumulate(
+        safe_weights.begin(), safe_weights.end(), std::optional<int>(0),
+        [](std::optional<int> accumulated, int weight) -> std::optional<int> {
+          // if a previous step failed...
+          if (!accumulated) {
+            return std::nullopt;
+          }
+          // check for overflow before it happens
+          if (weight > std::numeric_limits<int>::max() - *accumulated) {
+            return std::nullopt;
+          }
+          return *accumulated + weight;
+        });
+    // validation
+    if ( !total_weight.has_value() || *total_weight <= 0 ) {
+      return std::nullopt;
+    }
+    // pre-allocate storage
+    std::vector<int> calculated_thresholds;
+    calculated_thresholds.reserve(weights.size());
     std::partial_sum(safe_weights.begin(), safe_weights.end(),
-                     std::back_inserter(thresholds_));
-    // the total is simply the final threshold... or 0 if it was empty
-    total_weight_ = thresholds_.empty() ? 0 : thresholds_.back();
+                     std::back_inserter(calculated_thresholds));
+    // check if the thresholds do not exist or sum to nothing
+    if (calculated_thresholds.empty() || calculated_thresholds.back() <= 0) {
+      return std::nullopt;
+    }
+    // construct and return
+    return DynamicProbabilityTable(std::move(calculated_thresholds));
   }
-
   // Returns the exact die size required to drive this table.
-  [[nodiscard]] int GetTotalWeight() const { return total_weight_; }
+  [[nodiscard]] int GetTotalWeight() const { return thresholds_.back(); }
 
   // Maps a value (example: from a die roll) to an outcome index.
   [[nodiscard]] int At(int value) const {
+    // binary search for the value
     const auto iter =
         std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
+    // clamp value within range of table
+    if (iter == thresholds_.end()) {
+      // this case happens when the input value is greater than the total_weight
+      return static_cast<int>(thresholds_.size() - 1);
+    }
     return static_cast<int>(std::distance(thresholds_.begin(), iter));
   }
 };

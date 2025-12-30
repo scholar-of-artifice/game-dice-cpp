@@ -27,9 +27,9 @@
 
 #include "Dice.h"
 
-TEST(DiceConstructorTest, AssignsCorrectValueForValidInput) {
+TEST(DiceTest, ConstructorValidInputSetsSides) {
   // GIVEN an input number of sides z
-  for (int z = 2; z <= 2'000'000; z++) {
+  for (int z = 2; z < 2'000'000; z++) {
     // WHEN a Dice is constructed
     const auto dz = game_dice_cpp::Dice(z);
     // THEN there are the correct number of sides
@@ -38,10 +38,10 @@ TEST(DiceConstructorTest, AssignsCorrectValueForValidInput) {
   }
 }
 
-TEST(DiceConstructorTest, AssignsCorrectValueForSmallInput) {
+TEST(DiceTest, ConstructorNegativeInputSetsSides) {
   // GIVEN an input number of sides z
-  // AND z is <= 2
-  for (int z = -2'000'000; z <= 2; z++) {
+  // AND z is negative
+  for (int z = -2'000'000; z < 0; z++) {
     // WHEN a Dice is constructed
     const auto dz = game_dice_cpp::Dice(z);
     // THEN there are the correct number of sides
@@ -50,7 +50,19 @@ TEST(DiceConstructorTest, AssignsCorrectValueForSmallInput) {
   }
 }
 
-TEST(DiceConstructorTest, AssignsCorrectValueForLargeInput) {
+TEST(DiceTest, ConstructorSmallInputSetsSides) {
+  // GIVEN an input number of sides z
+  // AND z is smaller than 2
+  for (int z = 0; z < 2; z++) {
+    // WHEN a Dice is constructed
+    const auto dz = game_dice_cpp::Dice(z);
+    // THEN there are the correct number of sides
+    EXPECT_EQ(dz.GetNumSides(), 2)
+        << "FAILURE: Unexpected number of sides for Dice(" << z << ").";
+  }
+}
+
+TEST(DiceTest, ConstructorLargeInputSetsSides) {
   // GIVEN an input number of sides z
   // AND z is the numeric limit of an int
   // WHEN a Dice is constructed

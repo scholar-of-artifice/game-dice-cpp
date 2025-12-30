@@ -27,204 +27,435 @@
 
 #include "StaticProbabilityTable.h"
 
-TEST(StaticProbabilityTableGetTotalWeightTest,
-     EmptyWeightInitializationHasTheCorrectTotalWeight) {
-  // GIVEN a table defined with known weights
-  // AND the weights are empty
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<0>();
-  // WHEN total_weight is called
-  // THEN the total weight matches the sum of inputs
-  EXPECT_EQ(table_A.GetTotalWeight(), 0);
+TEST(StaticProbabilityTableTest, MakeWithEmptyWeightsReturnsNullOpt) {
+  // GIVEN a table defined with no weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<0>::Make();
+  // WHEN Make is called
+  // THEN there is nothing returned
+  EXPECT_FALSE(table_A.has_value());
 }
 
-TEST(StaticProbabilityTableGetTotalWeightTest,
-     AllPositiveWeightsHasTheCorrectTotalWeight) {
-  // GIVEN a table defined with known weights
-  // AND all weights are positive
-  // small cases
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, 1, 1);
-  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 1);
-  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 3);
-  // medium cases
+TEST(StaticProbabilityTableTest, MakeWithAllZeroWeightsReturnsNullOpt) {
+  // GIVEN a table defined with zero weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make(0);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<2>::Make(0, 0);
+  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make(0, 0, 0);
+  // THEN the total weight matches the sum of input values// WHEN Make is called
+  // THEN there is nothing returned
+  EXPECT_FALSE(table_A.has_value());
+  EXPECT_FALSE(table_B.has_value());
+  EXPECT_FALSE(table_C.has_value());
+}
+
+TEST(StaticProbabilityTableTest,
+     GetTotalWeightWithSprasePositiveWeightsHasCorrectTotalWeight) {
+  // GIVEN a table defined with positive weights and zeros
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make(0, 2, 3);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 0, 3);
+  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 2, 0);
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of input values
+  EXPECT_EQ(table_A->GetTotalWeight(), 5);
+  EXPECT_EQ(table_B->GetTotalWeight(), 4);
+  EXPECT_EQ(table_C->GetTotalWeight(), 3);
+}
+
+TEST(StaticProbabilityTableTest,
+     AtTotalWeightWithSprasePositiveWeightsReturnsCorrectIndexes) {
+  // GIVEN a table defined with positive weights and zeros
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make(0, 2, 3);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 0, 3);
+  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 2, 0);
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of input values
+  // Table A
+  EXPECT_EQ(table_A->At(-1), 0);
+  EXPECT_EQ(table_A->At(0), 0);
+  EXPECT_EQ(table_A->At(1), 1);
+  EXPECT_EQ(table_A->At(2), 1);
+  EXPECT_EQ(table_A->At(3), 2);
+  EXPECT_EQ(table_A->At(4), 2);
+  EXPECT_EQ(table_A->At(5), 2);  // Table A - bound
+  EXPECT_EQ(table_A->At(6), 2);
+  // Table B
+  EXPECT_EQ(table_B->At(-1), 0);
+  EXPECT_EQ(table_B->At(0), 0);
+  EXPECT_EQ(table_B->At(1), 0);
+  EXPECT_EQ(table_B->At(2), 2);
+  EXPECT_EQ(table_B->At(3), 2);
+  EXPECT_EQ(table_B->At(4), 2);  // Table B - bound
+  EXPECT_EQ(table_B->At(5), 2);
+  EXPECT_EQ(table_B->At(6), 2);
+  // Table C
+  EXPECT_EQ(table_C->At(-1), 0);
+  EXPECT_EQ(table_C->At(0), 0);
+  EXPECT_EQ(table_C->At(1), 0);
+  EXPECT_EQ(table_C->At(2), 1);
+  EXPECT_EQ(table_C->At(3), 1);  // Table C - bound
+  EXPECT_EQ(table_C->At(4), 2);
+  EXPECT_EQ(table_C->At(5), 2);
+  EXPECT_EQ(table_C->At(6), 2);
+}
+
+TEST(StaticProbabilityTableTest,
+     GetTotalWeightWithSortedPositiveWeightsHasCorrectTotalWeight) {
+  // GIVEN a table defined with sorted positive weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make(1);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<2>::Make(1, 2);
+  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 2, 3);
   const auto table_D =
-      game_dice_cpp::StaticProbabilityTable<10>(1, 2, 3, 1, 8, 9, 22, 12, 1, 3);
-  const auto table_E = game_dice_cpp::StaticProbabilityTable<12>(
-      1, 2, 3, 1, 8, 9, 22, 12, 1, 3, 53, 33);
-  const auto table_F = game_dice_cpp::StaticProbabilityTable<20>(
-      1, 2, 3, 1, 8, 9, 22, 12, 1, 3, 53, 33, 12, 1, 15, 6, 81, 9, 10, 1);
-  // large cases
-  // WHEN total_weight is called
-  // THEN the total weight matches the sum of inputs
-  // small cases
-  EXPECT_EQ(table_A.GetTotalWeight(), 3);
-  EXPECT_EQ(table_B.GetTotalWeight(), 4);
-  EXPECT_EQ(table_C.GetTotalWeight(), 6);
-  // medium cases
-  EXPECT_EQ(table_D.GetTotalWeight(), 62);
-  EXPECT_EQ(table_E.GetTotalWeight(), 148);
-  EXPECT_EQ(table_F.GetTotalWeight(), 283);
+      game_dice_cpp::StaticProbabilityTable<4>::Make(1, 2, 3, 4);
+  const auto table_E =
+      game_dice_cpp::StaticProbabilityTable<5>::Make(1, 2, 3, 4, 5);
+  const auto table_F =
+      game_dice_cpp::StaticProbabilityTable<6>::Make(1, 2, 3, 4, 5, 6);
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of input values
+  EXPECT_EQ(table_A->GetTotalWeight(), 1);
+  EXPECT_EQ(table_B->GetTotalWeight(), 3);
+  EXPECT_EQ(table_C->GetTotalWeight(), 6);
+  EXPECT_EQ(table_D->GetTotalWeight(), 10);
+  EXPECT_EQ(table_E->GetTotalWeight(), 15);
+  EXPECT_EQ(table_F->GetTotalWeight(), 21);
 }
 
-TEST(StaticProbabilityTableGetTotalWeightTest,
-     AllNegativeWeightsHasTheCorrectTotalWeight) {
-  // GIVEN a table defined with known weights
-  // AND all weights are positive
-  // small cases
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(-1, -1, -1);
-  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>(-1, -2, -1);
-  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>(-1, -2, -3);
-  // WHEN total_weight is called
-  // THEN the total weight matches the sum of inputs
-  // small cases
-  EXPECT_EQ(table_A.GetTotalWeight(), 0);
-  EXPECT_EQ(table_B.GetTotalWeight(), 0);
-  EXPECT_EQ(table_C.GetTotalWeight(), 0);
+TEST(StaticProbabilityTableTest,
+     AtWithAllSortedPositiveWeightsReturnsCorrectIndexes) {
+  // GIVEN a table defined with sorted positive weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make(1);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<2>::Make(1, 2);
+  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 2, 3);
+  const auto table_D =
+      game_dice_cpp::StaticProbabilityTable<4>::Make(1, 2, 3, 4);
+  const auto table_E =
+      game_dice_cpp::StaticProbabilityTable<5>::Make(1, 2, 3, 4, 5);
+  const auto table_F =
+      game_dice_cpp::StaticProbabilityTable<6>::Make(1, 2, 3, 4, 5, 6);
+  // WHEN At is called
+  // the following outputs are observed...
+  // Table A
+  EXPECT_EQ(table_A->At(-1), 0);
+  EXPECT_EQ(table_A->At(0), 0);
+  EXPECT_EQ(table_A->At(1), 0);
+  EXPECT_EQ(table_A->At(2), 0);  // Table A - bound
+  EXPECT_EQ(table_A->At(3), 0);
+  EXPECT_EQ(table_A->At(4), 0);
+  EXPECT_EQ(table_A->At(5), 0);
+  EXPECT_EQ(table_A->At(6), 0);
+  EXPECT_EQ(table_A->At(7), 0);
+  EXPECT_EQ(table_A->At(8), 0);
+  EXPECT_EQ(table_A->At(9), 0);
+  EXPECT_EQ(table_A->At(10), 0);
+  EXPECT_EQ(table_A->At(11), 0);
+  EXPECT_EQ(table_A->At(12), 0);
+  EXPECT_EQ(table_A->At(13), 0);
+  EXPECT_EQ(table_A->At(14), 0);
+  EXPECT_EQ(table_A->At(15), 0);
+  EXPECT_EQ(table_A->At(16), 0);
+  EXPECT_EQ(table_A->At(17), 0);
+  EXPECT_EQ(table_A->At(18), 0);
+  EXPECT_EQ(table_A->At(19), 0);
+  EXPECT_EQ(table_A->At(20), 0);
+  EXPECT_EQ(table_A->At(21), 0);
+  EXPECT_EQ(table_A->At(22), 0);
+  // Table B
+  EXPECT_EQ(table_B->At(-1), 0);
+  EXPECT_EQ(table_B->At(0), 0);
+  EXPECT_EQ(table_B->At(1), 0);
+  EXPECT_EQ(table_B->At(2), 1);
+  EXPECT_EQ(table_B->At(3), 1);  // Table B - bound
+  EXPECT_EQ(table_B->At(4), 1);
+  EXPECT_EQ(table_B->At(5), 1);
+  EXPECT_EQ(table_B->At(6), 1);
+  EXPECT_EQ(table_B->At(7), 1);
+  EXPECT_EQ(table_B->At(8), 1);
+  EXPECT_EQ(table_B->At(9), 1);
+  EXPECT_EQ(table_B->At(10), 1);
+  EXPECT_EQ(table_B->At(11), 1);
+  EXPECT_EQ(table_B->At(12), 1);
+  EXPECT_EQ(table_B->At(13), 1);
+  EXPECT_EQ(table_B->At(14), 1);
+  EXPECT_EQ(table_B->At(15), 1);
+  EXPECT_EQ(table_B->At(16), 1);
+  EXPECT_EQ(table_B->At(17), 1);
+  EXPECT_EQ(table_B->At(18), 1);
+  EXPECT_EQ(table_B->At(19), 1);
+  EXPECT_EQ(table_B->At(20), 1);
+  EXPECT_EQ(table_B->At(21), 1);
+  EXPECT_EQ(table_B->At(22), 1);
+  // Table C
+  EXPECT_EQ(table_C->At(-1), 0);
+  EXPECT_EQ(table_C->At(0), 0);
+  EXPECT_EQ(table_C->At(1), 0);
+  EXPECT_EQ(table_C->At(2), 1);
+  EXPECT_EQ(table_C->At(3), 1);
+  EXPECT_EQ(table_C->At(4), 2);
+  EXPECT_EQ(table_C->At(5), 2);
+  EXPECT_EQ(table_C->At(6), 2);  // Table C - bound
+  EXPECT_EQ(table_C->At(7), 2);
+  EXPECT_EQ(table_C->At(8), 2);
+  EXPECT_EQ(table_C->At(9), 2);
+  EXPECT_EQ(table_C->At(10), 2);
+  EXPECT_EQ(table_C->At(11), 2);
+  EXPECT_EQ(table_C->At(12), 2);
+  EXPECT_EQ(table_C->At(13), 2);
+  EXPECT_EQ(table_C->At(14), 2);
+  EXPECT_EQ(table_C->At(15), 2);
+  EXPECT_EQ(table_C->At(16), 2);
+  EXPECT_EQ(table_C->At(17), 2);
+  EXPECT_EQ(table_C->At(18), 2);
+  EXPECT_EQ(table_C->At(19), 2);
+  EXPECT_EQ(table_C->At(20), 2);
+  EXPECT_EQ(table_C->At(21), 2);
+  EXPECT_EQ(table_C->At(22), 2);
+  // Table D
+  EXPECT_EQ(table_D->At(-1), 0);
+  EXPECT_EQ(table_D->At(0), 0);
+  EXPECT_EQ(table_D->At(1), 0);
+  EXPECT_EQ(table_D->At(2), 1);
+  EXPECT_EQ(table_D->At(3), 1);
+  EXPECT_EQ(table_D->At(4), 2);
+  EXPECT_EQ(table_D->At(5), 2);
+  EXPECT_EQ(table_D->At(6), 2);
+  EXPECT_EQ(table_D->At(7), 3);
+  EXPECT_EQ(table_D->At(8), 3);
+  EXPECT_EQ(table_D->At(9), 3);
+  EXPECT_EQ(table_D->At(10), 3);  // Table D - bound
+  EXPECT_EQ(table_D->At(11), 3);
+  EXPECT_EQ(table_D->At(12), 3);
+  EXPECT_EQ(table_D->At(13), 3);
+  EXPECT_EQ(table_D->At(14), 3);
+  EXPECT_EQ(table_D->At(15), 3);
+  EXPECT_EQ(table_D->At(16), 3);
+  EXPECT_EQ(table_D->At(17), 3);
+  EXPECT_EQ(table_D->At(18), 3);
+  EXPECT_EQ(table_D->At(19), 3);
+  EXPECT_EQ(table_D->At(20), 3);
+  EXPECT_EQ(table_D->At(21), 3);
+  EXPECT_EQ(table_D->At(22), 3);
+  // Table E
+  EXPECT_EQ(table_E->At(-1), 0);
+  EXPECT_EQ(table_E->At(0), 0);
+  EXPECT_EQ(table_E->At(1), 0);
+  EXPECT_EQ(table_E->At(2), 1);
+  EXPECT_EQ(table_E->At(3), 1);
+  EXPECT_EQ(table_E->At(4), 2);
+  EXPECT_EQ(table_E->At(5), 2);
+  EXPECT_EQ(table_E->At(6), 2);
+  EXPECT_EQ(table_E->At(7), 3);
+  EXPECT_EQ(table_E->At(8), 3);
+  EXPECT_EQ(table_E->At(9), 3);
+  EXPECT_EQ(table_E->At(10), 3);
+  EXPECT_EQ(table_E->At(11), 4);
+  EXPECT_EQ(table_E->At(12), 4);
+  EXPECT_EQ(table_E->At(13), 4);
+  EXPECT_EQ(table_E->At(14), 4);
+  EXPECT_EQ(table_E->At(15), 4);  // Table E - bound
+  EXPECT_EQ(table_E->At(16), 4);
+  EXPECT_EQ(table_E->At(17), 4);
+  EXPECT_EQ(table_E->At(18), 4);
+  EXPECT_EQ(table_E->At(19), 4);
+  EXPECT_EQ(table_E->At(20), 4);
+  EXPECT_EQ(table_E->At(21), 4);
+  EXPECT_EQ(table_E->At(22), 4);
+  // Table F
+  EXPECT_EQ(table_F->At(-1), 0);
+  EXPECT_EQ(table_F->At(0), 0);
+  EXPECT_EQ(table_F->At(1), 0);
+  EXPECT_EQ(table_F->At(2), 1);
+  EXPECT_EQ(table_F->At(3), 1);
+  EXPECT_EQ(table_F->At(4), 2);
+  EXPECT_EQ(table_F->At(5), 2);
+  EXPECT_EQ(table_F->At(6), 2);
+  EXPECT_EQ(table_F->At(7), 3);
+  EXPECT_EQ(table_F->At(8), 3);
+  EXPECT_EQ(table_F->At(9), 3);
+  EXPECT_EQ(table_F->At(10), 3);
+  EXPECT_EQ(table_F->At(11), 4);
+  EXPECT_EQ(table_F->At(12), 4);
+  EXPECT_EQ(table_F->At(13), 4);
+  EXPECT_EQ(table_F->At(14), 4);
+  EXPECT_EQ(table_F->At(15), 4);
+  EXPECT_EQ(table_F->At(16), 5);
+  EXPECT_EQ(table_F->At(17), 5);
+  EXPECT_EQ(table_F->At(18), 5);
+  EXPECT_EQ(table_F->At(19), 5);
+  EXPECT_EQ(table_F->At(20), 5);
+  EXPECT_EQ(table_F->At(21), 5);  // Table F - bound
+  EXPECT_EQ(table_F->At(22), 5);
 }
 
-TEST(StaticProbabilityTableGetTotalWeightTest,
-     MixedSignWeightsHasTheCorrectTotalWeight) {
-  // GIVEN a table defined with known weights
-  // AND all weights are positive
-  // small cases
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, -1, 1);
-  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>(1, -2, 1);
-  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>(1, -2, -3);
-  // WHEN total_weight is called
-  // THEN the total weight matches the sum of inputs
-  // small cases
-  EXPECT_EQ(table_A.GetTotalWeight(), 2);
-  EXPECT_EQ(table_B.GetTotalWeight(), 2);
-  EXPECT_EQ(table_C.GetTotalWeight(), 1);
+TEST(StaticProbabilityTableTest,
+     GetTotalWeightWithUnsortedPositiveWeightsHasCorrectTotalWeight) {
+  // GIVEN a table defined with unsorted positive weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 2, 1);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>::Make(2, 1, 1);
+  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 1, 2);
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of input values
+  EXPECT_EQ(table_A->GetTotalWeight(), 4);
+  EXPECT_EQ(table_B->GetTotalWeight(), 4);
+  EXPECT_EQ(table_C->GetTotalWeight(), 4);
 }
 
-TEST(StaticProbabilityTableAtTest, MapsToCorrectValue) {
-  // GIVEN a table defined with known weights
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 3);
+TEST(StaticProbabilityTableTest,
+     AtWithUnsortedPositiveWeightsHasCorrectIndexes) {
+  // GIVEN a table defined with unsorted positive weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 2, 1);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>::Make(2, 1, 1);
+  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make(1, 1, 2);
+  // WHEN At is called
+  // THEN the correct index is returned
+  // Table A
+  EXPECT_EQ(table_A->At(-1), 0);
+  EXPECT_EQ(table_A->At(0), 0);
+  EXPECT_EQ(table_A->At(1), 0);
+  EXPECT_EQ(table_A->At(2), 1);
+  EXPECT_EQ(table_A->At(3), 1);
+  EXPECT_EQ(table_A->At(4), 2);
+  EXPECT_EQ(table_A->At(5), 2);
+  // Table B
+  EXPECT_EQ(table_B->At(-1), 0);
+  EXPECT_EQ(table_B->At(0), 0);
+  EXPECT_EQ(table_B->At(1), 0);
+  EXPECT_EQ(table_B->At(2), 0);
+  EXPECT_EQ(table_B->At(3), 1);
+  EXPECT_EQ(table_B->At(4), 2);
+  EXPECT_EQ(table_B->At(5), 2);
+  // Table C
+  EXPECT_EQ(table_C->At(-1), 0);
+  EXPECT_EQ(table_C->At(0), 0);
+  EXPECT_EQ(table_C->At(1), 0);
+  EXPECT_EQ(table_C->At(2), 1);
+  EXPECT_EQ(table_C->At(3), 2);
+  EXPECT_EQ(table_C->At(4), 2);
+  EXPECT_EQ(table_C->At(5), 2);
+}
+
+TEST(StaticProbabilityTableTest, MakeWithNegativeWeightsReturnsNullOpt) {
+  // GIVEN a table defined with unsorted negative weights
+  const auto table_A =
+      game_dice_cpp::StaticProbabilityTable<3>::Make(-1, -2, -1);
+  const auto table_B =
+      game_dice_cpp::StaticProbabilityTable<3>::Make(-2, -1, -1);
+  const auto table_C =
+      game_dice_cpp::StaticProbabilityTable<3>::Make(-1, -1, -2);
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of input values
+  EXPECT_FALSE(table_A.has_value());
+  EXPECT_FALSE(table_B.has_value());
+  EXPECT_FALSE(table_C.has_value());
+}
+
+TEST(StaticProbabilityTableTest,
+     GetTotalWeightWithUnsortedMixedSignWeightsHasCorrectTotalWeight) {
+  // GIVEN a table defined with unsorted mixed signed weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make(1, -2, 0);
+  // WHEN GetTotalWeight is called
+  // THEN the total weight matches the sum of input values
+  EXPECT_EQ(table_A->GetTotalWeight(), 1);
+}
+
+TEST(StaticProbabilityTableTest,
+     AtWithUnsortedMixedSignWeightsHasCorrectIndexes) {
+  // GIVEN a table defined with unsorted mixed signed weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make(1, -2, 0);
+  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>::Make(1, -2, 1);
+  // WHEN At is called
+  // THEN the correct index is returned
+  // Table A
+  EXPECT_EQ(table_A->At(-1), 0);
+  EXPECT_EQ(table_A->At(0), 0);
+  EXPECT_EQ(table_A->At(1), 0);
+  EXPECT_EQ(table_A->At(2), 2);
+  EXPECT_EQ(table_A->At(3), 2);
+  EXPECT_EQ(table_A->At(4), 2);
+  EXPECT_EQ(table_A->At(5), 2);
+  // Table B
+  EXPECT_EQ(table_B->At(-1), 0);
+  EXPECT_EQ(table_B->At(0), 0);
+  EXPECT_EQ(table_B->At(1), 0);
+  EXPECT_EQ(table_B->At(2), 2);
+  EXPECT_EQ(table_B->At(3), 2);
+  EXPECT_EQ(table_B->At(4), 2);
+  EXPECT_EQ(table_B->At(5), 2);
+}
+
+TEST(StaticProbabilityTableTest,
+     GetTotalWeightWithLargeWeightHasCorrectTotalWeight) {
+  // GIVEN a table defined with a single large known weight
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make(
+      std::numeric_limits<int>::max());
   // WHEN At is called
   // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A.At(1), 0);
-  EXPECT_EQ(table_A.At(2), 1);
-  EXPECT_EQ(table_A.At(3), 1);
-  EXPECT_EQ(table_A.At(4), 2);
-  EXPECT_EQ(table_A.At(5), 2);
-  EXPECT_EQ(table_A.At(6), 2);
+  EXPECT_EQ(table_A->GetTotalWeight(), 2147483647);
 }
 
-TEST(StaticProbabilityTableAtTest, OutOfBoundsLookup) {
-  // GIVEN a table defined with known weights
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>(1, 2, 3);
+TEST(StaticProbabilityTableTest, AtWithLargeWeightHasCorrectIndexes) {
+  // GIVEN a table defined with a single large known weight
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make(
+      std::numeric_limits<int>::max());
   // WHEN At is called
   // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A.At(-1), 0);
-  EXPECT_EQ(table_A.At(0), 0);
-  EXPECT_EQ(table_A.At(10), 2);
+  EXPECT_EQ(table_A->At(-1), 0);
+  EXPECT_EQ(table_A->At(0), 0);
+  EXPECT_EQ(table_A->At(1), 0);
+  EXPECT_EQ(table_A->At(2147483647), 0);
 }
 
-TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithLinearSearch) {
+TEST(StaticProbabilityTableTest,
+     GetTotalWeightWithLargeWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with known weights
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<16>(
-      1, 2, 3, 1, 2, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1);
+  const auto half_max = std::numeric_limits<int>::max() / 2;
+  const auto table_A =
+      game_dice_cpp::StaticProbabilityTable<2>::Make(half_max, half_max);
   // WHEN At is called
   // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A.At(1), 0);
-  EXPECT_EQ(table_A.At(2), 1);
-  EXPECT_EQ(table_A.At(3), 1);
-  EXPECT_EQ(table_A.At(4), 2);
-  EXPECT_EQ(table_A.At(5), 2);
-  EXPECT_EQ(table_A.At(6), 2);
-  EXPECT_EQ(table_A.At(7), 3);
-  EXPECT_EQ(table_A.At(8), 4);
-  EXPECT_EQ(table_A.At(9), 4);
-  EXPECT_EQ(table_A.At(10), 5);
-  EXPECT_EQ(table_A.At(11), 6);
-  EXPECT_EQ(table_A.At(12), 6);
-  EXPECT_EQ(table_A.At(13), 7);
-  EXPECT_EQ(table_A.At(14), 7);
-  EXPECT_EQ(table_A.At(15), 7);
-  EXPECT_EQ(table_A.At(16), 8);
-  EXPECT_EQ(table_A.At(17), 8);
-  EXPECT_EQ(table_A.At(18), 8);
-  EXPECT_EQ(table_A.At(19), 8);
-  EXPECT_EQ(table_A.At(20), 9);
-  EXPECT_EQ(table_A.At(21), 9);
-  EXPECT_EQ(table_A.At(22), 9);
-  EXPECT_EQ(table_A.At(23), 9);
-  EXPECT_EQ(table_A.At(24), 9);
-  EXPECT_EQ(table_A.At(25), 10);
-  EXPECT_EQ(table_A.At(26), 11);
-  EXPECT_EQ(table_A.At(27), 12);
-  EXPECT_EQ(table_A.At(28), 13);
-  EXPECT_EQ(table_A.At(29), 14);
-  EXPECT_EQ(table_A.At(30), 15);
+  EXPECT_EQ(table_A->GetTotalWeight(), std::numeric_limits<int>::max() - 1);
+  // TODO: consider if this actually a good idea
 }
 
-TEST(StaticProbabilityTableAtTest, MapsToCorrectValueWithBinarySearch) {
+TEST(StaticProbabilityTableTest, AtWithLargeWeightsHasCorrectIndexes) {
   // GIVEN a table defined with known weights
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<17>(
-      1, 2, 3, 1, 2, 1, 2, 3, 4, 5, 1, 1, 1, 1, 1, 1, 1);
+  const auto half_max = std::numeric_limits<int>::max() / 2;
+  const auto table_A =
+      game_dice_cpp::StaticProbabilityTable<2>::Make(half_max, half_max);
   // WHEN At is called
   // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A.At(1), 0);
-  EXPECT_EQ(table_A.At(2), 1);
-  EXPECT_EQ(table_A.At(3), 1);
-  EXPECT_EQ(table_A.At(4), 2);
-  EXPECT_EQ(table_A.At(5), 2);
-  EXPECT_EQ(table_A.At(6), 2);
-  EXPECT_EQ(table_A.At(7), 3);
-  EXPECT_EQ(table_A.At(8), 4);
-  EXPECT_EQ(table_A.At(9), 4);
-  EXPECT_EQ(table_A.At(10), 5);
-  EXPECT_EQ(table_A.At(11), 6);
-  EXPECT_EQ(table_A.At(12), 6);
-  EXPECT_EQ(table_A.At(13), 7);
-  EXPECT_EQ(table_A.At(14), 7);
-  EXPECT_EQ(table_A.At(15), 7);
-  EXPECT_EQ(table_A.At(16), 8);
-  EXPECT_EQ(table_A.At(17), 8);
-  EXPECT_EQ(table_A.At(18), 8);
-  EXPECT_EQ(table_A.At(19), 8);
-  EXPECT_EQ(table_A.At(20), 9);
-  EXPECT_EQ(table_A.At(21), 9);
-  EXPECT_EQ(table_A.At(22), 9);
-  EXPECT_EQ(table_A.At(23), 9);
-  EXPECT_EQ(table_A.At(24), 9);
-  EXPECT_EQ(table_A.At(25), 10);
-  EXPECT_EQ(table_A.At(26), 11);
-  EXPECT_EQ(table_A.At(27), 12);
-  EXPECT_EQ(table_A.At(28), 13);
-  EXPECT_EQ(table_A.At(29), 14);
-  EXPECT_EQ(table_A.At(30), 15);
+  EXPECT_EQ(table_A->At(-1), 0);
+  EXPECT_EQ(table_A->At(0), 0);
+  EXPECT_EQ(table_A->At(1), 0);
+  EXPECT_EQ(table_A->At(half_max), 0);
+  EXPECT_EQ(table_A->At(half_max + 1), 1);
+  EXPECT_EQ(table_A->At(half_max * 2 - 1), 1);
+  EXPECT_EQ(table_A->At(half_max * 2), 1);
+  EXPECT_EQ(table_A->At(half_max * 2 + 1), 1);
 }
 
-TEST(StaticProbabilityTableAtTest, HandlesLargeSafeWeights) {
+TEST(StaticProbabilityTableTest, MakeWithOverflowWeightsDoesNotConstruct) {
   // GIVEN a table defined with known weights
-  const auto half_max = std::numeric_limits<int>::max()/2;
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<2>(half_max, half_max);
-  // WHEN At is called
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<4>::Make(
+      std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
+      std::numeric_limits<int>::max(), -1230);
+  // WHEN Make is called
   // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A.At(0), 0);
-  EXPECT_EQ(table_A.At(half_max + 1), 1);
+  EXPECT_FALSE(table_A.has_value());
 }
 
-TEST(StaticProbabilityTableTest, CompileTimeChecksMixedSignedWeights) {
-  constexpr auto table = game_dice_cpp::StaticProbabilityTable<4>(1, -5, 0, 2);
-  static_assert(table.GetTotalWeight() == 3);
-  static_assert(table.At(1) == 0);
-  static_assert(table.At(2) == 3);
+TEST(StaticProbabilityTableTest,
+     GetTotalWeightWithLargeLargeInputSizeHasCorrectTotalWeight) {
+  // GIVEN a table defined with known weights
+  const auto table_A = game_dice_cpp::StaticProbabilityTable<220>::Make(
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+  // WHEN At is called
+  // THEN it has the correct total weight
+  EXPECT_EQ(table_A->GetTotalWeight(), 220);
 }
-
-TEST(StaticProbabilityTableTest, CompileTimeChecksSingleWeight) {
-  constexpr auto single_table = game_dice_cpp::StaticProbabilityTable<1>(10);
-  static_assert(single_table.GetTotalWeight() == 10);
-  static_assert(single_table.At(5) == 0);
-}
-
-TEST(StaticProbabilityTableTest, CompileTimeChecksZeroWeights) {
-  constexpr auto single_table = game_dice_cpp::StaticProbabilityTable<3>(0, 0, 0);
-  static_assert(single_table.GetTotalWeight() == 0);
-  static_assert(single_table.At(1) == 2);
-}
-
-// TODO: compile-time negative weights
-// TODO: total weight zero
-// TODO: integer overflow safety
