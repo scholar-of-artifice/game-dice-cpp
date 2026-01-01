@@ -22,6 +22,7 @@ add_executable(
         tests/ActionsTest.cpp
         tests/DynamicProbabilityTableTest.cpp
         tests/StaticProbabilityTableTest.cpp
+        tests/DistributionFactoryTest.cpp
 )
 # link the executable to the GoogleTest library
 target_link_libraries(
