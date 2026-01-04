@@ -44,62 +44,36 @@ even launches.
 No external libraries required. Just drop the `src/` folder into your Godot GDExtension or Unreal Engine project and
 build.
 
-### Few Opinions, No Dependencies
+## ⚡️ Quick Start
 
-As a user, all you need are the source code files.
-You need only the C++ STL and no external dependencies to use the source code.
-This code should integrate easily with most C++ accepting game engines (Unreal Engine, Godot, etc.).
+### Prerequisites
+* **C++ Compiler**: Must support **C++23** (e.g., GCC 13+, Clang 16+, MSVC 19.36+).
+* **CMake**: Version **3.31** or higher.
 
-If you wish to make modifications or run the tests yourself, you will need `CMake` and `Google Test`.
+### Method 1: CMake FetchContent (Recommended)
+The most robust way to integrate this library is via CMake's `FetchContent`.
+This ensures your project always builds with the correct version and settings.
 
-### Data-Oriented Core
+- Add this to your `CMakeLists.txt`:
 
-The `Dice` class is a light-weight, immutable data structure.
-It defines what a die is (geometry) but contains no logic.
+```cmake
+include(FetchContent)
 
-### Functional Paradigms
+FetchContent_Declare(
+        game_dice_cpp
+        GIT_REPOSITORY [https://github.com/scholar-of-artifice/game-dice-cpp.git] (https://github.com/scholar-of-artifice/game-dice-cpp.git)
+        GIT_TAG main  # or a specific commit hash for stability
+)
+FetchContent_MakeAvailable(game_dice_cpp)
 
-The act of rolling is simplified to a **pure function**.
-It requires 2 explicit inputs:
+# Link it to your target (header-only, so it adds include paths automatically)
+target_link_libraries(YourGameTarget PRIVATE game_dice_cpp)
+```
 
-- the definition (the `Dice` you want to roll)
-- the entropy (random number engine probably from the C++ STL or your game engine)
+### Method 2: Header-Only (Manual)
 
-Rolling creates no side effects.
-As a user or player, all you care about is the output from rolling.
+Since `game-dice-cpp` is a pure interface library with no compiled binaries, you can simply copy the files. You will
+probably do this if you intend to compile from source.
 
-### Composition over Inheritance
-
-This library does not create deep inheritance structures with hundreds of derived variants.
-Instead, we compose systems and map the outputs to probabilities.
-This handles much more like a standard table top game.
-However, if your needs for Dice rolling are complicated, you may find the included tools helpful.
-Check the `docs/deep-dive` to learn more.
-
-### Separation of "Prep" vs "Play"
-
-Complex math happens during initialization.
-The runtime hot-path can remain extremely fast.
-
-## 💪 Key Advantages
-
-### Deterministic & Testable
-
-By injecting the random generator into the roll function, the system remains deterministic.
-You can mock and test critical game mechanics with reliable results.
-
-### Cache-Friendly Performance
-
-`Dice` are tiny and can be contiguous in memory.
-The heavy lifting of distribution math is pre-calculated which means your game loop can remain lightweight.
-
-### Mathematical Flexibility
-
-This system abstracts `Dice` into Discrete Distribution Generators.
-It handles simple uniform rolls, custom rarity tables and non-uniform distributions using the same uniform `roll`
-function.
-
-### Modern C++ Safety
-
-This library uses modern C++ practices including `constexpr` for compile-time optimization where possible.
-It also uses `[[nodiscard]]` to prevent ignored results.
+- Copy the `src/` folder into your project's vendor directory (example: `ThirdParty/game-dice-cpp/`).
+- Add that folder to your include path.
