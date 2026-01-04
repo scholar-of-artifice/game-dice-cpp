@@ -77,3 +77,13 @@ probably do this if you intend to compile from source.
 
 - Copy the `src/` folder into your project's vendor directory (example: `ThirdParty/game-dice-cpp/`).
 - Add that folder to your include path.
+
+## 📚 Learn More
+All types are strictly scoped within the `game_dice_cpp` namespace.
+Please refer to the documentation to learn more about using the library.
+- TODO documentation here
+- Want to learn more about performance and benchmarks?
+- Want to see some usage examples?
+- Want to learn more about the Architecture of this library?
+- Want to learn more about the Design Principles of this library?
+- Want to see the future RoadMap and current limitations?
