@@ -132,6 +132,152 @@ TEST(
   for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
     EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
         << "Mismatch found at index = " << idx << " for input (15, 5, 5)";
+
+TEST(
+    DistributionFactoryTest,
+    TriangleDistributionWithDesiredSize5VaryingPeakIdxPeakWeight5HasCorrectValues) {
+  // GIVEN a known set of inputs...
+  // AND the peak_idx varies
+  // WHEN a Triangle Distribution is made...
+  // THEN the new distribution is correct
+
+  // ---
+  auto calculated_output = game_dice_cpp::TriangleDistribution(5, 0, 5);
+  auto expected_output = {5, 4, 3, 2, 1};
+
+  size_t idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE A:\tMismatch found at index = " << idx
+        << " for input (5, 0, 5)";
+    ++idx;
+  }
+
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(5, 1, 5);
+  expected_output = {1, 5, 4, 2, 1};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE B:\tMismatch found at index = " << idx
+        << " for input (5, 1, 5)";
+    ++idx;
+  }
+
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(5, 2, 5);
+  expected_output = {1, 3, 5, 3, 1};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE C:\tMismatch found at index = " << idx
+        << " for input (5, 2, 5)";
+    ++idx;
+  }
+
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(5, 3, 5);
+  expected_output = {1, 2, 4, 5, 1};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE D:\tMismatch found at index = " << idx
+        << " for input (5, 3, 5)";
+    ++idx;
+  }
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(5, 4, 5);
+  expected_output = {1, 2, 3, 4, 5};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE E:\tMismatch found at index = " << idx
+        << " for input (5, 4, 5)";
+    ++idx;
+  }
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(5, -1, 5);
+  expected_output = {};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE NegativeIndex:\tExpected Empty Container for input (5, -1, 5)";
+    ++idx;
+  }
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(5, 5, 5);
+  expected_output = {};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE IndexBeyondBounds:\tExpected Empty Container for input (5, 5, "
+           "5)";
+    ++idx;
+  }
+}
+
+TEST(
+    DistributionFactoryTest,
+    TriangleDistributionWithDesiredSize7PeakIdx4PeakWeightVaryingHasCorrectValues) {
+  // GIVEN a known set of inputs...
+  // AND the peak_weight varies
+  // WHEN a Triangle Distribution is made...
+  // THEN the new distribution is correct
+
+  // ---
+  auto calculated_output = game_dice_cpp::TriangleDistribution(7, 4, 0);
+  auto expected_output = {1, 1, 1, 1, 1, 1};
+
+  size_t idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE A:\tMismatch found at index = " << idx << " for input (7,4,0)";
+    ++idx;
+  }
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(7, 4, 1);
+  expected_output = {1, 1, 1, 1, 1, 1};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE B:\tMismatch found at index = " << idx << " for input (7,4,1)";
+    ++idx;
+  }
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(7, 4, 2);
+  expected_output = {1, 1, 2, 2, 2, 2, 1};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE C:\tMismatch found at index = " << idx << " for input (7,4,2)";
+    ++idx;
+  }
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(7, 4, 3);
+  expected_output = {1, 2, 2, 3, 3, 2, 1};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE D:\tMismatch found at index = " << idx << " for input (7,4,3)";
+    ++idx;
+  }
+  // ---
+  calculated_output = game_dice_cpp::TriangleDistribution(7, 4, 10);
+  expected_output = {1,3,6,8,10,6,1};
+
+  idx = 0;
+  for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
+    EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
+        << "CASE E:\tMismatch found at index = " << idx << " for input (7,4,3)";
     ++idx;
   }
 }
