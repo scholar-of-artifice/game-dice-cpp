@@ -33,13 +33,14 @@
 namespace game_dice_cpp {
 // TODO: Make a Triangle Distribution
 std::vector<int> TriangleDistribution(int desired_size, int peak_index,
-                                      int peak_weight, int min_weight = 1) {
+                                      int peak_weight) {
   // check if desired_size is below acceptable value
-  if (desired_size <= peak_index) {
+  if (desired_size <= 0 || desired_size <= peak_index ||
+      peak_index > desired_size) {
     return {};
   }
-  // force min_weight to be at least 1 so that 0 probabilities cannot be used
-  min_weight = std::clamp(min_weight, 1, min_weight);
+  // force peak_weight to be at least 1 so that 0 probabilities cannot be used
+  peak_weight = std::clamp(peak_weight, 1, peak_weight);
   // force peak_index to be within bounds
   peak_index = std::clamp(peak_index, 0, desired_size - 1);
   // create an empty vector with reserved size
@@ -55,12 +56,12 @@ std::vector<int> TriangleDistribution(int desired_size, int peak_index,
       // rising slope
       double slope_ratio =
           static_cast<double>(i) / static_cast<double>(peak_index);
-      value = min_weight + (peak_weight - min_weight) * slope_ratio;
+      value = 1 + (peak_weight - 1) * slope_ratio;
     } else {
       // falling slope
       double slope_ratio = static_cast<double>(i - peak_index) /
                            static_cast<double>(desired_size - 1 - peak_index);
-      value = peak_weight - (peak_weight - min_weight) * slope_ratio;
+      value = peak_weight - (peak_weight - 1) * slope_ratio;
     }
     // write the value
     out_weights.push_back(static_cast<int>(std::round(value)));
