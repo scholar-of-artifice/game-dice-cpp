@@ -28,6 +28,15 @@
 #include "DistributionFactory.h"
 
 TEST(DistributionFactoryTest,
+     TriangleDistributionWithNegativeLengthHasCorrectSize) {
+  // GIVEN a negative desired_size...
+  // WHEN a Triangle Distribution is made...
+  auto calculated_output = game_dice_cpp::TriangleDistribution(-10, -20, 100);
+  // THEN the new distribution has the correct size
+  EXPECT_EQ(calculated_output.size(), 0);
+}
+
+TEST(DistributionFactoryTest,
      TriangleDistributionWithZeroLengthHasCorrectSize) {
   // GIVEN a zero desired_size...
   // WHEN a Triangle Distribution is made...
