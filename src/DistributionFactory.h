@@ -31,7 +31,7 @@
 #include <vector>
 
 namespace game_dice_cpp {
-// TODO: Make a Triangle Distribution
+
 std::vector<int> TriangleDistribution(int desired_size, int peak_index,
                                       int peak_weight) {
   // check if desired_size is below acceptable value
