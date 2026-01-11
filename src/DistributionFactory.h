@@ -68,13 +68,14 @@ std::vector<int> TriangleDistribution(int desired_size, int peak_index,
   }
   return out_weights;
 };
-// TODO: Make a Bernoulli Distribution
+
 // TODO: Make a Binomial Distribution
-// std::vector<int> BinomialWeights(int n, double k) {
-//   std::binomial_distribution<int> d(n, static_cast<double>(k));
-// };
+std::vector<int> BinomialDistribution(int n, double k) {
+};
 
 // TODO: Make a Poisson Distribution
+std::vector<int> PoissonDistribution(int n, double k) {
+};
 }  // namespace game_dice_cpp
 
 #endif  // GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
