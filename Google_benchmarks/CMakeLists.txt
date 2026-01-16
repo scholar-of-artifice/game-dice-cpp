@@ -17,7 +17,7 @@ FetchContent_MakeAvailable(
 # create the executable
 add_executable(
         game_dice_benchmarks
-        StaticTableBenchmarks.cpp
+        benchmarks/StaticProbabilityTableBenchmark.cpp
 )
 #
 target_compile_definitions(
