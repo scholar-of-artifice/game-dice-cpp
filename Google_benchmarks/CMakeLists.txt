@@ -4,6 +4,12 @@ cmake_minimum_required(VERSION 3.31)
 project(game_dice_benchmarks)
 # load the module FetchContent so further commands are available
 include(FetchContent)
+# do not look for googlebenchmark
+set(BENCHMARK_ENABLE_GTEST_TESTS OFF CACHE BOOL "" FORCE)
+# do not build googlebenchmark own tests
+set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
+# do not install googlebenchmark
+set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
 # Declare the external source, define the dependency but do not download it yet
 FetchContent_Declare(
         googlebenchmark
