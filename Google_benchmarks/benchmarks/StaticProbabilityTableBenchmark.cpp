@@ -34,7 +34,7 @@ static void BM_StaticProbabilityTableAtForMicroInput(benchmark::State &state) {
   auto table = game_dice_cpp::StaticProbabilityTable<10>::Make(4, 6, 7, 10, 1,
                                                                5, 2, 3, 8, 9);
   for (auto _ : state) {
-    benchmark::DoNotOptimize(table->At(4));
+    benchmark::DoNotOptimize(table->At(3));
   }
 }
 BENCHMARK(BM_StaticProbabilityTableAtForMicroInput);
