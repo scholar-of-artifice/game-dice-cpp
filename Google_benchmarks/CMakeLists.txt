@@ -31,7 +31,12 @@ target_compile_definitions(
         PRIVATE
         BENCHMARK_DISABLE_CLOCK
         BENCHMARK_DISABLE_THREAD_AFFINITY
-
+)
+# specify C++ standard features
+target_compile_features(
+        game_dice_benchmarks
+        PRIVATE
+        cxx_std_23
 )
 # link to the library and the benchmark library
 target_link_libraries(
