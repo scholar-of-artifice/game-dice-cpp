@@ -22,6 +22,6 @@ RUN cmake -S . -B build -G "Unix Makefiles" \
     && cmake --build build --target unit_test_suite
 # set the default execution command
 WORKDIR /app/build
-ENTRYPOINT ["ctest", "--output-on-failure", "--verbose"]
+ENTRYPOINT ["ctest", "--test-dir", "Google_tests", "--output-on-failure", "--verbose"]
 
 
