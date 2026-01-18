@@ -11,5 +11,5 @@ docker build --tag game-dice-cpp-unit-tests --target unit-test-suite .
 
 ### Run the Tests
 ```
-docker run --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests
+docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests
 ```
