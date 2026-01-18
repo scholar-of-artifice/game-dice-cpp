@@ -19,9 +19,9 @@ FROM base AS unit-test-suite
 COPY . .
 # create build directory, generate files, compile the test app
 RUN cmake -S . -B build -G "Unix Makefiles" \
-    && cmake --build build --target unit_test_suite \
+    && cmake --build build --target unit_test_suite
 # set the default execution command
 WORKDIR /app/build
-ENTRYPOINT ["cteset", "--output-on-failure"]
+ENTRYPOINT ["ctest", "--output-on-failure", "--verbose"]
 
 
