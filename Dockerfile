@@ -1,5 +1,5 @@
 # select base image
-FROM ubuntu:resolute-20260106.1 as base
+FROM ubuntu:resolute-20260106.1 AS base
 # name of the author
 LABEL authors="scholar-of-artifice"
 # install git, clang, cmake
@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 # install depenedencies
 # Unit Tests Image
-FROM base as unit-test-suite
+FROM base AS unit-test-suite
 # copy project source code
 COPY . .
 # create build directory, generate files, compile the test app
