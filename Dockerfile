@@ -19,6 +19,10 @@ FROM base AS unit-test-suite
 COPY . .
 # create build directory, generate files, compile the test app
 RUN cmake -S . -B build -G "Unix Makefiles" \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer -g" \
+    -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" \
     && cmake --build build --target unit_test_suite
 # set the default execution command
 WORKDIR /app/build
