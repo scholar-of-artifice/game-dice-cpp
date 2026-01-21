@@ -40,7 +40,7 @@ std::vector<int> TriangleDistribution(int desired_size, int peak_index,
     return {};
   }
   // force peak_weight to be at least 1 so that 0 probabilities cannot be used
-  peak_weight = std::clamp(peak_weight, 1, peak_weight);
+  peak_weight = std::max(peak_weight, 1);
   // force peak_index to be within bounds
   peak_index = std::clamp(peak_index, 0, desired_size - 1);
   // create an empty vector with reserved size

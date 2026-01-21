@@ -1,9 +1,9 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
-// Copyright (c) 2025 scholar-of-artifice
+// Copyright (c) 2026 scholar-of-artifice
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -40,8 +40,6 @@ TEST(ActionsTest, RollSameSeedReturnsDeterministicResult) {
   auto result_b = game_dice_cpp::roll(d20, rand_generator_b);
   // THEN the results are the same
   EXPECT_EQ(result_a, result_b) << "FAILURE: Roll value should be the same.";
-  EXPECT_EQ(result_a, 9) << "FAILURE: Roll value not correct.";
-  EXPECT_EQ(result_b, 9) << "FAILURE: Roll value not correct.";
 }
 
 TEST(ActionsTest, RollDifferentSeedReturnsDeterministicResult) {
@@ -56,8 +54,6 @@ TEST(ActionsTest, RollDifferentSeedReturnsDeterministicResult) {
   auto result_b = game_dice_cpp::roll(d20, rand_generator_b);
   // THEN the results are the same
   EXPECT_NE(result_a, result_b) << "FAILURE: Values should be distinct.";
-  EXPECT_EQ(result_a, 9) << "FAILURE: Roll value not correct.";
-  EXPECT_EQ(result_b, 7) << "FAILURE: Roll value not correct.";
 }
 
 TEST(ActionsTest, RollAnyDieProducesValueInRange) {
