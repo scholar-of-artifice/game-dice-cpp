@@ -92,7 +92,7 @@ TEST(
 
   // ---
   auto calculated_output = game_dice_cpp::TriangleDistribution(1, 5, 5);
-  auto expected_output = {5};
+  std::vector<int> expected_output = {5};
 
   size_t idx = 0;
   for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
@@ -173,7 +173,7 @@ TEST(
 
   // ---
   auto calculated_output = game_dice_cpp::TriangleDistribution(5, 0, 5);
-  auto expected_output = {5, 4, 3, 2, 1};
+  std::vector<int> expected_output = {5, 4, 3, 2, 1};
 
   size_t idx = 0;
   for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
@@ -262,7 +262,7 @@ TEST(
 
   // ---
   auto calculated_output = game_dice_cpp::TriangleDistribution(7, 4, 0);
-  auto expected_output = {1, 1, 1, 1, 1, 1};
+  std::vector<int> expected_output = {1, 1, 1, 1, 1, 1};
 
   size_t idx = 0;
   for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
