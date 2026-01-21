@@ -13,6 +13,12 @@ RUN apt-get update && apt-get install -y \
 # define working directory
 WORKDIR /app
 # install depenedencies
+FROM base AS toolchain-clang
+RUN apt-get update && apt-get install -y \
+    clang-format \
+    clang-tidy \
+    && rm -rf /var/lib/apt/lists/*
+
 # Unit Tests Image
 FROM base AS unit-test-suite-asan-ubsan
 # copy project source code
