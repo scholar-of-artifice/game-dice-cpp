@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 # install depenedencies
 # Unit Tests Image
-FROM base AS unit-test-suite
+FROM base AS unit-test-suite-asan-ubsan
 # copy project source code
 COPY . .
 # create build directory, generate files, compile the test app
