@@ -69,11 +69,11 @@ std::vector<int> TriangleDistribution(int desired_size, int peak_index,
   return out_weights;
 };
 
-// TODO: Make a Binomial Distribution
+// TODO(scholar_of_artifice): Make a Binomial Distribution
 std::vector<int> BinomialDistribution(int n, double k) {
 };
 
-// TODO: Make a Poisson Distribution
+// TODO(scholar_of_artifice): Make a Poisson Distribution
 std::vector<int> PoissonDistribution(int n, double k) {
 };
 }  // namespace game_dice_cpp

@@ -89,7 +89,7 @@ class StaticProbabilityTable {
     return thresholds_.back();
   }
   [[nodiscard]] constexpr int At(int value) const {
-    // TODO: small table optimization
+    // TODO(scholar_of_artifice): small table optimization
     // binary search for the value
     const auto iter =
         std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
