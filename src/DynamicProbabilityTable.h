@@ -78,7 +78,7 @@ class DynamicProbabilityTable {
           return *accumulated + weight;
         });
     // validation
-    if ( !total_weight.has_value() || *total_weight <= 0 ) {
+    if (!total_weight.has_value() || *total_weight <= 0) {
       return std::nullopt;
     }
     // pre-allocate storage

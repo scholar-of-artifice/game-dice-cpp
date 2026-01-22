@@ -70,12 +70,10 @@ std::vector<int> TriangleDistribution(int desired_size, int peak_index,
 };
 
 // TODO(scholar_of_artifice): Make a Binomial Distribution
-std::vector<int> BinomialDistribution(int n, double k) {
-};
+std::vector<int> BinomialDistribution(int n, double k) {};
 
 // TODO(scholar_of_artifice): Make a Poisson Distribution
-std::vector<int> PoissonDistribution(int n, double k) {
-};
+std::vector<int> PoissonDistribution(int n, double k) {};
 }  // namespace game_dice_cpp
 
 #endif  // GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
