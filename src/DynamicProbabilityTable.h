@@ -1,9 +1,9 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
-// Copyright (c) 2025 scholar-of-artifice
+// Copyright (c) 2026 scholar-of-artifice
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -100,7 +100,7 @@ class DynamicProbabilityTable {
   [[nodiscard]] int At(int value) const {
     // binary search for the value
     const auto iter =
-        std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
+        std::ranges::lower_bound(thresholds_, value);
     // clamp value within range of table
     if (iter == thresholds_.end()) {
       // this case happens when the input value is greater than the total_weight
