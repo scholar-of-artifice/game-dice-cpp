@@ -54,7 +54,7 @@ inline std::vector<int> TriangleDistribution(int desired_size, int peak_index,
       value = static_cast<double>(peak_weight);
     } else if (i < peak_index) {
       // rising slope
-      double slope_ratio =
+      const double slope_ratio =
           static_cast<double>(i) / static_cast<double>(peak_index);
       value = 1 + (peak_weight - 1) * slope_ratio;
     } else {
