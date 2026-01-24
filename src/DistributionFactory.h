@@ -61,7 +61,7 @@ inline std::vector<int> TriangleDistribution(int desired_size, int peak_index,
       // falling slope
       const double slope_ratio = static_cast<double>(i - peak_index) /
                            static_cast<double>(desired_size - 1 - peak_index);
-      value = peak_weight - (peak_weight - 1) * slope_ratio;
+      value = peak_weight - ((peak_weight - 1) * slope_ratio);
     }
     // write the value
     out_weights.push_back(static_cast<int>(std::round(value)));
