@@ -28,7 +28,6 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
-#include <ranges>
 #include <vector>
 
 namespace game_dice_cpp {
