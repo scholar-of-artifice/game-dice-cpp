@@ -26,6 +26,7 @@
 #ifndef GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
 #define GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
 #include <algorithm>
+#include <cmath>
 #include <random>
 #include <ranges>
 #include <vector>
