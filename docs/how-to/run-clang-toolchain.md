@@ -28,5 +28,5 @@ docker run --rm \
     -v "$(pwd):/app" \
     game-dice-cpp-toolchain-clang-tidy  \
     clang-tidy src/*.h \
-    -- -Isrc --std=c++23
+    -- -Isrc --std=c++23 -x c++
 ```
