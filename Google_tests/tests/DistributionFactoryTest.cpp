@@ -24,7 +24,7 @@
 // SOFTWARE.
 
 #include <gtest/gtest.h>
-
+#include <ranges>
 #include "DistributionFactory.h"
 
 TEST(DistributionFactoryTest,
