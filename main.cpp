@@ -1,5 +1,5 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
@@ -39,7 +39,7 @@ int main() {
   std::mt19937_64 rand_generator(43);
   // roll the dice a few times...
   for (auto i = 0; i < 3; i++) {
-    auto result = game_dice_cpp::roll(d7, rand_generator);
+    auto result = game_dice_cpp::Roll(d7, rand_generator);
     std::cout << "\tRolled " << result << "!" << std::endl;
   }
 }
