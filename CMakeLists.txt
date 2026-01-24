@@ -34,3 +34,4 @@ target_link_libraries(
 
 # --- the tests live here ---
 add_subdirectory(Google_tests)
+add_subdirectory(Google_benchmarks)
