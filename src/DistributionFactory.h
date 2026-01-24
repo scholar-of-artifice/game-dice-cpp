@@ -32,7 +32,7 @@
 
 namespace game_dice_cpp {
 
-std::vector<int> TriangleDistribution(int desired_size, int peak_index,
+inline std::vector<int> TriangleDistribution(int desired_size, int peak_index,
                                       int peak_weight) {
   // check if desired_size is below acceptable value
   if (desired_size <= 0 || desired_size <= peak_index ||
