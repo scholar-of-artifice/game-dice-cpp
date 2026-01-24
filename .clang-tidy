@@ -2,6 +2,7 @@
 # enable almost everything
 # disble system/compiler specific checks
 Checks: '*,
+        -alpha-*,
         -abseil-*,
         -altera-*,
         -android-*,
@@ -15,7 +16,11 @@ Checks: '*,
         -openmp-*,
         -zircon-*,
         -readability-magic-numbers,
-        -modernize-use-trailing-return-type'
+        -modernize-use-trailing-return-type,
+        -bugprone-easily-swappable-parameters'
+# NOTE:
+# -bugprone-easily-swappable-parameters -> some math functions basically require this
+
 # Treat all enabled warning as errors
 WarningsAsErrors: '*'
 # header-only libraries need this
