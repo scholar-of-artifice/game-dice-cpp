@@ -32,7 +32,7 @@
 namespace game_dice_cpp {
 
 inline std::vector<int> TriangleDistribution(int desired_size, int peak_index,
-                                      int peak_weight) {
+                                             int peak_weight) {
   // check if desired_size is below acceptable value
   if (desired_size <= 0 || desired_size <= peak_index ||
       peak_index > desired_size) {
@@ -58,8 +58,9 @@ inline std::vector<int> TriangleDistribution(int desired_size, int peak_index,
       value = 1 + ((peak_weight - 1) * slope_ratio);
     } else {
       // falling slope
-      const double slope_ratio = static_cast<double>(i - peak_index) /
-                           static_cast<double>(desired_size - 1 - peak_index);
+      const double slope_ratio =
+          static_cast<double>(i - peak_index) /
+          static_cast<double>(desired_size - 1 - peak_index);
       value = peak_weight - ((peak_weight - 1) * slope_ratio);
     }
     // write the value

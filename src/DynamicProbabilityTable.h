@@ -62,8 +62,9 @@ class DynamicProbabilityTable {
   [[nodiscard]] static std::optional<game_dice_cpp::DynamicProbabilityTable>
   Make(const std::vector<int>& weights) {
     // create a view that sees only non-negative weights
-    auto safe_weights = weights | std::ranges::views::transform(
-                                      [](int weight) { return std::max(weight, 0); });
+    auto safe_weights = weights | std::ranges::views::transform([](int weight) {
+                          return std::max(weight, 0);
+                        });
     // accumulate with check-as-you-go
     // use std::optional<int> to carry the valid state through the loop
     std::optional<int> total_weight = std::accumulate(
@@ -101,8 +102,7 @@ class DynamicProbabilityTable {
   // Maps a value (example: from a die roll) to an outcome index.
   [[nodiscard]] int At(int value) const {
     // binary search for the value
-    const auto iter =
-        std::ranges::lower_bound(thresholds_, value);
+    const auto iter = std::ranges::lower_bound(thresholds_, value);
     // clamp value within range of table
     if (iter == thresholds_.end()) {
       // this case happens when the input value is greater than the total_weight
