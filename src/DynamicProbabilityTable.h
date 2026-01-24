@@ -63,7 +63,7 @@ class DynamicProbabilityTable {
   Make(const std::vector<int>& weights) {
     // create a view that sees only non-negative weights
     auto safe_weights = weights | std::ranges::views::transform(
-                                      [](int w) { return std::max(w, 0); });
+                                      [](int weight) { return std::max(weight, 0); });
     // accumulate with check-as-you-go
     // use std::optional<int> to carry the valid state through the loop
     std::optional<int> total_weight = std::accumulate(
