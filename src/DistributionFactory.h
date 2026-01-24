@@ -26,14 +26,13 @@
 #ifndef GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
 #define GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
 #include <algorithm>
-#include <random>
-#include <ranges>
+#include <cmath>
 #include <vector>
 
 namespace game_dice_cpp {
 
-std::vector<int> TriangleDistribution(int desired_size, int peak_index,
-                                      int peak_weight) {
+inline std::vector<int> TriangleDistribution(int desired_size, int peak_index,
+                                             int peak_weight) {
   // check if desired_size is below acceptable value
   if (desired_size <= 0 || desired_size <= peak_index ||
       peak_index > desired_size) {
@@ -54,14 +53,15 @@ std::vector<int> TriangleDistribution(int desired_size, int peak_index,
       value = static_cast<double>(peak_weight);
     } else if (i < peak_index) {
       // rising slope
-      double slope_ratio =
+      const double slope_ratio =
           static_cast<double>(i) / static_cast<double>(peak_index);
-      value = 1 + (peak_weight - 1) * slope_ratio;
+      value = 1 + ((peak_weight - 1) * slope_ratio);
     } else {
       // falling slope
-      double slope_ratio = static_cast<double>(i - peak_index) /
-                           static_cast<double>(desired_size - 1 - peak_index);
-      value = peak_weight - (peak_weight - 1) * slope_ratio;
+      const double slope_ratio =
+          static_cast<double>(i - peak_index) /
+          static_cast<double>(desired_size - 1 - peak_index);
+      value = peak_weight - ((peak_weight - 1) * slope_ratio);
     }
     // write the value
     out_weights.push_back(static_cast<int>(std::round(value)));
@@ -69,13 +69,11 @@ std::vector<int> TriangleDistribution(int desired_size, int peak_index,
   return out_weights;
 };
 
-// TODO: Make a Binomial Distribution
-std::vector<int> BinomialDistribution(int n, double k) {
-};
+// TODO(scholar_of_artifice): Make a Binomial Distribution
+// std::vector<int> BinomialDistribution(int n, double k) {};
 
-// TODO: Make a Poisson Distribution
-std::vector<int> PoissonDistribution(int n, double k) {
-};
+// TODO(scholar_of_artifice): Make a Poisson Distribution
+// std::vector<int> PoissonDistribution(int n, double k) {};
 }  // namespace game_dice_cpp
 
 #endif  // GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H

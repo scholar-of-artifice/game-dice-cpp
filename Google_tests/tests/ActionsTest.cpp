@@ -36,8 +36,8 @@ TEST(ActionsTest, RollSameSeedReturnsDeterministicResult) {
   std::mt19937_64 rand_generator_a(42);
   std::mt19937_64 rand_generator_b(42);
   // WHEN the dice is rolled
-  auto result_a = game_dice_cpp::roll(d20, rand_generator_a);
-  auto result_b = game_dice_cpp::roll(d20, rand_generator_b);
+  auto result_a = game_dice_cpp::Roll(d20, rand_generator_a);
+  auto result_b = game_dice_cpp::Roll(d20, rand_generator_b);
   // THEN the results are the same
   EXPECT_EQ(result_a, result_b) << "FAILURE: Roll value should be the same.";
 }
@@ -50,8 +50,8 @@ TEST(ActionsTest, RollDifferentSeedReturnsDeterministicResult) {
   std::mt19937_64 rand_generator_a(42);
   std::mt19937_64 rand_generator_b(13579);
   // WHEN the dice is rolled
-  auto result_a = game_dice_cpp::roll(d20, rand_generator_a);
-  auto result_b = game_dice_cpp::roll(d20, rand_generator_b);
+  auto result_a = game_dice_cpp::Roll(d20, rand_generator_a);
+  auto result_b = game_dice_cpp::Roll(d20, rand_generator_b);
   // THEN the results are the same
   EXPECT_NE(result_a, result_b) << "FAILURE: Values should be distinct.";
 }
@@ -65,7 +65,7 @@ TEST(ActionsTest, RollAnyDieProducesValueInRange) {
     auto dice = game_dice_cpp::Dice(sides);
     for (int trial = 0; trial <= 100'000; trial++) {
       // WHEN the dice is rolled
-      auto result = game_dice_cpp::roll(dice, rand_generator);
+      auto result = game_dice_cpp::Roll(dice, rand_generator);
       // THEN the result is always in range
       EXPECT_THAT(result, testing::AllOf(testing::Ge(1), testing::Le(sides)))
           << "FAILURE: Value " << result << " not in range [1, " << sides

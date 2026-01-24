@@ -1,16 +1,37 @@
 //
-// Created by dev on 28/12/2025.
+// Copyright 2026 scholar-of-artifice
 //
+// Licensed under the MIT License
+//
+// Copyright (c) 2026 scholar-of-artifice
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 #ifndef GAME_DICE_CPP_SRC_STATICPROBABILITYTABLE_H
 #define GAME_DICE_CPP_SRC_STATICPROBABILITYTABLE_H
 #include <algorithm>
 #include <array>
 #include <concepts>
+#include <cstddef>
 #include <iterator>
-#include <numeric>
-#include <ranges>
 #include <limits>
+#include <numeric>
 #include <optional>
 
 namespace game_dice_cpp {
@@ -28,13 +49,15 @@ class StaticProbabilityTable {
   //
   template <std::convertible_to<int>... Args>
     requires(sizeof...(Args) == NumberOfOutcomes)
-  [[nodiscard]] static constexpr std::optional<game_dice_cpp::StaticProbabilityTable<NumberOfOutcomes>>
+  [[nodiscard]] static constexpr std::optional<
+      game_dice_cpp::StaticProbabilityTable<NumberOfOutcomes>>
   Make(const Args&... input_weights) {
     // pack arguments
     std::array<int, NumberOfOutcomes> weights = {
         static_cast<int>(input_weights)...};
     // transform in-place only non-negative weights
-    std::ranges::transform(weights, weights.begin(), [](int w) { return std::max(w, 0); });
+    std::ranges::transform(weights, weights.begin(),
+                           [](int weight) { return std::max(weight, 0); });
     // accumulate with check-as-you-go overflow check
     // use std::optional<int> to carry the valid state through the loop
     std::optional<int> total_weight = std::accumulate(
@@ -68,7 +91,7 @@ class StaticProbabilityTable {
     return thresholds_.back();
   }
   [[nodiscard]] constexpr int At(int value) const {
-    // TODO: small table optimization
+    // TODO(scholar_of_artifice): small table optimization
     // binary search for the value
     const auto iter =
         std::lower_bound(thresholds_.begin(), thresholds_.end(), value);

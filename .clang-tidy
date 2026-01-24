@@ -1,0 +1,44 @@
+# strict checks:
+# enable almost everything
+# disble system/compiler specific checks
+Checks: '*,
+        -alpha-*,
+        -abseil-*,
+        -altera-*,
+        -android-*,
+        -boost-*,
+        -darwin-*,
+        -fuchsia-*,
+        -google-runtime-*,
+        -llvm-*,
+        -llvmlibc-*,
+        -mpi-*,
+        -objc-*,
+        -openmp-*,
+        -zircon-*,
+        -readability-magic-numbers,
+        -modernize-use-trailing-return-type,
+        -bugprone-easily-swappable-parameters'
+# NOTE:
+# -bugprone-easily-swappable-parameters -> some math functions basically require this
+
+# Treat all enabled warning as errors
+WarningsAsErrors: '*'
+# header-only libraries need this
+HeaderFilterRegex: 'src/.*'
+# Enforce C++23 standard
+CheckOptions:
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.StructCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: CamelCase
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.GlobalConstantCase
+    value: UPPER_CASE
+  - key: bugprone-dangling-handle.HandleClasses
+    value: 'std::string_view;std::span'
+
+FormatStyle: file

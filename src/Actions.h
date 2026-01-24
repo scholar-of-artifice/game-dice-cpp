@@ -1,5 +1,5 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
@@ -39,8 +39,10 @@ namespace game_dice_cpp {
 // die: The die to roll (defines the range [1, N])
 // engine: A C++ STL compatible random number engine
 template <typename Engine>
-[[nodiscard]] int roll(const Dice& die, Engine& engine) {
+[[nodiscard]] int Roll(const Dice& die, Engine& engine) {
   // create the uniform distribution from 1->N on the stack
+  // NOLINTNEXTLINE(misc-const-correctness): STL distributions are not
+  // const-callable
   std::uniform_int_distribution<int> distribution(1, die.GetNumSides());
   // pull a number from the distribution using the provided entropy source
   return distribution(engine);

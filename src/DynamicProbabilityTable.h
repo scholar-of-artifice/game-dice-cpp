@@ -1,9 +1,9 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
-// Copyright (c) 2025 scholar-of-artifice
+// Copyright (c) 2026 scholar-of-artifice
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,11 @@
 #define GAME_DICE_CPP_SRC_DYNAMICPROBABILITYTABLE_H
 #include <algorithm>
 #include <iterator>
+#include <limits>
 #include <numeric>
 #include <optional>
 #include <ranges>
+#include <utility>
 #include <vector>
 
 namespace game_dice_cpp {
@@ -60,8 +62,9 @@ class DynamicProbabilityTable {
   [[nodiscard]] static std::optional<game_dice_cpp::DynamicProbabilityTable>
   Make(const std::vector<int>& weights) {
     // create a view that sees only non-negative weights
-    auto safe_weights = weights | std::ranges::views::transform(
-                                      [](int w) { return std::max(w, 0); });
+    auto safe_weights = weights | std::ranges::views::transform([](int weight) {
+                          return std::max(weight, 0);
+                        });
     // accumulate with check-as-you-go
     // use std::optional<int> to carry the valid state through the loop
     std::optional<int> total_weight = std::accumulate(
@@ -78,7 +81,7 @@ class DynamicProbabilityTable {
           return *accumulated + weight;
         });
     // validation
-    if ( !total_weight.has_value() || *total_weight <= 0 ) {
+    if (!total_weight.has_value() || *total_weight <= 0) {
       return std::nullopt;
     }
     // pre-allocate storage
@@ -99,8 +102,7 @@ class DynamicProbabilityTable {
   // Maps a value (example: from a die roll) to an outcome index.
   [[nodiscard]] int At(int value) const {
     // binary search for the value
-    const auto iter =
-        std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
+    const auto iter = std::ranges::lower_bound(thresholds_, value);
     // clamp value within range of table
     if (iter == thresholds_.end()) {
       // this case happens when the input value is greater than the total_weight
