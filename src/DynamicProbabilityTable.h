@@ -31,6 +31,7 @@
 #include <numeric>
 #include <optional>
 #include <ranges>
+#include <utility>
 #include <vector>
 
 namespace game_dice_cpp {
