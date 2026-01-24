@@ -1,5 +1,5 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
@@ -32,7 +32,6 @@
 #include <limits>
 #include <numeric>
 #include <optional>
-#include <ranges>
 
 namespace game_dice_cpp {
 
@@ -57,7 +56,7 @@ class StaticProbabilityTable {
         static_cast<int>(input_weights)...};
     // transform in-place only non-negative weights
     std::ranges::transform(weights, weights.begin(),
-                           [](int w) { return std::max(w, 0); });
+                           [](int weight) { return std::max(weight, 0); });
     // accumulate with check-as-you-go overflow check
     // use std::optional<int> to carry the valid state through the loop
     std::optional<int> total_weight = std::accumulate(
