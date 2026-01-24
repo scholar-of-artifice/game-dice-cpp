@@ -26,6 +26,7 @@
 #ifndef GAME_DICE_CPP_SRC_DICE_H
 #define GAME_DICE_CPP_SRC_DICE_H
 
+#include <algorithm>
 #include <limits>
 
 namespace game_dice_cpp {
@@ -48,10 +49,7 @@ class Dice {
   //  - minimum: 2 (example: a coin)
   //  - maximum std::numeric_limits<int>::max() - 1
   constexpr explicit Dice(int sides)
-      : num_sides_((sides < 2) ? 2
-                   : (sides >= std::numeric_limits<int>::max())
-                       ? (std::numeric_limits<int>::max() - 1)
-                       : sides) {}
+      : num_sides_(std::clamp(sides, 2, std::numeric_limits<int>::max() - 1)) {}
   // Retrieves the number of sides.
   [[nodiscard]] constexpr int GetNumSides() const noexcept {
     return num_sides_;
