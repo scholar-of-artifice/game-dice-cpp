@@ -112,6 +112,8 @@ ENTRYPOINT ["ctest", "--test-dir", "Google_tests", "--output-on-failure", "--ver
 
 # Build unit tests with Tsan and UBsan
 FROM base AS unit-test-suite-tsan-ubsan
+# copy the instrumented library from the builder stage
+COPY --from=tsan-libcxx-builder /opt/tsan-libcxx /opt/tsan-libcxx
 # copy project source code
 COPY . .
 # create build directory, generate files, compile the test app
