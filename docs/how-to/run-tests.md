@@ -28,3 +28,13 @@ docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-me
 ```
 
 
+### unit tests + tsan + ubsan
+#### Build the Image
+```
+docker build --tag game-dice-cpp-unit-tests-tsan-ubsan --target unit-test-suite-tsan-ubsan .
+```
+
+#### Run the Tests
+```
+docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-tsan-ubsan
+```
