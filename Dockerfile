@@ -25,7 +25,59 @@ RUN apt-get update && apt-get install -y \
     clang-tidy \
     && rm -rf /var/lib/apt/lists/*
 
-# Unit Tests Image
+# builder stage - compile libc++ with MemorySantizer
+# Memsan requires that the entire program (including the STL is instrumented)
+FROM base AS msan-libcxx-builder
+# Install tools needed to build LLVM
+RUN apt-get update && apt-get install -y \
+    ninja-build \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
+# clone LLVM project
+WORKDIR /tmp
+RUN git clone --depth=1 https://github.com/llvm/llvm-project.git
+# go to downloaded repo
+WORKDIR /tmp/llvm-project
+# 'RUN' tells docker to execute a shell command
+# 'cmake' is the tool used to configure the build
+# '-S runtimes' tells cmake that the source code is in /runtimes directory
+# '-B build' tells cmake to create a temp directory called 'build'
+# '-G Ninja' tells cmake to use the 'Ninja' tool to run the build.
+# build libc++ and libc++abi with MSan enabled
+RUN cmake -S runtimes -B build -G Ninja \
+        \
+        # tell cmake to use clang for c and c++ files
+        -DCMAKE_C_COMPILER=clang \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        \
+        # we do not need debug symbols
+        -DCMAKE_BUILD_TYPE=Release \
+        \
+        # this is a list of exactly which sub-projects to build
+        -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" \
+        \
+        # inject Memsan
+        -DLLVM_USE_SANITIZER=Memory \
+        \
+        # where to save the final files
+        -DCMAKE_INSTALL_PREFIX=/opt/msan-libcxx \
+        \
+        # dont build the internal tests for LLVM
+        -DLIBCXX_INCLUDE_TESTS=OFF \
+        \
+        # dont build the internal benchmarks
+        -DLIBCXX_INCLUDE_BENCHMARKS=OFF \
+        \
+        # dont build the internal tests for ABI support
+        -DLIBCXXABI_INCLUDE_TESTS=OFF \
+        \
+        # turn off internal tests for the unwind library
+        -DLIBUNWIND_INCLUDE_TESTS=OFF \
+        \
+        # && means to run this configuration if all the above parts succeed
+        && cmake --build build --target install-cxx install-cxxabi install-unwind
+# Unit Tests Images
+# Build unit tests with Asan and UBsan
 FROM base AS unit-test-suite-asan-ubsan
 # copy project source code
 COPY . .
