@@ -38,3 +38,49 @@ docker build --tag game-dice-cpp-unit-tests-tsan-ubsan --target unit-test-suite-
 ```
 docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-tsan-ubsan
 ```
+
+### unit tests + valgrind
+#### Build the Image
+```
+docker build --tag game-dice-cpp-unit-tests-valgrind --target unit-test-suite-valgrind .
+```
+
+#### Run the Tests
+
+##### Run Memcheck
+```
+docker run --rm \
+    game-dice-cpp-unit-tests-valgrind
+```
+
+##### Run Massif
+```
+docker run --rm \
+    --entrypoint valgrind \
+    game-dice-cpp-unit-tests-valgrind \
+    --tool=massif \
+    --massif-out-file=/app/massif.out \
+    ./Google_tests/unit_test_suite
+```
+
+##### Run Helgrind
+```
+docker run --rm \
+    --entrypoint valgrind \
+    game-dice-cpp-unit-tests-valgrind \
+    --tool=helgrind \
+    --error-exitcode=1 \
+    ./Google_tests/unit_test_suite
+```
+
+
+##### Run Callgrind
+```
+docker run --rm \
+    --entrypoint valgrind \
+    game-dice-cpp-unit-tests-valgrind \
+    --tool=callgrind \
+    --dump-instr=yes \
+    ./Google_tests/unit_test_suite
+```
+
