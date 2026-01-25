@@ -110,3 +110,19 @@ WORKDIR /app/build
 ENTRYPOINT ["ctest", "--test-dir", "Google_tests", "--output-on-failure", "--verbose"]
 
 
+# Build unit tests with Tsan and UBsan
+FROM base AS unit-test-suite-tsan-ubsan
+# copy project source code
+COPY . .
+# create build directory, generate files, compile the test app
+RUN cmake -S . -B build -G "Unix Makefiles" \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_CXX_FLAGS="-fsanitize=thread,undefined -stdlib=libc++ -nostdinc++ -I/opt/tsan-libcxx/include/c++/v1 -L/opt/tsan-libcxx/lib -lc++abi -fno-omit-frame-pointer -g" \
+    -DCMAKE_EXE_LINKER_FLAGS="-stdlib=libc++ -fsanitize=thread,undefined -L/opt/tsan-libcxx/lib -Wl,-rpath,/opt/tsan-libcxx/lib -lc++abi" \
+    && cmake --build build --target unit_test_suite
+# set the default execution command
+WORKDIR /app/build
+ENTRYPOINT ["ctest", "--test-dir", "Google_tests", "--output-on-failure", "--verbose"]
+
+
