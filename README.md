@@ -18,8 +18,7 @@ value compile-time safety and memory control.
 
 ## 🧐 Design Philosophy
 
-**game-dice-cpp** is a modern C++23, header only library designed to make probabilty mechanics **type-safe**, *
-*deterministic** and **testable**.
+**game-dice-cpp** is a modern C++23, header only library designed to make probabilty mechanics **type-safe**, **deterministic** and **testable**.
 This library addresses those pain points by adopting Data Oriented Design and Functional Programming paradigms to
 strictly decouple the *definition* of the random event from the *source* of the entropy
 
