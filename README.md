@@ -11,10 +11,10 @@ value compile-time safety and memory control.
 ## 🧑‍💻Technologies
 
 <!--technology badges here-->
-<div class="technology-list" alt="This project includes the use of the following technologies:">
-    <img src="docs/assets/badges/cmake.svg" alt="CMake Logo" width="64"/>
-    <img src="docs/assets/badges/cplusplus.svg" alt="C++ Programming Language Logo" width="64"/>
-</div>
+![C++](https://img.shields.io/badge/C%2B%2B-blue.svg?&logo=c%2B%2B&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)
+![LLVM](https://img.shields.io/badge/LLVM-black?logo=llvm&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white)
 
 ## 🧐 Design Philosophy
 
