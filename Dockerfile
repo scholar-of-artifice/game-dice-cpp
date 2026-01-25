@@ -75,7 +75,7 @@ RUN cmake -S runtimes -B build -G Ninja \
         -DLIBUNWIND_INCLUDE_TESTS=OFF \
         \
         # && means to run this configuration if all the above parts succeed
-        && cmake --build build --target install-cxx install-cxxabi install-unwind \
+        && cmake --build build --target install-cxx install-cxxabi install-unwind
 
 # builder stage - compile libc++ with ThreadSantizer
 # Tsan requires that the entire program (including the STL is instrumented)
@@ -127,7 +127,7 @@ RUN cmake -S runtimes -B build -G Ninja \
         -DLIBUNWIND_INCLUDE_TESTS=OFF \
         \
         # && means to run this configuration if all the above parts succeed
-        && cmake --build build --target install-cxx install-cxxabi install-unwind \
+        && cmake --build build --target install-cxx install-cxxabi install-unwind
 
 # Unit Tests Images
 # Build unit tests with Asan and UBsan
