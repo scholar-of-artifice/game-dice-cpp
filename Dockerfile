@@ -92,4 +92,21 @@ RUN cmake -S . -B build -G "Unix Makefiles" \
 WORKDIR /app/build
 ENTRYPOINT ["ctest", "--test-dir", "Google_tests", "--output-on-failure", "--verbose"]
 
+# Build unit tests with Memsan and UBsan
+FROM base AS unit-test-suite-memsan-ubsan
+# copy the instrumented library from the builder stage
+COPY --from=msan-libcxx-builder /opt/msan-libcxx /opt/msan-libcxx
+# copy project source code
+COPY . .
+# create build directory, generate files, compile the test app
+RUN cmake -S . -B build -G "Unix Makefiles" \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_CXX_FLAGS="-fsanitize=memory,undefined -stdlib=libc++ -nostdinc++ -I/opt/msan-libcxx/include/c++/v1 -L/opt/msan-libcxx/lib -lc++abi -fno-omit-frame-pointer -g" \
+    -DCMAKE_EXE_LINKER_FLAGS="-stdlib=libc++ -fsanitize=memory,undefined -L/opt/msan-libcxx/lib -Wl,-rpath,/opt/msan-libcxx/lib -lc++abi" \
+    && cmake --build build --target unit_test_suite
+# set the default execution command
+WORKDIR /app/build
+ENTRYPOINT ["ctest", "--test-dir", "Google_tests", "--output-on-failure", "--verbose"]
+
 
