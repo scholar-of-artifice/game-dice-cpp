@@ -41,8 +41,7 @@ namespace game_dice_cpp {
 template <typename Engine>
 [[nodiscard]] int Roll(const Dice& die, Engine& engine) {
   // create the uniform distribution from 1->N on the stack
-  // NOLINTNEXTLINE(misc-const-correctness): STL distributions are not
-  // const-callable
+  // NOLINTNEXTLINE(misc-const-correctness): STL dists not const-callable
   std::uniform_int_distribution<int> distribution(1, die.GetNumSides());
   // pull a number from the distribution using the provided entropy source
   return distribution(engine);
