@@ -31,8 +31,8 @@ FROM base AS unit-test-suite-asan-ubsan
 COPY . .
 # create build directory, generate files, compile the test app
 RUN cmake -S . -B build -G "Unix Makefiles" \
-    -DCMAKE_CXX_COMPILER=clang++ \
     -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
     -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer -g" \
     -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address,undefined" \
     && cmake --build build --target unit_test_suite
