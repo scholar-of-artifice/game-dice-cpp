@@ -180,3 +180,23 @@ RUN cmake -S . -B build -G "Unix Makefiles" \
 WORKDIR /app/build
 ENTRYPOINT ["ctest", "--test-dir", "Google_tests", "--output-on-failure", "--verbose"]
 
+# Build unit tests with valgrind
+FROM base AS unit-test-suite-valgrind
+
+RUN apt-get update && apt-get install -y \
+    valgrind \
+    && rm -rf /var/lib/apt/lists/*
+# copy project source code
+COPY . .
+# create build directory, generate files, compile the test app
+# user -O0 to ensure variable values are preserved in debugger/profiler
+RUN cmake -S . -B build -G "Unix Makefiles" \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_CXX_FLAGS="-g -O0" \
+    && cmake --build build --target unit_test_suite
+# set the default execution command
+WORKDIR /app/build
+ENTRYPOINT ["valgrind", "--error-exitcode=1", "--leak-check=full", "--track-origins=yes", "./Google_tests/unit_test_suite"]
+
+
