@@ -199,4 +199,19 @@ RUN cmake -S . -B build -G "Unix Makefiles" \
 WORKDIR /app/build
 ENTRYPOINT ["valgrind", "--error-exitcode=1", "--leak-check=full", "--track-origins=yes", "./Google_tests/unit_test_suite"]
 
+# Build benchmarks in Release mode
+FROM base AS benchmark-suite
+
+# copy project source code
+COPY . .
+# create build directory, generate files, compile the benchmarking
+RUN cmake -S . -B build -G "Unix Makefiles" \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_BUILD_TYPE=Release \
+    && cmake --build build --target benchmark_suite --config Release
+# set the default execution command
+WORKDIR /app/build
+ENTRYPOINT ["./Google_benchmarks/benchmark_suite"]
+
 
