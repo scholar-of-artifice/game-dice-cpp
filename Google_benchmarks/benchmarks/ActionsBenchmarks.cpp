@@ -107,3 +107,17 @@ static void BM_Roll_w_ranlux48(benchmark::State& state) {
 }
 // register this benchmark
 BENCHMARK(BM_Roll_w_ranlux48);
+
+
+// measure the cost Roll a Dice object with minstd_rand Engine
+static void BM_Roll_w_minstd_rand(benchmark::State& state) {
+  const auto dice = game_dice_cpp::Dice(20);
+  auto engine = std::minstd_rand(42);
+  // the loop where the code to be timed runs
+  for (auto _ : state) {
+    // prevent compiler from optimizing the result away
+    benchmark::DoNotOptimize(game_dice_cpp::Roll(dice, engine));
+  }
+}
+// register this benchmark
+BENCHMARK(BM_Roll_w_minstd_rand);
