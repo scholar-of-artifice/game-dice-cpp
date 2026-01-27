@@ -28,8 +28,6 @@
 #include "Dice.h"
 #include "Actions.h"
 
-// measure the cost of constructing a Dice object
-static void BM_Roll(benchmark::State& state) {
 // measure the cost Roll a Dice object with mt19937_64 Engine
 static void BM_Roll_w_mt19937_64(benchmark::State& state) {
   const auto dice = game_dice_cpp::Dice(20);
