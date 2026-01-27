@@ -80,3 +80,30 @@ static void BM_Roll_w_ranlux48_base(benchmark::State& state) {
 }
 // register this benchmark
 BENCHMARK(BM_Roll_w_ranlux48_base);
+
+// measure the cost Roll a Dice object with ranlux24 Engine
+static void BM_Roll_w_ranlux24(benchmark::State& state) {
+  const auto dice = game_dice_cpp::Dice(20);
+  auto engine = std::ranlux24(42);
+  // the loop where the code to be timed runs
+  for (auto _ : state) {
+    // prevent compiler from optimizing the result away
+    benchmark::DoNotOptimize(game_dice_cpp::Roll(dice, engine));
+  }
+}
+// register this benchmark
+BENCHMARK(BM_Roll_w_ranlux24);
+
+
+// measure the cost Roll a Dice object with ranlux48 Engine
+static void BM_Roll_w_ranlux48(benchmark::State& state) {
+  const auto dice = game_dice_cpp::Dice(20);
+  auto engine = std::ranlux48(42);
+  // the loop where the code to be timed runs
+  for (auto _ : state) {
+    // prevent compiler from optimizing the result away
+    benchmark::DoNotOptimize(game_dice_cpp::Roll(dice, engine));
+  }
+}
+// register this benchmark
+BENCHMARK(BM_Roll_w_ranlux48);
