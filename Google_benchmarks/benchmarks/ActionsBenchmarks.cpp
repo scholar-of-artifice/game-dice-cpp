@@ -28,19 +28,6 @@
 #include "Dice.h"
 #include "Actions.h"
 
-// measure the cost Roll a Dice object with mt19937_64 Engine
-static void BM_Roll_w_mt19937_64(benchmark::State& state) {
-  const auto dice = game_dice_cpp::Dice(20);
-  auto engine = std::mt19937_64(42);
-  // the loop where the code to be timed runs
-  for (auto _ : state) {
-    // prevent compiler from optimizing the result away
-    benchmark::DoNotOptimize(game_dice_cpp::Roll(dice, engine));
-  }
-}
-// register this benchmark
-BENCHMARK(BM_Roll_w_mt19937_64);
-
 // measure the cost Roll a Dice object with mt19937
 static void BM_Roll_w_mt19937(benchmark::State& state) {
   const auto dice = game_dice_cpp::Dice(20);
@@ -53,3 +40,16 @@ static void BM_Roll_w_mt19937(benchmark::State& state) {
 }
 // register this benchmark
 BENCHMARK(BM_Roll_w_mt19937);
+
+// measure the cost Roll a Dice object with mt19937_64 Engine
+static void BM_Roll_w_mt19937_64(benchmark::State& state) {
+  const auto dice = game_dice_cpp::Dice(20);
+  auto engine = std::mt19937_64(42);
+  // the loop where the code to be timed runs
+  for (auto _ : state) {
+    // prevent compiler from optimizing the result away
+    benchmark::DoNotOptimize(game_dice_cpp::Roll(dice, engine));
+  }
+}
+// register this benchmark
+BENCHMARK(BM_Roll_w_mt19937_64);
