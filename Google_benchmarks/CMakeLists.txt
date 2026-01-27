@@ -19,7 +19,7 @@ enable_testing()
 # create the executable
 add_executable(
         benchmark_suite
-        tests/DiceBenchmark.cpp
+        benchmarks/DiceBenchmarks.cpp
 )
 # link the executable to the GoogleBenchmark library
 target_link_libraries(
