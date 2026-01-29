@@ -43,6 +43,23 @@ static void BM_DynamicProbabilityTable_Make(benchmark::State& state) {
 // register this benchmark
 BENCHMARK(BM_DynamicProbabilityTable_Make)->RangeMultiplier(2)->Range(8, 2048);
 
+// measure the cost of GetTotalWeight in DynamicProbabilityTable
+static void BM_DynamicProbabilityTable_GetTotalWeight(benchmark::State& state) {
+  std::vector<int> weights(state.range(0), 1);
+  auto table_opt = game_dice_cpp::DynamicProbabilityTable::Make(weights);
+  if(!table_opt) {
+    state.SkipWithError("Failed to create table.");
+    return;
+  }
+  const auto& table = *table_opt;
+  // the loop where the code to be timed runs
+  for (auto _ : state) {
+    // prevent compiler from optimizing the result away
+    benchmark::DoNotOptimize( table.GetTotalWeight() );
+  }
+}
+// register this benchmark
+BENCHMARK(BM_DynamicProbabilityTable_GetTotalWeight)->RangeMultiplier(2)->Range(8, 2048);
 
 // measure the cost of lookup in DynamicProbabilityTable
 static void BM_DynamicProbabilityTable_At(benchmark::State& state) {
