@@ -24,7 +24,9 @@
 // SOFTWARE.
 
 #include <gtest/gtest.h>
+
 #include <ranges>
+
 #include "DistributionFactory.h"
 
 TEST(DistributionFactoryTest,
@@ -302,7 +304,7 @@ TEST(
   }
   // ---
   calculated_output = game_dice_cpp::TriangleDistribution(7, 4, 10);
-  expected_output = {1,3,6,8,10,6,1};
+  expected_output = {1, 3, 6, 8, 10, 6, 1};
 
   idx = 0;
   for (auto entry : std::ranges::zip_view(calculated_output, expected_output)) {
