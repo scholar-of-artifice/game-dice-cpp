@@ -24,7 +24,9 @@
 // SOFTWARE.
 
 #include <benchmark/benchmark.h>
+
 #include <random>
+
 #include "Dice.h"
 
 // measure the cost of constructing a Dice object

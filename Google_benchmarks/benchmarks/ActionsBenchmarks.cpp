@@ -24,9 +24,11 @@
 // SOFTWARE.
 
 #include <benchmark/benchmark.h>
+
 #include <random>
-#include "Dice.h"
+
 #include "Actions.h"
+#include "Dice.h"
 
 // measure the cost Roll a Dice object with mt19937
 static void BM_Roll_w_mt19937(benchmark::State& state) {
@@ -67,7 +69,6 @@ static void BM_Roll_w_ranlux24_base(benchmark::State& state) {
 // register this benchmark
 BENCHMARK(BM_Roll_w_ranlux24_base);
 
-
 // measure the cost Roll a Dice object with ranlux48_base Engine
 static void BM_Roll_w_ranlux48_base(benchmark::State& state) {
   const auto dice = game_dice_cpp::Dice(20);
@@ -94,7 +95,6 @@ static void BM_Roll_w_ranlux24(benchmark::State& state) {
 // register this benchmark
 BENCHMARK(BM_Roll_w_ranlux24);
 
-
 // measure the cost Roll a Dice object with ranlux48 Engine
 static void BM_Roll_w_ranlux48(benchmark::State& state) {
   const auto dice = game_dice_cpp::Dice(20);
@@ -107,7 +107,6 @@ static void BM_Roll_w_ranlux48(benchmark::State& state) {
 }
 // register this benchmark
 BENCHMARK(BM_Roll_w_ranlux48);
-
 
 // measure the cost Roll a Dice object with minstd_rand Engine
 static void BM_Roll_w_minstd_rand(benchmark::State& state) {
