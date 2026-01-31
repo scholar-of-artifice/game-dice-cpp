@@ -109,3 +109,6 @@ http-client.private.env.json
 
 # MacOS specific
 .DS_*
+
+# benchmarks json
+benchmarks.json
