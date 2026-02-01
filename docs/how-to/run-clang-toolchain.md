@@ -13,7 +13,7 @@ docker run --rm \
     -w /work \
     -u "$(id -u):$(id -g)" \
     game-dice-cpp-toolchain-clang-format  \
-    sh -c "find src -name '*.cpp' -o -name '*.h' | xargs clang-format -i -style=file"
+    sh -c "find src Google_tests/tests Google_benchmarks/benchmarks -name '*.cpp' -o -name '*.h' | xargs clang-format -i -style=file"
 ```
 
 ## Running `clang-tidy`

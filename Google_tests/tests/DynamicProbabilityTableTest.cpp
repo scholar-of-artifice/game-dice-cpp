@@ -27,8 +27,7 @@
 
 #include "DynamicProbabilityTable.h"
 
-TEST(DynamicProbabilityTableTest,
-     MakeWithEmptyWeightsReturnsNullOpt) {
+TEST(DynamicProbabilityTableTest, MakeWithEmptyWeightsReturnsNullOpt) {
   // GIVEN a table defined with no weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({});
   // WHEN Make is called
@@ -36,8 +35,7 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_FALSE(table_A.has_value());
 }
 
-TEST(DynamicProbabilityTableTest,
-     MakeWithAllZeroWeightsReturnsNullOpt) {
+TEST(DynamicProbabilityTableTest, MakeWithAllZeroWeightsReturnsNullOpt) {
   // GIVEN a table defined with zero weights
   const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({0});
   const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({0, 0});
@@ -334,8 +332,7 @@ TEST(DynamicProbabilityTableTest,
   EXPECT_EQ(table_C->At(5), 2);
 }
 
-TEST(DynamicProbabilityTableTest,
-     MakeWithNegativeWeightsReturnsNullOpt) {
+TEST(DynamicProbabilityTableTest, MakeWithNegativeWeightsReturnsNullOpt) {
   // GIVEN a table defined with unsorted negative weights
   const auto table_A =
       game_dice_cpp::DynamicProbabilityTable::Make({-1, -2, -1});
@@ -387,8 +384,8 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest,
      GetTotalWeightWithLargeWeightHasCorrectTotalWeight) {
   // GIVEN a table defined with a single large known weight
-  const auto table_A =
-      game_dice_cpp::DynamicProbabilityTable::Make({std::numeric_limits<int>::max()});
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make(
+      {std::numeric_limits<int>::max()});
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A->GetTotalWeight(), 2147483647);
@@ -396,8 +393,8 @@ TEST(DynamicProbabilityTableTest,
 
 TEST(DynamicProbabilityTableTest, AtWithLargeWeightHasCorrectIndexes) {
   // GIVEN a table defined with a single large known weight
-  const auto table_A =
-      game_dice_cpp::DynamicProbabilityTable::Make({std::numeric_limits<int>::max()});
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make(
+      {std::numeric_limits<int>::max()});
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A->At(-1), 0);
@@ -435,11 +432,11 @@ TEST(DynamicProbabilityTableTest, AtWithLargeWeightsHasCorrectIndexes) {
   EXPECT_EQ(table_A->At(half_max * 2 + 1), 1);
 }
 
-TEST(DynamicProbabilityTableTest,
-     MakeWithOverflowWeightsDoesNotConstruct) {
+TEST(DynamicProbabilityTableTest, MakeWithOverflowWeightsDoesNotConstruct) {
   // GIVEN a table defined with known weights
-  const auto table_A =
-      game_dice_cpp::DynamicProbabilityTable::Make({std::numeric_limits<int>::max(), std::numeric_limits<int>::max(), std::numeric_limits<int>::max(), -1230});
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make(
+      {std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
+       std::numeric_limits<int>::max(), -1230});
   // WHEN Make is called
   // THEN the returns the correct value from the table
   EXPECT_FALSE(table_A.has_value());

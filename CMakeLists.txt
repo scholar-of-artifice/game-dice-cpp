@@ -32,5 +32,6 @@ target_link_libraries(
         game_dice_cpp
 )
 
-# --- the tests live here ---
+# --- the tests/benchmarks live here ---
 add_subdirectory(Google_tests)
+add_subdirectory(Google_benchmarks)
