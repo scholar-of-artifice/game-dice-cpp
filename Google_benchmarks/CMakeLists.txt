@@ -23,6 +23,7 @@ add_executable(
         benchmarks/ActionsBenchmarks.cpp
         benchmarks/DynamicProbabilityTableBenchmarks.cpp
         benchmarks/StaticProbabilityTableBenchmarks.cpp
+        benchmarks/DistributionFactoryBenchmarks.cpp
 )
 # link the executable to the GoogleBenchmark library
 target_link_libraries(
