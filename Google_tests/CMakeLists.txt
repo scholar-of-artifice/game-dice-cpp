@@ -34,3 +34,9 @@ target_link_libraries(
 # register the tests so ctest can find them
 include(GoogleTest)
 gtest_discover_tests(unit_test_suite)
+
+set_tests_properties(
+        unit_test_suite
+        PROPERTIES
+        TIMEOUT 10
+)
