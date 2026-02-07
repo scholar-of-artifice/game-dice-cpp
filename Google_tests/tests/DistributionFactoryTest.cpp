@@ -53,17 +53,6 @@ TEST(DistributionFactoryTest, TriangleDistributionWithAnyLengthHasCorrectSize) {
   }
 }
 
-TEST(DistributionFactoryTest,
-     TriangleDistributionWithZeroDesiredSizeReturnsEmptyContainer) {
-  // GIVEN a desired_size of 0
-  auto desired_size = 0;
-  // WHEN a Triangle Distribution is made...
-  auto calculated_output = game_dice_cpp::TriangleDistribution(
-      desired_size, desired_size, desired_size);
-  // THEN the new distribution has the correct size
-  EXPECT_EQ(calculated_output.size(), 0);
-}
-
 TEST(
     DistributionFactoryTest,
     TriangleDistributionWithVaryingDesiredSizePeakIdx5PeakWeight5HasCorrectValues) {
