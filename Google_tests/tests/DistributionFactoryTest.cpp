@@ -149,33 +149,6 @@ TEST(
   std::array<int, 5> expected_output_E = {1, 2, 3, 4, 5};
   EXPECT_EQ(calculated_output_E, expected_output_E)
       << "CASE E:\tMismatch found for input (5, 4, 5)";
-  // TODO: decide-put this test case back in later
-  // // --- test case F
-  // calculated_output = game_dice_cpp::TriangleDistribution<5>(-1, 5);
-  // expected_output = {};
-  //
-  // idx = 0;
-  // for (auto entry : std::ranges::zip_view(calculated_output,
-  // expected_output)) {
-  //   EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
-  //       << "CASE NegativeIndex:\tExpected Empty Container for input (5, -1,
-  //       5)";
-  //   ++idx;
-  // }
-  // TODO: decide-put this test case back in later
-  // // --- test case G
-  // calculated_output = game_dice_cpp::TriangleDistribution<5>(5, 5);
-  // expected_output = {};
-  //
-  // idx = 0;
-  // for (auto entry : std::ranges::zip_view(calculated_output,
-  // expected_output)) {
-  //   EXPECT_EQ(std::get<0>(entry), std::get<1>(entry))
-  //       << "CASE IndexBeyondBounds:\tExpected Empty Container for input (5,
-  //       5, "
-  //          "5)";
-  //   ++idx;
-  // }
 }
 
 TEST(
