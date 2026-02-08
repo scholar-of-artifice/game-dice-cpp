@@ -28,12 +28,14 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <cstddef>
+#include <utility>
 
 namespace game_dice_cpp {
 
 template <std::size_t desired_size>
 [[nodiscard]] constexpr std::array<int, desired_size> TriangleDistribution(
-    size_t peak_index, int peak_weight) {
+    std::size_t peak_index, int peak_weight) {
   // handle input argument sizes with static_asserts
   // handle the empty case
   if constexpr (desired_size == 0) {
@@ -49,10 +51,10 @@ template <std::size_t desired_size>
     // write values to out_weights
     for (std::size_t i = 0; i < desired_size; ++i) {
       double value = 0.0;
-      if (i == safe_peak_index) {
+      if (std::cmp_equal(i, safe_peak_index)) {
         // this is the peak
         value = static_cast<double>(safe_peak_weight);
-      } else if (i < safe_peak_index) {
+      } else if (std::cmp_less(i, safe_peak_index)) {
         // rising slope
         const double slope_ratio =
             static_cast<double>(i) / static_cast<double>(safe_peak_index);
