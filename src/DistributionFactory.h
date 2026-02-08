@@ -42,8 +42,8 @@ template <std::size_t desired_size>
     // force peak_weight to be at least 1 so that 0 probabilities cannot be used
     const int safe_peak_weight = std::max(peak_weight, 1);
     // force peak_index to be within bounds
-    const int safe_peak_index = static_cast<int>(std::clamp(
-        peak_index, std::size_t{0}, desired_size - 1));
+    const int safe_peak_index = static_cast<int>(
+        std::clamp(peak_index, std::size_t{0}, desired_size - 1));
     // create an empty array
     std::array<int, desired_size> out_weights{};
     // write values to out_weights
