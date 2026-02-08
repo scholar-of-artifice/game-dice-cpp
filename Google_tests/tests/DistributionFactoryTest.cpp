@@ -240,6 +240,23 @@ TEST(DistributionFactoryTest,
 }
 
 TEST(DistributionFactoryTest,
+     TriangleDistributionWithUnderflowingPeakIndexClampsToUpperBound) {
+  // GIVEN desired_size of 5
+  // AND a peak_index of SIZE_MAX
+  // AND a peak_weight of 5
+  // WHEN TriangleDistribution is called
+  // THEN the peak should be clamped to the end (resulting in a rising slope)
+  constexpr std::size_t desired_size = 5;
+  const std::size_t huge_index = -25;
+  const int peak_weight = 5;
+  auto calculated_output = game_dice_cpp::TriangleDistribution<desired_size>(
+      huge_index, peak_weight);
+  std::array<int, 5> expected_output = {1, 2, 3, 4, 5};
+  EXPECT_EQ(calculated_output, expected_output)
+      << "Mismatch found for input (5, -25, 5)";
+}
+
+TEST(DistributionFactoryTest,
      TriangleDistributionWithOverflowingPeakIndexClampsToUpperBound) {
   // GIVEN desired_size of 5
   // AND a peak_index beyond SIZE_MAX
