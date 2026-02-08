@@ -76,11 +76,11 @@ TEST(
   std::array<int, 2> expected_output_B = {1, 5};
   EXPECT_EQ(calculated_output_B, expected_output_B)
       << "CASE B:\tMismatch found for input (2, 5, 5)";
-  // TODO (scholar-of-artifice): fix this test
+
   // --- test case C
   std::array<int, 3> calculated_output_C =
       game_dice_cpp::TriangleDistribution<3>(5, 5);
-  std::array<int, 3> expected_output_C = {1, 5, 1};
+  std::array<int, 3> expected_output_C = {1, 3, 5};
   EXPECT_EQ(calculated_output_C, expected_output_C)
       << "CASE C:\tMismatch found for input (3, 5, 5)";
 
@@ -246,9 +246,9 @@ TEST(DistributionFactoryTest,
   // AND a peak_weight of 5
   // WHEN TriangleDistribution is called
   // THEN the peak should be clamped to the end (resulting in a rising slope)
-constexpr std::size_t desired_size = 5;
-const std::size_t overflowing_peak_weight = 2'200'000'000;
-const int peak_weight = 5;
+  constexpr std::size_t desired_size = 5;
+  const std::size_t overflowing_peak_weight = 2'200'000'000;
+  const int peak_weight = 5;
   auto calculated_output = game_dice_cpp::TriangleDistribution<desired_size>(
       overflowing_peak_weight, peak_weight);
   std::array<int, 5> expected_output = {1, 2, 3, 4, 5};
