@@ -250,7 +250,7 @@ constexpr std::size_t desired_size = 5;
 const std::size_t overflowing_peak_weight = 2'200'000'000;
 const int peak_weight = 5;
   auto calculated_output = game_dice_cpp::TriangleDistribution<desired_size>(
-      overflowing_peak_weight, peak_weight);gm
+      overflowing_peak_weight, peak_weight);
   std::array<int, 5> expected_output = {1, 2, 3, 4, 5};
   EXPECT_EQ(calculated_output, expected_output)
       << "Mismatch found for input (5, 2.2B, 5";
