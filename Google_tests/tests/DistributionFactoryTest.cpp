@@ -270,5 +270,5 @@ TEST(DistributionFactoryTest,
       overflowing_peak_weight, peak_weight);
   std::array<int, 5> expected_output = {1, 2, 3, 4, 5};
   EXPECT_EQ(calculated_output, expected_output)
-      << "Mismatch found for input (5, 2.2B, 5";
+      << "Mismatch found for input (5, 2.2B, 5)";
 }
