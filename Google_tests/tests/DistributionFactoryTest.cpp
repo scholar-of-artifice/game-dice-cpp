@@ -67,52 +67,44 @@ TEST(
   std::array<int, 1> calculated_output_A =
       game_dice_cpp::TriangleDistribution<1>(5, 5);
   std::array<int, 1> expected_output_A = {5};
-  size_t idx = 0;
   EXPECT_EQ(calculated_output_A, expected_output_A)
-      << "CASE A:\tMismatch found at index = " << idx << " for input (1, 5, 5)";
+      << "CASE A:\tMismatch found for input (1, 5, 5)";
 
   // --- test case B
   std::array<int, 2> calculated_output_B =
       game_dice_cpp::TriangleDistribution<2>(5, 5);
   std::array<int, 2> expected_output_B = {1, 5};
-  idx = 0;
   EXPECT_EQ(calculated_output_B, expected_output_B)
-      << "CASE B:\tMismatch found at index = " << idx << " for input (2, 5, 5)";
+      << "CASE B:\tMismatch found for input (2, 5, 5)";
   // TODO (scholar-of-artifice): fix this test
   // --- test case C
   std::array<int, 3> calculated_output_C =
       game_dice_cpp::TriangleDistribution<3>(5, 5);
   std::array<int, 3> expected_output_C = {1, 5, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_C, expected_output_C)
-      << "CASE C:\tMismatch found at index = " << idx << " for input (3, 5, 5)";
+      << "CASE C:\tMismatch found for input (3, 5, 5)";
 
   // --- test case D
   std::array<int, 9> calculated_output_D =
       game_dice_cpp::TriangleDistribution<9>(5, 5);
   std::array<int, 9> expected_output_D = {1, 2, 3, 3, 4, 5, 4, 2, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_D, expected_output_D)
-      << "CASE D:\tMismatch found at index = " << idx << " for input (9, 5, 5)";
+      << "CASE D:\tMismatch found for input (9, 5, 5)";
 
   // --- test case E
   std::array<int, 10> calculated_output_E =
       game_dice_cpp::TriangleDistribution<10>(5, 5);
   std::array<int, 10> expected_output_E = {1, 2, 3, 3, 4, 5, 4, 3, 2, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_E, expected_output_E)
-      << "CASE E:\tMismatch found at index = " << idx
-      << " for input (10, 5, 5)";
+      << "CASE E:\tMismatch found for input (10, 5, 5)";
 
   // --- test case F
   std::array<int, 15> calculated_output_F =
       game_dice_cpp::TriangleDistribution<15>(5, 5);
   std::array<int, 15> expected_output_F = {1, 2, 3, 3, 4, 5, 5, 4,
                                            4, 3, 3, 2, 2, 1, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_F, expected_output_F)
-      << "CASE F:\tMismatch found at index = " << idx
-      << " for input (15, 5, 5)";
+      << "CASE F:\tMismatch found for input (15, 5, 5)";
 }
 
 TEST(
@@ -127,41 +119,36 @@ TEST(
   std::array<int, 5> calculated_output_A =
       game_dice_cpp::TriangleDistribution<5>(0, 5);
   std::array<int, 5> expected_output_A = {5, 4, 3, 2, 1};
-  size_t idx = 0;
   EXPECT_EQ(calculated_output_A, expected_output_A)
-      << "CASE A:\tMismatch found at index = " << idx << " for input (5, 0, 5)";
+      << "CASE A:\tMismatch found for input (5, 0, 5)";
 
   // --- test case B
   std::array<int, 5> calculated_output_B =
       game_dice_cpp::TriangleDistribution<5>(1, 5);
   std::array<int, 5> expected_output_B = {1, 5, 4, 2, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_B, expected_output_B)
-      << "CASE B:\tMismatch found at index = " << idx << " for input (5, 1, 5)";
+      << "CASE B:\tMismatch found for input (5, 1, 5)";
 
   // --- test case C
   std::array<int, 5> calculated_output_C =
       game_dice_cpp::TriangleDistribution<5>(2, 5);
   std::array<int, 5> expected_output_C = {1, 3, 5, 3, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_C, expected_output_C)
-      << "CASE C:\tMismatch found at index = " << idx << " for input (5, 2, 5)";
+      << "CASE C:\tMismatch found for input (5, 2, 5)";
 
   // --- test case D
   std::array<int, 5> calculated_output_D =
       game_dice_cpp::TriangleDistribution<5>(3, 5);
   std::array<int, 5> expected_output_D = {1, 2, 4, 5, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_D, expected_output_D)
-      << "CASE D:\tMismatch found at index = " << idx << " for input (5, 3, 5)";
+      << "CASE D:\tMismatch found for input (5, 3, 5)";
 
   // --- test case E
   std::array<int, 5> calculated_output_E =
       game_dice_cpp::TriangleDistribution<5>(4, 5);
   std::array<int, 5> expected_output_E = {1, 2, 3, 4, 5};
-  idx = 0;
   EXPECT_EQ(calculated_output_E, expected_output_E)
-      << "CASE E:\tMismatch found at index = " << idx << " for input (5, 4, 5)";
+      << "CASE E:\tMismatch found for input (5, 4, 5)";
   // TODO: decide-put this test case back in later
   // // --- test case F
   // calculated_output = game_dice_cpp::TriangleDistribution<5>(-1, 5);
@@ -203,42 +190,36 @@ TEST(
   std::array<int, 7> calculated_output_A =
       game_dice_cpp::TriangleDistribution<7>(4, 0);
   std::array<int, 7> expected_output_A = {1, 1, 1, 1, 1, 1, 1};
-  size_t idx = 0;
   EXPECT_EQ(calculated_output_A, expected_output_A)
-      << "CASE A:\tMismatch found at index = " << idx << " for input (7,4,0)";
+      << "CASE A:\tMismatch found for input (7,4,0)";
 
   // --- test case B
   std::array<int, 7> calculated_output_B =
       game_dice_cpp::TriangleDistribution<7>(4, 1);
   std::array<int, 7> expected_output_B = {1, 1, 1, 1, 1, 1, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_B, expected_output_B)
-      << "CASE B:\tMismatch found at index = " << idx
-      << " for input (7, 4, 1) ";
+      << "CASE B:\tMismatch found for input (7, 4, 1) ";
 
   // --- test case C
   std::array<int, 7> calculated_output_C =
       game_dice_cpp::TriangleDistribution<7>(4, 2);
   std::array<int, 7> expected_output_C = {1, 1, 2, 2, 2, 2, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_C, expected_output_C)
-      << "CASE C:\tMismatch found at index = " << idx << " for input (7,4,2)";
+      << "CASE C:\tMismatch found for input (7,4,2)";
 
   // --- test case D
   std::array<int, 7> calculated_output_D =
       game_dice_cpp::TriangleDistribution<7>(4, 3);
   std::array<int, 7> expected_output_D = {1, 2, 2, 3, 3, 2, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_D, expected_output_D)
-      << "CASE D:\tMismatch found at index = " << idx << " for input (7,4,3)";
+      << "CASE D:\tMismatch found for input (7,4,3)";
 
   // --- test case E
   std::array<int, 7> calculated_output_E =
       game_dice_cpp::TriangleDistribution<7>(4, 10);
   std::array<int, 7> expected_output_E = {1, 3, 6, 8, 10, 6, 1};
-  idx = 0;
   EXPECT_EQ(calculated_output_E, expected_output_E)
-      << "CASE E:\tMismatch found at index = " << idx << " for input (7,4,3)";
+      << "CASE E:\tMismatch found for input (7,4,3)";
 }
 
 TEST(DistributionFactoryTest,
