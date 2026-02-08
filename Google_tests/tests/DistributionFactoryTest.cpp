@@ -240,3 +240,20 @@ TEST(
   EXPECT_EQ(calculated_output_E, expected_output_E)
       << "CASE E:\tMismatch found at index = " << idx << " for input (7,4,3)";
 }
+
+TEST(DistributionFactoryTest,
+     TriangleDistributionWithHugePeakIndexClampsToUpperBound) {
+  // GIVEN. desired_size of 5
+  // AND a peak_index of SIZE_MAX
+  // AND a peak_weight of 5
+  // WHEN TriangleDistribution is called
+  // THEN the peak should be clamped to the end (resulting in a rising slope)
+  constexpr std::size_t desired_size = 5;
+  const std::size_t huge_index = std::numeric_limits<std::size_t>::max();
+  const int peak_weight = 5;
+  auto calculated_output = game_dice_cpp::TriangleDistribution<desired_size>(
+      huge_index, peak_weight);
+  std::array<int, 5> expected_output = {1, 2, 3, 4, 5};
+  EXPECT_EQ(calculated_output, expected_output)
+      << "CASE E:\tMismatch found for input (7,4,3)";
+}
