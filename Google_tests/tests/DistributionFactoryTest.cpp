@@ -224,7 +224,7 @@ TEST(
 
 TEST(DistributionFactoryTest,
      TriangleDistributionWithHugePeakIndexClampsToUpperBound) {
-  // GIVEN. desired_size of 5
+  // GIVEN desired_size of 5
   // AND a peak_index of SIZE_MAX
   // AND a peak_weight of 5
   // WHEN TriangleDistribution is called
@@ -236,7 +236,7 @@ TEST(DistributionFactoryTest,
       huge_index, peak_weight);
   std::array<int, 5> expected_output = {1, 2, 3, 4, 5};
   EXPECT_EQ(calculated_output, expected_output)
-      << "CASE E:\tMismatch found for input (7,4,3)";
+      << "Mismatch found for input (5, SIZE_MAX, 5)";
 }
 
 TEST(DistributionFactoryTest,
