@@ -1,5 +1,5 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
@@ -115,7 +115,8 @@ TEST(StaticProbabilityTableTest,
   // GIVEN a table defined with sorted positive weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make({1});
   const auto table_B = game_dice_cpp::StaticProbabilityTable<2>::Make({1, 2});
-  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 3});
+  const auto table_C =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 3});
   const auto table_D =
       game_dice_cpp::StaticProbabilityTable<4>::Make({1, 2, 3, 4});
   const auto table_E =
@@ -137,7 +138,8 @@ TEST(StaticProbabilityTableTest,
   // GIVEN a table defined with sorted positive weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<1>::Make({1});
   const auto table_B = game_dice_cpp::StaticProbabilityTable<2>::Make({1, 2});
-  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 3});
+  const auto table_C =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 3});
   const auto table_D =
       game_dice_cpp::StaticProbabilityTable<4>::Make({1, 2, 3, 4});
   const auto table_E =
@@ -301,9 +303,12 @@ TEST(StaticProbabilityTableTest,
 TEST(StaticProbabilityTableTest,
      GetTotalWeightWithUnsortedPositiveWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with unsorted positive weights
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 1});
-  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>::Make({2, 1, 1});
-  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make({1, 1, 2});
+  const auto table_A =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 1});
+  const auto table_B =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({2, 1, 1});
+  const auto table_C =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 1, 2});
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   EXPECT_EQ(table_A->GetTotalWeight(), 4);
@@ -314,9 +319,12 @@ TEST(StaticProbabilityTableTest,
 TEST(StaticProbabilityTableTest,
      AtWithUnsortedPositiveWeightsHasCorrectIndexes) {
   // GIVEN a table defined with unsorted positive weights
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 1});
-  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>::Make({2, 1, 1});
-  const auto table_C = game_dice_cpp::StaticProbabilityTable<3>::Make({1, 1, 2});
+  const auto table_A =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 1});
+  const auto table_B =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({2, 1, 1});
+  const auto table_C =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 1, 2});
   // WHEN At is called
   // THEN the correct index is returned
   // Table A
@@ -363,7 +371,8 @@ TEST(StaticProbabilityTableTest, MakeWithNegativeWeightsReturnsNullOpt) {
 TEST(StaticProbabilityTableTest,
      GetTotalWeightWithUnsortedMixedSignWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with unsorted mixed signed weights
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 0});
+  const auto table_A =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 0});
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   EXPECT_EQ(table_A->GetTotalWeight(), 1);
@@ -372,8 +381,10 @@ TEST(StaticProbabilityTableTest,
 TEST(StaticProbabilityTableTest,
      AtWithUnsortedMixedSignWeightsHasCorrectIndexes) {
   // GIVEN a table defined with unsorted mixed signed weights
-  const auto table_A = game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 0});
-  const auto table_B = game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 1});
+  const auto table_A =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 0});
+  const auto table_B =
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 1});
   // WHEN At is called
   // THEN the correct index is returned
   // Table A
@@ -449,7 +460,7 @@ TEST(StaticProbabilityTableTest, MakeWithOverflowWeightsDoesNotConstruct) {
   // GIVEN a table defined with known weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<4>::Make(
       {std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
-      std::numeric_limits<int>::max(), -1230});
+       std::numeric_limits<int>::max(), -1230});
   // WHEN Make is called
   // THEN the returns the correct value from the table
   EXPECT_FALSE(table_A.has_value());
@@ -459,15 +470,16 @@ TEST(StaticProbabilityTableTest,
      GetTotalWeightWithLargeLargeInputSizeHasCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<220>::Make(
-      {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
+      {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
   // WHEN At is called
   // THEN it has the correct total weight
   EXPECT_EQ(table_A->GetTotalWeight(), 220);

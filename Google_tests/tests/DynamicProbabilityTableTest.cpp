@@ -1,9 +1,9 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
-// Copyright (c) 2025 scholar-of-artifice
+// Copyright (c) 2026 scholar-of-artifice
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
