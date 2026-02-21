@@ -87,16 +87,29 @@ class StaticProbabilityTable {
     return thresholds_.back();
   }
   [[nodiscard]] constexpr int At(int value) const {
-    // TODO(scholar_of_artifice): small table optimization
-    // binary search for the value
-    const auto iter =
-        std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
-    // clamp value within range of table
-    if (iter == thresholds_.end()) {
-      // this case happens when the input value is greater than the total_weight
-      return static_cast<int>(thresholds_.size() - 1);
+    // small table optimization
+    if constexpr (NumberOfOutcomes <= 16) {
+      // linear search for the value
+      const auto iter =
+          std::find_if(thresholds_.begin(), thresholds_.end(),
+                       [value](int threshold) { return threshold >= value; });
+      if (iter == thresholds_.end()) {
+        return static_cast<int>(thresholds_.size() - 1);
+      } else {
+        return static_cast<int>(std::distance(thresholds_.begin(), iter));
+      }
+    } else {
+      // binary search for the value
+      const auto iter =
+          std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
+      // clamp value within range of table
+      if (iter == thresholds_.end()) {
+        // this case happens when the input value is greater than the
+        // total_weight
+        return static_cast<int>(thresholds_.size() - 1);
+      }
+      return static_cast<int>(std::distance(thresholds_.begin(), iter));
     }
-    return static_cast<int>(std::distance(thresholds_.begin(), iter));
   }
 };
 
