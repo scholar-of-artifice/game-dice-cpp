@@ -1,9 +1,9 @@
 //
-// Copyright 2025 scholar-of-artifice
+// Copyright 2026 scholar-of-artifice
 //
 // Licensed under the MIT License
 //
-// Copyright (c) 2025 scholar-of-artifice
+// Copyright (c) 2026 scholar-of-artifice
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,8 @@
 
 TEST(DynamicProbabilityTableTest, MakeWithEmptyWeightsReturnsNullOpt) {
   // GIVEN a table defined with no weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::span<const int>{});
   // WHEN Make is called
   // THEN there is nothing returned
   EXPECT_FALSE(table_A.has_value());
@@ -37,9 +38,12 @@ TEST(DynamicProbabilityTableTest, MakeWithEmptyWeightsReturnsNullOpt) {
 
 TEST(DynamicProbabilityTableTest, MakeWithAllZeroWeightsReturnsNullOpt) {
   // GIVEN a table defined with zero weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({0});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({0, 0});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable::Make({0, 0, 0});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({0}));
+  const auto table_B =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({0, 0}));
+  const auto table_C =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({0, 0, 0}));
   // THEN the total weight matches the sum of input values// WHEN Make is called
   // THEN there is nothing returned
   EXPECT_FALSE(table_A.has_value());
@@ -50,9 +54,12 @@ TEST(DynamicProbabilityTableTest, MakeWithAllZeroWeightsReturnsNullOpt) {
 TEST(DynamicProbabilityTableTest,
      GetTotalWeightWithSprasePositiveWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with positive weights and zeros
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({0, 2, 3});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({1, 0, 3});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 0});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({0, 2, 3}));
+  const auto table_B =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 0, 3}));
+  const auto table_C =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2, 0}));
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   EXPECT_EQ(table_A->GetTotalWeight(), 5);
@@ -63,9 +70,12 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest,
      AtTotalWeightWithSprasePositiveWeightsReturnsCorrectIndexes) {
   // GIVEN a table defined with positive weights and zeros
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({0, 2, 3});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({1, 0, 3});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 0});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({0, 2, 3}));
+  const auto table_B =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 0, 3}));
+  const auto table_C =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2, 0}));
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   // Table A
@@ -100,15 +110,18 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest,
      GetTotalWeightWithSortedPositiveWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with sorted positive weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({1});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({1, 2});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 3});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1}));
+  const auto table_B =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2}));
+  const auto table_C =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2, 3}));
   const auto table_D =
-      game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 3, 4});
-  const auto table_E =
-      game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 3, 4, 5});
-  const auto table_F =
-      game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 3, 4, 5, 6});
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2, 3, 4}));
+  const auto table_E = game_dice_cpp::DynamicProbabilityTable::Make(
+      std::to_array({1, 2, 3, 4, 5}));
+  const auto table_F = game_dice_cpp::DynamicProbabilityTable::Make(
+      std::to_array({1, 2, 3, 4, 5, 6}));
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   EXPECT_EQ(table_A->GetTotalWeight(), 1);
@@ -122,15 +135,18 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest,
      AtWithAllSortedPositiveWeightsReturnsCorrectIndexes) {
   // GIVEN a table defined with sorted positive weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({1});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({1, 2});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 3});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1}));
+  const auto table_B =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2}));
+  const auto table_C =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2, 3}));
   const auto table_D =
-      game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 3, 4});
-  const auto table_E =
-      game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 3, 4, 5});
-  const auto table_F =
-      game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 3, 4, 5, 6});
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2, 3, 4}));
+  const auto table_E = game_dice_cpp::DynamicProbabilityTable::Make(
+      std::to_array({1, 2, 3, 4, 5}));
+  const auto table_F = game_dice_cpp::DynamicProbabilityTable::Make(
+      std::to_array({1, 2, 3, 4, 5, 6}));
   // WHEN At is called
   // the following outputs are observed...
   // Table A
@@ -288,9 +304,12 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest,
      GetTotalWeightWithUnsortedPositiveWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with unsorted positive weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 1});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({2, 1, 1});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable::Make({1, 1, 2});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2, 1}));
+  const auto table_B =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({2, 1, 1}));
+  const auto table_C =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 1, 2}));
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   EXPECT_EQ(table_A->GetTotalWeight(), 4);
@@ -301,9 +320,12 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest,
      AtWithUnsortedPositiveWeightsHasCorrectIndexes) {
   // GIVEN a table defined with unsorted positive weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({1, 2, 1});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({2, 1, 1});
-  const auto table_C = game_dice_cpp::DynamicProbabilityTable::Make({1, 1, 2});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 2, 1}));
+  const auto table_B =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({2, 1, 1}));
+  const auto table_C =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, 1, 2}));
   // WHEN At is called
   // THEN the correct index is returned
   // Table A
@@ -335,11 +357,11 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest, MakeWithNegativeWeightsReturnsNullOpt) {
   // GIVEN a table defined with unsorted negative weights
   const auto table_A =
-      game_dice_cpp::DynamicProbabilityTable::Make({-1, -2, -1});
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({-1, -2, -1}));
   const auto table_B =
-      game_dice_cpp::DynamicProbabilityTable::Make({-2, -1, -1});
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({-2, -1, -1}));
   const auto table_C =
-      game_dice_cpp::DynamicProbabilityTable::Make({-1, -1, -2});
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({-1, -1, -2}));
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   EXPECT_FALSE(table_A.has_value());
@@ -350,7 +372,8 @@ TEST(DynamicProbabilityTableTest, MakeWithNegativeWeightsReturnsNullOpt) {
 TEST(DynamicProbabilityTableTest,
      GetTotalWeightWithUnsortedMixedSignWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with unsorted mixed signed weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({1, -2, 0});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, -2, 0}));
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   EXPECT_EQ(table_A->GetTotalWeight(), 1);
@@ -359,8 +382,10 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest,
      AtWithUnsortedMixedSignWeightsHasCorrectIndexes) {
   // GIVEN a table defined with unsorted mixed signed weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make({1, -2, 0});
-  const auto table_B = game_dice_cpp::DynamicProbabilityTable::Make({1, -2, 1});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, -2, 0}));
+  const auto table_B =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array({1, -2, 1}));
   // WHEN At is called
   // THEN the correct index is returned
   // Table A
@@ -385,7 +410,7 @@ TEST(DynamicProbabilityTableTest,
      GetTotalWeightWithLargeWeightHasCorrectTotalWeight) {
   // GIVEN a table defined with a single large known weight
   const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make(
-      {std::numeric_limits<int>::max()});
+      std::to_array({std::numeric_limits<int>::max()}));
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A->GetTotalWeight(), 2147483647);
@@ -394,7 +419,7 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest, AtWithLargeWeightHasCorrectIndexes) {
   // GIVEN a table defined with a single large known weight
   const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make(
-      {std::numeric_limits<int>::max()});
+      std::to_array({std::numeric_limits<int>::max()}));
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A->At(-1), 0);
@@ -407,8 +432,8 @@ TEST(DynamicProbabilityTableTest,
      GetTotalWeightWithLargeWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with known weights
   const auto half_max = std::numeric_limits<int>::max() / 2;
-  const auto table_A =
-      game_dice_cpp::DynamicProbabilityTable::Make({half_max, half_max});
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make(
+      std::to_array({half_max, half_max}));
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A->GetTotalWeight(), std::numeric_limits<int>::max() - 1);
@@ -418,8 +443,8 @@ TEST(DynamicProbabilityTableTest,
 TEST(DynamicProbabilityTableTest, AtWithLargeWeightsHasCorrectIndexes) {
   // GIVEN a table defined with known weights
   const auto half_max = std::numeric_limits<int>::max() / 2;
-  const auto table_A =
-      game_dice_cpp::DynamicProbabilityTable::Make({half_max, half_max});
+  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make(
+      std::to_array({half_max, half_max}));
   // WHEN At is called
   // THEN the returns the correct value from the table
   EXPECT_EQ(table_A->At(-1), 0);
@@ -434,9 +459,10 @@ TEST(DynamicProbabilityTableTest, AtWithLargeWeightsHasCorrectIndexes) {
 
 TEST(DynamicProbabilityTableTest, MakeWithOverflowWeightsDoesNotConstruct) {
   // GIVEN a table defined with known weights
-  const auto table_A = game_dice_cpp::DynamicProbabilityTable::Make(
-      {std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
-       std::numeric_limits<int>::max(), -1230});
+  const auto table_A =
+      game_dice_cpp::DynamicProbabilityTable::Make(std::to_array(
+          {std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
+           std::numeric_limits<int>::max(), -1230}));
   // WHEN Make is called
   // THEN the returns the correct value from the table
   EXPECT_FALSE(table_A.has_value());

@@ -26,47 +26,51 @@
 #ifndef GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
 #define GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
 #include <algorithm>
+#include <array>
 #include <cmath>
-#include <vector>
+#include <cstddef>
+#include <utility>
 
 namespace game_dice_cpp {
 
-inline std::vector<int> TriangleDistribution(int desired_size, int peak_index,
-                                             int peak_weight) {
-  // check if desired_size is below acceptable value
-  if (desired_size <= 0 || desired_size <= peak_index ||
-      peak_index > desired_size) {
+template <std::size_t desired_size>
+[[nodiscard]] constexpr std::array<int, desired_size> TriangleDistribution(
+    std::size_t peak_index, int peak_weight) {
+  // handle input argument sizes with static_asserts
+  // handle the empty case
+  if constexpr (desired_size == 0) {
     return {};
-  }
-  // force peak_weight to be at least 1 so that 0 probabilities cannot be used
-  peak_weight = std::max(peak_weight, 1);
-  // force peak_index to be within bounds
-  peak_index = std::clamp(peak_index, 0, desired_size - 1);
-  // create an empty vector with reserved size
-  std::vector<int> out_weights;
-  out_weights.reserve(desired_size);
-  // write values to out_weights
-  for (int i = 0; i < desired_size; ++i) {
-    double value = 0.0;
-    if (i == peak_index) {
-      // this is the peak
-      value = static_cast<double>(peak_weight);
-    } else if (i < peak_index) {
-      // rising slope
-      const double slope_ratio =
-          static_cast<double>(i) / static_cast<double>(peak_index);
-      value = 1 + ((peak_weight - 1) * slope_ratio);
-    } else {
-      // falling slope
-      const double slope_ratio =
-          static_cast<double>(i - peak_index) /
-          static_cast<double>(desired_size - 1 - peak_index);
-      value = peak_weight - ((peak_weight - 1) * slope_ratio);
+  } else {
+    // force peak_weight to be at least 1 so that 0 probabilities cannot be used
+    const int safe_peak_weight = std::max(peak_weight, 1);
+    // force peak_index to be within bounds
+    const int safe_peak_index = static_cast<int>(
+        std::clamp(peak_index, std::size_t{0}, desired_size - 1));
+    // create an empty array
+    std::array<int, desired_size> out_weights{};
+    // write values to out_weights
+    for (std::size_t i = 0; i < desired_size; ++i) {
+      double value = 0.0;
+      if (std::cmp_equal(i, safe_peak_index)) {
+        // this is the peak
+        value = static_cast<double>(safe_peak_weight);
+      } else if (std::cmp_less(i, safe_peak_index)) {
+        // rising slope
+        const double slope_ratio =
+            static_cast<double>(i) / static_cast<double>(safe_peak_index);
+        value = 1 + ((safe_peak_weight - 1) * slope_ratio);
+      } else {
+        // falling slope
+        const double slope_ratio =
+            static_cast<double>(i - safe_peak_index) /
+            static_cast<double>(desired_size - 1 - safe_peak_index);
+        value = safe_peak_weight - ((safe_peak_weight - 1) * slope_ratio);
+      }
+      // write the value
+      out_weights[i] = (static_cast<int>(std::round(value)));
     }
-    // write the value
-    out_weights.push_back(static_cast<int>(std::round(value)));
+    return out_weights;
   }
-  return out_weights;
 };
 
 // TODO(scholar_of_artifice): Make a Binomial Distribution

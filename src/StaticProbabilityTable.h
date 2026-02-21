@@ -27,7 +27,6 @@
 #define GAME_DICE_CPP_SRC_STATICPROBABILITYTABLE_H
 #include <algorithm>
 #include <array>
-#include <concepts>
 #include <cstddef>
 #include <iterator>
 #include <limits>
@@ -47,14 +46,11 @@ class StaticProbabilityTable {
 
  public:
   //
-  template <std::convertible_to<int>... Args>
-    requires(sizeof...(Args) == NumberOfOutcomes)
   [[nodiscard]] static constexpr std::optional<
       game_dice_cpp::StaticProbabilityTable<NumberOfOutcomes>>
-  Make(const Args&... input_weights) {
-    // pack arguments
-    std::array<int, NumberOfOutcomes> weights = {
-        static_cast<int>(input_weights)...};
+  Make(const std::array<int, NumberOfOutcomes>& input_weights) {
+    // create a local copy to work with
+    std::array<int, NumberOfOutcomes> weights = input_weights;
     // transform in-place only non-negative weights
     std::ranges::transform(weights, weights.begin(),
                            [](int weight) { return std::max(weight, 0); });

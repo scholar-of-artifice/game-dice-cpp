@@ -60,7 +60,7 @@ class DynamicProbabilityTable {
  public:
   //
   [[nodiscard]] static std::optional<game_dice_cpp::DynamicProbabilityTable>
-  Make(const std::vector<int>& weights) {
+  Make(const std::span<const int> weights) {
     // create a view that sees only non-negative weights
     auto safe_weights = weights | std::ranges::views::transform([](int weight) {
                           return std::max(weight, 0);
