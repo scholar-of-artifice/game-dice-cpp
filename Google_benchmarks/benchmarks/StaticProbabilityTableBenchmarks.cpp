@@ -42,7 +42,8 @@ static void BM_StaticProbabilityTable_Make_8(benchmark::State& state) {
 BENCHMARK(BM_StaticProbabilityTable_Make_8);
 
 // measure the cost of At for a StaticProbabilityTable object of size 8
-static void BM_StaticProbabilityTable_At_8(benchmark::State& state) {
+static void BM_StaticProbabilityTable_GetOutcomeIndex_8(
+    benchmark::State& state) {
   auto table_opt =
       game_dice_cpp::StaticProbabilityTable<8>::Make({8, 7, 8, 3, 2, 1, 9, 4});
   if (!table_opt) {
@@ -57,7 +58,7 @@ static void BM_StaticProbabilityTable_At_8(benchmark::State& state) {
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away
-    benchmark::DoNotOptimize(table.At(input));
+    benchmark::DoNotOptimize(table.GetOutcomeIndex(input));
     // alternate increment
     input = input + stride;
     if (input > total_weight) {
@@ -66,7 +67,7 @@ static void BM_StaticProbabilityTable_At_8(benchmark::State& state) {
   }
 }
 // register this benchmark
-BENCHMARK(BM_StaticProbabilityTable_At_8);
+BENCHMARK(BM_StaticProbabilityTable_GetOutcomeIndex_8);
 
 // measure the cost of GetTotalWeight for a StaticProbabilityTable object of
 // size 8
@@ -101,7 +102,8 @@ static void BM_StaticProbabilityTable_Make_16(benchmark::State& state) {
 BENCHMARK(BM_StaticProbabilityTable_Make_16);
 
 // measure the cost of At for a StaticProbabilityTable object of size 16
-static void BM_StaticProbabilityTable_At_16(benchmark::State& state) {
+static void BM_StaticProbabilityTable_GetOutcomeIndex_16(
+    benchmark::State& state) {
   auto table_opt = game_dice_cpp::StaticProbabilityTable<16>::Make(
       {1, 9, 5, 6, 8, 7, 3, 1, 9, 8, 2, 2, 6, 3, 7, 8});
   if (!table_opt) {
@@ -116,7 +118,7 @@ static void BM_StaticProbabilityTable_At_16(benchmark::State& state) {
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away
-    benchmark::DoNotOptimize(table.At(input));
+    benchmark::DoNotOptimize(table.GetOutcomeIndex(input));
     // alternate increment
     input = input + stride;
     if (input > total_weight) {
@@ -125,7 +127,7 @@ static void BM_StaticProbabilityTable_At_16(benchmark::State& state) {
   }
 }
 // register this benchmark
-BENCHMARK(BM_StaticProbabilityTable_At_16);
+BENCHMARK(BM_StaticProbabilityTable_GetOutcomeIndex_16);
 
 // measure the cost of GetTotalWeight for a StaticProbabilityTable object of
 // size 16
@@ -162,7 +164,8 @@ static void BM_StaticProbabilityTable_Make_32(benchmark::State& state) {
 BENCHMARK(BM_StaticProbabilityTable_Make_32);
 
 // measure the cost of At for a StaticProbabilityTable object of size 32
-static void BM_StaticProbabilityTable_At_32(benchmark::State& state) {
+static void BM_StaticProbabilityTable_GetOutcomeIndex_32(
+    benchmark::State& state) {
   auto table_opt = game_dice_cpp::StaticProbabilityTable<32>::Make(
       {1, 8, 3, 2, 5, 2, 2, 6, 3, 7, 8, 6, 5, 2, 1, 2,
        8, 3, 2, 5, 3, 2, 5, 8, 5, 4, 8, 2, 1, 8, 1, 9});
@@ -178,7 +181,7 @@ static void BM_StaticProbabilityTable_At_32(benchmark::State& state) {
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away
-    benchmark::DoNotOptimize(table.At(input));
+    benchmark::DoNotOptimize(table.GetOutcomeIndex(input));
     // alternate increment
     input = input + stride;
     if (input > total_weight) {
@@ -187,7 +190,7 @@ static void BM_StaticProbabilityTable_At_32(benchmark::State& state) {
   }
 }
 // register this benchmark
-BENCHMARK(BM_StaticProbabilityTable_At_32);
+BENCHMARK(BM_StaticProbabilityTable_GetOutcomeIndex_32);
 
 // measure the cost of GetTotalWeight for a StaticProbabilityTable object of
 // size 32
@@ -225,7 +228,8 @@ static void BM_StaticProbabilityTable_Make_64(benchmark::State& state) {
 BENCHMARK(BM_StaticProbabilityTable_Make_64);
 
 // measure the cost of At for a StaticProbabilityTable object of size 64
-static void BM_StaticProbabilityTable_At_64(benchmark::State& state) {
+static void BM_StaticProbabilityTable_GetOutcomeIndex_64(
+    benchmark::State& state) {
   auto table_opt = game_dice_cpp::StaticProbabilityTable<64>::Make(
       {1, 8, 3, 2, 5, 2, 2, 6, 3, 7, 8, 6, 5, 2, 1, 2, 8, 3, 2, 5, 3, 2,
        5, 8, 5, 4, 8, 2, 1, 8, 1, 9, 5, 6, 8, 7, 3, 1, 9, 8, 1, 1, 3, 2,
@@ -242,7 +246,7 @@ static void BM_StaticProbabilityTable_At_64(benchmark::State& state) {
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away
-    benchmark::DoNotOptimize(table.At(input));
+    benchmark::DoNotOptimize(table.GetOutcomeIndex(input));
     // alternate increment
     input = input + stride;
     if (input > total_weight) {
@@ -251,7 +255,7 @@ static void BM_StaticProbabilityTable_At_64(benchmark::State& state) {
   }
 }
 // register this benchmark
-BENCHMARK(BM_StaticProbabilityTable_At_64);
+BENCHMARK(BM_StaticProbabilityTable_GetOutcomeIndex_64);
 
 // measure the cost of GetTotalWeight for a StaticProbabilityTable object of
 // size 64
@@ -293,7 +297,8 @@ static void BM_StaticProbabilityTable_Make_128(benchmark::State& state) {
 BENCHMARK(BM_StaticProbabilityTable_Make_128);
 
 // measure the cost of At for a StaticProbabilityTable object of size 128
-static void BM_StaticProbabilityTable_At_128(benchmark::State& state) {
+static void BM_StaticProbabilityTable_GetOutcomeIndex_128(
+    benchmark::State& state) {
   auto table_opt = game_dice_cpp::StaticProbabilityTable<128>::Make(
       {1, 8, 3, 2, 5, 2, 2, 6, 3, 7, 8, 6, 5, 2, 1, 2, 8, 3, 2, 5, 3, 2,
        5, 8, 5, 4, 8, 2, 1, 8, 1, 9, 5, 6, 8, 7, 3, 1, 9, 8, 1, 1, 3, 2,
@@ -313,7 +318,7 @@ static void BM_StaticProbabilityTable_At_128(benchmark::State& state) {
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away
-    benchmark::DoNotOptimize(table.At(input));
+    benchmark::DoNotOptimize(table.GetOutcomeIndex(input));
     // alternate increment
     input = input + stride;
     if (input > total_weight) {
@@ -322,7 +327,7 @@ static void BM_StaticProbabilityTable_At_128(benchmark::State& state) {
   }
 }
 // register this benchmark
-BENCHMARK(BM_StaticProbabilityTable_At_128);
+BENCHMARK(BM_StaticProbabilityTable_GetOutcomeIndex_128);
 
 // measure the cost of GetTotalWeight for a StaticProbabilityTable object of
 // size 128

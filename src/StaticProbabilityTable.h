@@ -86,14 +86,14 @@ class StaticProbabilityTable {
   [[nodiscard]] constexpr int GetTotalWeight() const {
     return thresholds_.back();
   }
-  [[nodiscard]] constexpr int At(int value) const {
+  [[nodiscard]] constexpr int GetOutcomeIndex(int roll) const {
     // small table optimization
     constexpr std::size_t linear_search_threshold{16};
     if constexpr (NumberOfOutcomes <= linear_search_threshold) {
       // linear search for the value
       const auto iter =
           std::find_if(thresholds_.begin(), thresholds_.end(),
-                       [value](int threshold) { return threshold >= value; });
+                       [roll](int threshold) { return threshold >= roll; });
       if (iter == thresholds_.end()) {
         return static_cast<int>(thresholds_.size() - 1);
       }
@@ -102,7 +102,7 @@ class StaticProbabilityTable {
     } else {
       // binary search for the value
       const auto iter =
-          std::lower_bound(thresholds_.begin(), thresholds_.end(), value);
+          std::lower_bound(thresholds_.begin(), thresholds_.end(), roll);
       // clamp value within range of table
       if (iter == thresholds_.end()) {
         // this case happens when the input value is greater than the

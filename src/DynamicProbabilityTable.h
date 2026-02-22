@@ -101,9 +101,9 @@ class DynamicProbabilityTable {
   [[nodiscard]] int GetTotalWeight() const { return thresholds_.back(); }
 
   // Maps a value (example: from a die roll) to an outcome index.
-  [[nodiscard]] int At(int value) const {
+  [[nodiscard]] int GetOutcomeIndex(int roll) const {
     // binary search for the value
-    const auto iter = std::ranges::lower_bound(thresholds_, value);
+    const auto iter = std::ranges::lower_bound(thresholds_, roll);
     // clamp value within range of table
     if (iter == thresholds_.end()) {
       // this case happens when the input value is greater than the total_weight

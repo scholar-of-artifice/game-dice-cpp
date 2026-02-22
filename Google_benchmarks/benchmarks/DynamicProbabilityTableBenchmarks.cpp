@@ -64,7 +64,8 @@ BENCHMARK(BM_DynamicProbabilityTable_GetTotalWeight)
     ->Range(8, 2048);
 
 // measure the cost of lookup in DynamicProbabilityTable
-static void BM_DynamicProbabilityTable_At(benchmark::State& state) {
+static void BM_DynamicProbabilityTable_GetOutcomeIndex(
+    benchmark::State& state) {
   std::vector<int> weights(state.range(0), 1);
   auto table_opt = game_dice_cpp::DynamicProbabilityTable::Make(weights);
   if (!table_opt) {
@@ -79,7 +80,7 @@ static void BM_DynamicProbabilityTable_At(benchmark::State& state) {
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away
-    benchmark::DoNotOptimize(table.At(input));
+    benchmark::DoNotOptimize(table.GetOutcomeIndex(input));
     // alternate increment
     input = input + stride;
     if (input > total_weight) {
@@ -88,4 +89,6 @@ static void BM_DynamicProbabilityTable_At(benchmark::State& state) {
   }
 }
 // register this benchmark
-BENCHMARK(BM_DynamicProbabilityTable_At)->RangeMultiplier(2)->Range(8, 2048);
+BENCHMARK(BM_DynamicProbabilityTable_GetOutcomeIndex)
+    ->RangeMultiplier(2)
+    ->Range(8, 2048);
