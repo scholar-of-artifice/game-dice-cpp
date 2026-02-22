@@ -47,4 +47,6 @@ static void BM_RoundingPolicies_StandardRoundingPolicy_Round(
   }
   state.SetItemsProcessed(state.iterations() * n);
 }
-BENCHMARK(BM_RoundingPolicies_StandardRoundingPolicy_Round)->RangeMultiplier(2)->Range(8, 2048);
+BENCHMARK(BM_RoundingPolicies_StandardRoundingPolicy_Round)
+    ->RangeMultiplier(2)
+    ->Range(8, 2048);
