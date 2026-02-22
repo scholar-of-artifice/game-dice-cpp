@@ -27,7 +27,6 @@
 #define GAME_DICE_CPP_SRC_DISTRIBUTIONFACTORY_H
 #include <algorithm>
 #include <array>
-#include <cmath>
 #include <cstddef>
 #include <utility>
 
