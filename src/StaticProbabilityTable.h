@@ -88,16 +88,17 @@ class StaticProbabilityTable {
   }
   [[nodiscard]] constexpr int At(int value) const {
     // small table optimization
-    if constexpr (NumberOfOutcomes <= 16) {
+    constexpr std::size_t linear_search_threshold{16};
+    if constexpr (NumberOfOutcomes <= linear_search_threshold) {
       // linear search for the value
       const auto iter =
           std::find_if(thresholds_.begin(), thresholds_.end(),
                        [value](int threshold) { return threshold >= value; });
       if (iter == thresholds_.end()) {
         return static_cast<int>(thresholds_.size() - 1);
-      } else {
-        return static_cast<int>(std::distance(thresholds_.begin(), iter));
       }
+      return static_cast<int>(std::distance(thresholds_.begin(), iter));
+
     } else {
       // binary search for the value
       const auto iter =
