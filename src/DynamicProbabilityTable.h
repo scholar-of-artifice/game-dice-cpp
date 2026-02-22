@@ -31,6 +31,7 @@
 #include <numeric>
 #include <optional>
 #include <ranges>
+#include <span>
 #include <utility>
 #include <vector>
 
