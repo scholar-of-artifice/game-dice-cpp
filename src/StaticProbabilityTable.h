@@ -96,9 +96,9 @@ class StaticProbabilityTable {
                        [value](int threshold) { return threshold >= value; });
       if (iter == thresholds_.end()) {
         return static_cast<int>(thresholds_.size() - 1);
-      } else {
-        return static_cast<int>(std::distance(thresholds_.begin(), iter));
       }
+      return static_cast<int>(std::distance(thresholds_.begin(), iter));
+
     } else {
       // binary search for the value
       const auto iter =
