@@ -31,9 +31,18 @@
 #include <cstddef>
 #include <utility>
 
+#include "./RoundingPolicies.h"
+
 namespace game_dice_cpp {
 
-template <std::size_t desired_size>
+// Generates a Triangular Probability Distribution.
+//
+// Template Parameters:
+// - desired_size: the number of outcomes in the distribution.
+// - RoundingPolicy: A policy struct defining a Round(double) method.
+//                   Defaults to StandardRoundingPolicy.
+template <std::size_t desired_size,
+          typename RoundingPolicy = game_dice_cpp::StandardRoundingPolicy>
 [[nodiscard]] constexpr std::array<int, desired_size> TriangleDistribution(
     std::size_t peak_index, int peak_weight) {
   // handle input argument sizes with static_asserts
@@ -66,8 +75,8 @@ template <std::size_t desired_size>
             static_cast<double>(desired_size - 1 - safe_peak_index);
         value = safe_peak_weight - ((safe_peak_weight - 1) * slope_ratio);
       }
-      // write the value
-      out_weights[i] = (static_cast<int>(std::round(value)));
+      // write the value using the provided RoundingPolicy
+      out_weights[i] = RoundingPolicy::Round(value);
     }
     return out_weights;
   }
