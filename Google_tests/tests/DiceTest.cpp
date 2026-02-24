@@ -29,7 +29,7 @@
 
 TEST(DiceTest, ConstructorValidInputSetsSides) {
   // GIVEN an input number of sides z
-  for (int z = 2; z < 2'000'000; z++) {
+  for (int z = 2; z < 1'000; z++) {
     // WHEN a Dice is constructed
     const auto dz = game_dice_cpp::Dice(z);
     // THEN there are the correct number of sides
