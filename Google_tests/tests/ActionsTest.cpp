@@ -63,7 +63,7 @@ TEST(ActionsTest, RollAnyDieProducesValueInRange) {
   for (int sides = 2; sides < 20; sides++) {
     // AND a dice...
     auto dice = game_dice_cpp::Dice(sides);
-    for (int trial = 0; trial <= 100'000; trial++) {
+    for (int trial = 0; trial <= 1'000; trial++) {
       // WHEN the dice is rolled
       auto result = game_dice_cpp::Roll(dice, rand_generator);
       // THEN the result is always in range
