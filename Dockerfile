@@ -1,5 +1,7 @@
 # select base image
-FROM ubuntu:resolute-20260106.1 AS base
+# retrieve the image using the cryptographic sha256 digest
+# if the hash does not match, Docker will refuse to pull
+FROM ubuntu@sha256:4095ef613201918336b5d7d00be15d8b09c72ddb77c80bca249c255887a64d87 AS base
 # name of the author
 LABEL authors="scholar-of-artifice"
 # install git, clang, cmake
