@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 # clone LLVM project
 WORKDIR /tmp
-RUN git clone --depth=1 https://github.com/llvm/llvm-project.git
+RUN git clone --depth=1 --branch llvmorg-21.1.6 https://github.com/llvm/llvm-project.git
 # go to downloaded repo
 WORKDIR /tmp/llvm-project
 # 'RUN' tells docker to execute a shell command
@@ -89,7 +89,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 # clone LLVM project
 WORKDIR /tmp
-RUN git clone --depth=1 https://github.com/llvm/llvm-project.git
+RUN git clone --depth=1 --branch llvmorg-21.1.6 https://github.com/llvm/llvm-project.git
 # go to downloaded repo
 WORKDIR /tmp/llvm-project
 # 'RUN' tells docker to execute a shell command
