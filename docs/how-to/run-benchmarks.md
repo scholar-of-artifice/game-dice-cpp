@@ -7,7 +7,7 @@ In this article, you will learn how to run the project benchmarks.
 
 #### Build the Image
 ```
-docker build --tag game-dice-cpp-benchmarks --target benchmark-suite .
+DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-benchmarks --target benchmark-suite .
 ```
 
 #### Run the Benchmarks
