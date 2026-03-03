@@ -3,7 +3,7 @@
 ## Running `clang-format`
 ### Build the Image
 ```
-docker build --tag game-dice-cpp-toolchain-clang-format --target toolchain-clang-format .
+DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-toolchain-clang-format --target toolchain-clang-format .
 ```
 
 ### Run `clang-format`
@@ -19,7 +19,7 @@ docker run --rm \
 ## Running `clang-tidy`
 ### Build the Image
 ```
-docker build --tag game-dice-cpp-toolchain-clang-tidy --target toolchain-clang-tidy .
+DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-toolchain-clang-tidy --target toolchain-clang-tidy .
 ```
 
 ### Run `clang-tidy`

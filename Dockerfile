@@ -1,14 +1,16 @@
 # select base image
-FROM ubuntu:resolute-20260106.1 AS base
+# retrieve the image using the cryptographic sha256 digest
+# if the hash does not match, Docker will refuse to pull
+FROM ubuntu@sha256:4095ef613201918336b5d7d00be15d8b09c72ddb77c80bca249c255887a64d87 AS base
 # name of the author
 LABEL authors="scholar-of-artifice"
 # install git, clang, cmake
 RUN apt-get update && apt-get install -y \
     build-essential \
-    clang \
-    cmake \
-    git \
-    llvm \
+    clang=1:21.1.* \
+    cmake=4.1.1+really3.31.* \
+    git=1:2.51.* \
+    llvm=1:21.1.* \
     && rm -rf /var/lib/apt/lists/*
 # define working directory
 WORKDIR /app
@@ -16,13 +18,13 @@ WORKDIR /app
 # clang-format image
 FROM base AS toolchain-clang-format
 RUN apt-get update && apt-get install -y \
-    clang-format \
+    clang-format=1:21.1.* \
     && rm -rf /var/lib/apt/lists/*
 
 # clang-tidy image
 FROM base AS toolchain-clang-tidy
 RUN apt-get update && apt-get install -y \
-    clang-tidy \
+    clang-tidy=1:21.1.* \
     && rm -rf /var/lib/apt/lists/*
 
 # builder stage - compile libc++ with MemorySantizer
@@ -30,12 +32,12 @@ RUN apt-get update && apt-get install -y \
 FROM base AS msan-libcxx-builder
 # Install tools needed to build LLVM
 RUN apt-get update && apt-get install -y \
-    ninja-build \
-    python3 \
+    ninja-build=1.13.* \
+    python3=3.13.* \
     && rm -rf /var/lib/apt/lists/*
 # clone LLVM project
 WORKDIR /tmp
-RUN git clone --depth=1 https://github.com/llvm/llvm-project.git
+RUN git clone --depth=1 --branch llvmorg-21.1.6 https://github.com/llvm/llvm-project.git
 # go to downloaded repo
 WORKDIR /tmp/llvm-project
 # 'RUN' tells docker to execute a shell command
@@ -82,12 +84,12 @@ RUN cmake -S runtimes -B build -G Ninja \
 FROM base AS tsan-libcxx-builder
 # Install tools needed to build LLVM
 RUN apt-get update && apt-get install -y \
-    ninja-build \
-    python3 \
+    ninja-build=1.13.* \
+    python3=3.13.* \
     && rm -rf /var/lib/apt/lists/*
 # clone LLVM project
 WORKDIR /tmp
-RUN git clone --depth=1 https://github.com/llvm/llvm-project.git
+RUN git clone --depth=1 --branch llvmorg-21.1.6 https://github.com/llvm/llvm-project.git
 # go to downloaded repo
 WORKDIR /tmp/llvm-project
 # 'RUN' tells docker to execute a shell command
@@ -184,7 +186,7 @@ ENTRYPOINT ["ctest", "--test-dir", "Google_tests", "--output-on-failure", "--ver
 FROM base AS unit-test-suite-valgrind
 
 RUN apt-get update && apt-get install -y \
-    valgrind \
+    valgrind=1:3.26.* \
     && rm -rf /var/lib/apt/lists/*
 # copy project source code
 COPY . .
