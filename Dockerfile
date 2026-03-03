@@ -8,7 +8,7 @@ LABEL authors="scholar-of-artifice"
 RUN apt-get update && apt-get install -y \
     build-essential \
     clang=1:21.1.* \
-    cmake= 4.1.1+really3.31.* \
+    cmake=4.1.1+really3.31.* \
     git=1:2.51.* \
     llvm=1:21.1.* \
     && rm -rf /var/lib/apt/lists/*
