@@ -10,10 +10,8 @@ add_library(
 )
 
 # enable strict compiler warnings
-if ( CMAKE_CXX_COMPILER_ID )
-    target_compile_options(
-            game_dice_cpp
-            INTERFACE
+if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU" )
+    add_compile_options(
             -Wall
             -Wextra
             -Wpedantic
@@ -22,6 +20,8 @@ if ( CMAKE_CXX_COMPILER_ID )
             -Wshadow
     )
 endif ()
+
+add_library(game_dev_cpp INTERFACE)
 
 # tell the library where the header files are
 target_include_directories(
