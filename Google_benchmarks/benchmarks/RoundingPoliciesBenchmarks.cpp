@@ -32,7 +32,7 @@
 // measure the cost of Rounding with StandardRoundingPolicy object
 static void BM_RoundingPolicies_StandardRoundingPolicy_Round(
     benchmark::State& state) {
-  const size_t n = state.range(0);
+  const size_t n = static_cast<std::size_t>(state.range(0));
   std::vector<double> values(n);
   for (size_t i = 0; i < n; ++i) {
     values[i] = static_cast<double>(i) + 0.5;
@@ -45,7 +45,8 @@ static void BM_RoundingPolicies_StandardRoundingPolicy_Round(
     }
     benchmark::ClobberMemory();
   }
-  state.SetItemsProcessed(state.iterations() * n);
+  state.SetItemsProcessed(static_cast<int64_t>(state.iterations()) *
+                          static_cast<int64_t>(n));
 }
 BENCHMARK(BM_RoundingPolicies_StandardRoundingPolicy_Round)
     ->RangeMultiplier(2)

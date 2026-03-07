@@ -151,7 +151,6 @@ BENCHMARK(BM_StaticProbabilityTable_GetTotalWeight_16);
 
 // measure the cost of making a StaticProbabilityTable object of size 32
 static void BM_StaticProbabilityTable_Make_32(benchmark::State& state) {
-  const int x = 2;
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away

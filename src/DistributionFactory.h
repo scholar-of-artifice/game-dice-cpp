@@ -70,8 +70,10 @@ template <std::size_t desired_size,
       } else {
         // falling slope
         const double slope_ratio =
-            static_cast<double>(i - safe_peak_index) /
-            static_cast<double>(desired_size - 1 - safe_peak_index);
+            static_cast<double>(static_cast<long long>(i) -
+                                static_cast<long long>(safe_peak_index)) /
+            static_cast<double>(static_cast<long long>(desired_size) - 1 -
+                                static_cast<long long>(safe_peak_index));
         value = safe_peak_weight - ((safe_peak_weight - 1) * slope_ratio);
       }
       // write the value using the provided RoundingPolicy

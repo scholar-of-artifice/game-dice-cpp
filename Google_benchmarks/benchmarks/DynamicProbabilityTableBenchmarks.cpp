@@ -32,7 +32,7 @@
 
 // measure the cost of making a DynamicProbabilityTable object
 static void BM_DynamicProbabilityTable_Make(benchmark::State& state) {
-  std::vector<int> weights(state.range(0), 1);
+  std::vector<int> weights(static_cast<std::size_t>(state.range(0)), 1);
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away
@@ -45,7 +45,7 @@ BENCHMARK(BM_DynamicProbabilityTable_Make)->RangeMultiplier(2)->Range(8, 2048);
 
 // measure the cost of GetTotalWeight in DynamicProbabilityTable
 static void BM_DynamicProbabilityTable_GetTotalWeight(benchmark::State& state) {
-  std::vector<int> weights(state.range(0), 1);
+  std::vector<int> weights(static_cast<std::size_t>(state.range(0)), 1);
   auto table_opt = game_dice_cpp::DynamicProbabilityTable::Make(weights);
   if (!table_opt) {
     state.SkipWithError("Failed to create table.");
@@ -66,7 +66,7 @@ BENCHMARK(BM_DynamicProbabilityTable_GetTotalWeight)
 // measure the cost of lookup in DynamicProbabilityTable
 static void BM_DynamicProbabilityTable_GetOutcomeIndex(
     benchmark::State& state) {
-  std::vector<int> weights(state.range(0), 1);
+  std::vector<int> weights(static_cast<std::size_t>(state.range(0)), 1);
   auto table_opt = game_dice_cpp::DynamicProbabilityTable::Make(weights);
   if (!table_opt) {
     state.SkipWithError("Failed to create table.");
