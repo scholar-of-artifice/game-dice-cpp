@@ -8,7 +8,7 @@ In this article, you will learn how to run individual tests.
 ### unit tests + asan + ubsan
 #### Build the Image
 ```
-DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-asan-ubsan --target unit-test-suite-asan-ubsan .
+DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-asan-ubsan --progress=plain --target unit-test-suite-asan-ubsan .
 ```
 
 #### Run the Tests
@@ -19,7 +19,7 @@ docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-as
 ### unit tests + memsan + ubsan
 #### Build the Image
 ```
-DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-memsan-ubsan --target unit-test-suite-memsan-ubsan .
+DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-memsan-ubsan --progress=plain --target unit-test-suite-memsan-ubsan .
 ```
 
 #### Run the Tests
@@ -31,7 +31,7 @@ docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-me
 ### unit tests + tsan + ubsan
 #### Build the Image
 ```
-DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-tsan-ubsan --target unit-test-suite-tsan-ubsan .
+DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-tsan-ubsan --progress=plain --target unit-test-suite-tsan-ubsan .
 ```
 
 #### Run the Tests
@@ -42,7 +42,7 @@ docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-ts
 ### unit tests + valgrind
 #### Build the Image
 ```
-DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-valgrind --target unit-test-suite-valgrind .
+DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-valgrind --progress=plain --target unit-test-suite-valgrind .
 ```
 
 #### Run the Tests
