@@ -19,12 +19,12 @@ enable_testing()
 # create the executable
 add_executable(
         benchmark_suite
-        benchmarks/DiceBenchmarks.cpp
         benchmarks/ActionsBenchmarks.cpp
-        benchmarks/DynamicProbabilityTableBenchmarks.cpp
-        benchmarks/StaticProbabilityTableBenchmarks.cpp
+        benchmarks/DiceBenchmarks.cpp
         benchmarks/DistributionFactoryBenchmarks.cpp
+        benchmarks/DynamicProbabilityTableBenchmarks.cpp
         benchmarks/RoundingPoliciesBenchmarks.cpp
+        benchmarks/StaticProbabilityTableBenchmarks.cpp
 )
 # link the executable to the GoogleBenchmark library
 target_link_libraries(

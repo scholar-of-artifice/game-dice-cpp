@@ -220,7 +220,7 @@ TEST(DistributionFactoryTest,
   // WHEN TriangleDistribution is called
   // THEN the peak should be clamped to the end (resulting in a rising slope)
   constexpr std::size_t desired_size = 5;
-  const std::size_t huge_index = -25;
+  const std::size_t huge_index = static_cast<std::size_t>(-25);
   const int peak_weight = 5;
   auto calculated_output = game_dice_cpp::TriangleDistribution<desired_size>(
       huge_index, peak_weight);
