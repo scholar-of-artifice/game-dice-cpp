@@ -18,12 +18,12 @@ enable_testing()
 # create the executable
 add_executable(
         unit_test_suite
-        tests/DiceTest.cpp
         tests/ActionsTest.cpp
-        tests/DynamicProbabilityTableTest.cpp
-        tests/StaticProbabilityTableTest.cpp
+        tests/DiceTest.cpp
         tests/DistributionFactoryTest.cpp
+        tests/DynamicProbabilityTableTest.cpp
         tests/RoundingPoliciesTest.cpp
+        tests/StaticProbabilityTableTest.cpp
 )
 # link the executable to the GoogleTest library
 target_link_libraries(
