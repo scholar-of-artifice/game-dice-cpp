@@ -19,6 +19,7 @@ enable_testing()
 add_executable(
         unit_test_suite
         tests/ActionsTest.cpp
+        tests/ConstExprMathTest.cpp
         tests/DiceTest.cpp
         tests/DistributionFactoryTest.cpp
         tests/DynamicProbabilityTableTest.cpp
