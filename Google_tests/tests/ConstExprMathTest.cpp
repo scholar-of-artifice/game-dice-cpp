@@ -75,6 +75,8 @@ TEST(ConstExprMathTest, RaisePowerCalculatesCorrectly) {
   EXPECT_DOUBLE_EQ(game_dice_cpp::RaisePower(2.0, 3), 8.0);
   EXPECT_DOUBLE_EQ(game_dice_cpp::RaisePower(3.33333333, 3), 37.037036925925925);
   EXPECT_DOUBLE_EQ(game_dice_cpp::RaisePower(1.00001, 5), 1.0000500010000104);
+  EXPECT_DOUBLE_EQ(game_dice_cpp::RaisePower(1.000001, 5), 1.0000050000099996);
+  EXPECT_DOUBLE_EQ(game_dice_cpp::RaisePower(1.0000001, 5), 1.0000005000001002);
   EXPECT_DOUBLE_EQ(game_dice_cpp::RaisePower(13.01, 2), 169.2601);
   EXPECT_DOUBLE_EQ(game_dice_cpp::RaisePower(23.108, 2), 533.979664);
   EXPECT_DOUBLE_EQ(game_dice_cpp::RaisePower(53.0, 3), 148877.0);
