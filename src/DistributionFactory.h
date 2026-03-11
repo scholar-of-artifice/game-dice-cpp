@@ -30,6 +30,7 @@
 #include <cstddef>
 #include <utility>
 
+#include "./ConstExprMath.h"
 #include "./RoundingPolicies.h"
 
 namespace game_dice_cpp {
@@ -84,7 +85,77 @@ template <std::size_t desired_size,
 };
 
 // TODO(scholar_of_artifice): Make a Binomial Distribution
-// std::vector<int> BinomialDistribution(int n, double k) {};
+template <std::size_t desired_size,
+          typename RoundingPolicy = game_dice_cpp::StandardRoundingPolicy>
+[[nodiscard]] constexpr std::array<int, desired_size> BinomialDistribution(
+    double p, int weight_multiplier) {
+  // TODO(scholar-of-artifice): This function needs to be broken down.
+  // maximum allowed size of binomial distribuion
+  constexpr std::size_t max_desired_size{512};
+  // enforce size limits at compile time
+  static_assert(desired_size > 0, "Distribution must have at least 1 outcome.");
+  static_assert(desired_size <= max_desired_size,
+                "Distribution size exceeds safe compile-time limits.");
+  // enforce limits on p and weight_multiplier
+  const double safe_p = std::clamp(p, 0.0, 1.0);
+  const std::size_t n = desired_size - 1;
+  // write values to this output array
+  std::array<int, desired_size> out_weights{};
+  // setup
+  const int max_safe_int = std::numeric_limits<int>::max();
+  const int target_total = std::clamp(
+      weight_multiplier, static_cast<int>(desired_size), max_safe_int);
+  // edge cases
+  if constexpr (desired_size == 1) {
+    out_weights.at(0) = target_total;
+    return out_weights;
+  }
+  if (safe_p <= 0.0) {
+    out_weights.fill(1);
+    out_weights.at(0) = target_total - static_cast<int>(n);
+    return out_weights;
+  } else if (safe_p >= 1.0) {
+    out_weights.fill(1);
+    out_weights.at(n) = target_total - static_cast<int>(n);
+    return out_weights;
+  }
+  // cumulative rounding logic
+  // initialization
+  const int pool = target_total - static_cast<int>(desired_size);
+  double current_probability = game_dice_cpp::RaisePower(1.0 - safe_p, n);
+  double cumulative_probability = current_probability;
+  int previous_rounded_cumulative_probability = 0;
+  int current_rounded_cumulative_probability =
+      std::min(pool, RoundingPolicy::Round(cumulative_probability *
+                                           static_cast<double>(pool)));
+  out_weights.at(0) = 1 + current_rounded_cumulative_probability -
+                      previous_rounded_cumulative_probability;
+  previous_rounded_cumulative_probability =
+      current_rounded_cumulative_probability;
+  int allocated_weight = out_weights.at(0);
+  const double probability_ratio = safe_p / (1.0 - safe_p);
+  //
+  for (std::size_t i = 1; i < n; ++i) {
+    const double combinations_ratio =
+        static_cast<double>(n - i + 1) / static_cast<double>(i);
+    current_probability =
+        current_probability * combinations_ratio * probability_ratio;
+    cumulative_probability = cumulative_probability + current_probability;
+    current_rounded_cumulative_probability =
+        std::min(pool, RoundingPolicy::Round(cumulative_probability *
+                                             static_cast<double>(pool)));
+    // assign value to bin
+    out_weights.at(i) = 1 + current_rounded_cumulative_probability -
+                        previous_rounded_cumulative_probability;
+    // ready variables for next iteration
+    previous_rounded_cumulative_probability =
+        current_rounded_cumulative_probability;
+    allocated_weight = allocated_weight + out_weights.at(i);
+  }
+  // final bin weight
+  out_weights.at(n) = target_total - allocated_weight;
+  return out_weights;
+};
 
 // TODO(scholar_of_artifice): Make a Poisson Distribution
 // std::vector<int> PoissonDistribution(int n, double k) {};

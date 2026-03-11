@@ -29,7 +29,7 @@
 
 #include "DistributionFactory.h"
 
-// measure the cost of constructing a Dice object
+// measure the cost of TriangleDistribution
 template <size_t SizeVar>
 static void BM_TriangleDistribution(benchmark::State& state) {
   // vary the size
@@ -54,3 +54,27 @@ BENCHMARK_TEMPLATE(BM_TriangleDistribution, 256);
 BENCHMARK_TEMPLATE(BM_TriangleDistribution, 512);
 BENCHMARK_TEMPLATE(BM_TriangleDistribution, 1024);
 BENCHMARK_TEMPLATE(BM_TriangleDistribution, 2048);
+
+// measure the cost of BinomialDistribution
+template <size_t SizeVar>
+static void BM_BinomialDistribution(benchmark::State& state) {
+  // vary the size
+  // keep the crest of the curve in the middle
+  const std::size_t crest_position = SizeVar / 2;
+  // const weight
+  const int weight_multiplier = 100;
+  // the loop where the code to be timed runs
+  for (auto _ : state) {
+    // prevent compiler from optimizing the result away
+    benchmark::DoNotOptimize(
+        game_dice_cpp::BinomialDistribution<SizeVar>(crest_position, weight_multiplier));
+  }
+}
+// register this benchmark
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 8);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 16);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 32);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 64);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 128);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 256);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 512);

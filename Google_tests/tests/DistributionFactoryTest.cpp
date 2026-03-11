@@ -245,3 +245,80 @@ TEST(DistributionFactoryTest,
   EXPECT_EQ(calculated_output, expected_output)
       << "Mismatch found for input (5, 2.2B, 5)";
 }
+
+TEST(DistributionFactoryTest,
+     BinomialDistributionWithSizeOneReturnsSingleWeight) {
+  // GIVEN desired_size of 1
+  // AND a p of 0.5
+  // AND a weight_multiplier of 100
+  // WHEN BinomialDistribution is called
+  // THEN the result is correct
+  auto calculated_output = game_dice_cpp::BinomialDistribution<1>(0.5, 100);
+  std::array<int, 1> expected_output = {100};
+  EXPECT_EQ(calculated_output, expected_output)
+      << "Mismatch found for input (1, 0.5, 100)";
+}
+
+TEST(DistributionFactoryTest,
+     BinomialDistributionWithZeroProbReturnsWeightAtStart) {
+  // GIVEN desired_size of 3
+  // AND a p of 0
+  // AND a weight_multiplier of 100
+  // WHEN BinomialDistribution is called
+  // THEN the result is correct
+  auto calculated_output = game_dice_cpp::BinomialDistribution<3>(0.0, 100);
+  std::array<int, 3> expected_output = {98, 1, 1};
+  EXPECT_EQ(calculated_output, expected_output)
+      << "Mismatch found for input (3, 0.0, 100)";
+}
+
+TEST(DistributionFactoryTest,
+     BinomialDistributionWithZeroProbReturnsWeightAtEnd) {
+  // GIVEN desired_size of 4
+  // AND a p of 1
+  // AND a weight_multiplier of 100
+  // WHEN BinomialDistribution is called
+  // THEN the result is correct
+  auto calculated_output = game_dice_cpp::BinomialDistribution<4>(1.0, 100);
+  std::array<int, 4> expected_output = {1, 1, 1, 97};
+  EXPECT_EQ(calculated_output, expected_output)
+      << "Mismatch found for input (4, 1.0, 100)";
+}
+
+TEST(DistributionFactoryTest,
+     BinomialDistributionWithHalfProbIsSymmetricAndExact) {
+  // GIVEN desired_size of 3
+  // AND a p of 0.5
+  // AND a weight_multiplier of 100
+  // WHEN BinomialDistribution is called
+  // THEN the result is correct
+  auto calculated_output = game_dice_cpp::BinomialDistribution<3>(0.5, 100);
+  std::array<int, 3> expected_output = {25, 50, 25};
+  EXPECT_EQ(calculated_output, expected_output)
+      << "Mismatch found for input (3, 0.5, 100)";
+}
+
+TEST(DistributionFactoryTest,
+     BinomialDistributionWideArrayWithHalfProbIsSymmetricAndExact) {
+  // GIVEN desired_size of 10
+  // AND a p of 0.5
+  // AND a weight_multiplier of 100
+  // WHEN BinomialDistribution is called
+  // THEN the result is correct
+  auto calculated_output = game_dice_cpp::BinomialDistribution<10>(0.5, 100);
+  std::array<int, 10> expected_output = {1, 2, 7, 16, 24, 24, 16, 7, 2, 1};
+  EXPECT_EQ(calculated_output, expected_output)
+      << "Mismatch found for input (10, 0.5, 100)";
+}
+
+TEST(DistributionFactoryTest, BinomialDistributionCumulativelyRoundsTails) {
+  // GIVEN desired_size of 3
+  // AND a p of 0.1
+  // AND a weight_multiplier of 100
+  // WHEN BinomialDistribution is called
+  // THEN the result is correct
+  auto calculated_output = game_dice_cpp::BinomialDistribution<3>(0.1, 100);
+  std::array<int, 10> expected_output = {80, 18, 2};
+  EXPECT_EQ(calculated_output, expected_output)
+      << "Mismatch found for input (3, 0.1, 100)";
+}
