@@ -59,15 +59,15 @@ BENCHMARK_TEMPLATE(BM_TriangleDistribution, 2048);
 template <size_t SizeVar>
 static void BM_BinomialDistribution(benchmark::State& state) {
   // vary the size
-  // keep the peak in the middle
-  const std::size_t peak_index = SizeVar / 2;
+  // keep the crest of the curve in the middle
+  const std::size_t crest_position = SizeVar / 2;
   // const weight
-  const int peak_weight = 100;
+  const int weight_multiplier = 100;
   // the loop where the code to be timed runs
   for (auto _ : state) {
     // prevent compiler from optimizing the result away
     benchmark::DoNotOptimize(
-        game_dice_cpp::BinomialDistribution<SizeVar>(peak_index, peak_weight));
+        game_dice_cpp::BinomialDistribution<SizeVar>(crest_position, weight_multiplier));
   }
 }
 // register this benchmark
