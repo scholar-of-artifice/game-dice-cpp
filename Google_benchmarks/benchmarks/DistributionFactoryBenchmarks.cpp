@@ -29,7 +29,7 @@
 
 #include "DistributionFactory.h"
 
-// measure the cost of constructing a Dice object
+// measure the cost of TriangleDistribution
 template <size_t SizeVar>
 static void BM_TriangleDistribution(benchmark::State& state) {
   // vary the size
