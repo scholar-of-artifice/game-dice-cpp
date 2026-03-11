@@ -54,3 +54,27 @@ BENCHMARK_TEMPLATE(BM_TriangleDistribution, 256);
 BENCHMARK_TEMPLATE(BM_TriangleDistribution, 512);
 BENCHMARK_TEMPLATE(BM_TriangleDistribution, 1024);
 BENCHMARK_TEMPLATE(BM_TriangleDistribution, 2048);
+
+// measure the cost of BinomialDistribution
+template <size_t SizeVar>
+static void BM_BinomialDistribution(benchmark::State& state) {
+  // vary the size
+  // keep the peak in the middle
+  const std::size_t peak_index = SizeVar / 2;
+  // const weight
+  const int peak_weight = 100;
+  // the loop where the code to be timed runs
+  for (auto _ : state) {
+    // prevent compiler from optimizing the result away
+    benchmark::DoNotOptimize(
+        game_dice_cpp::BinomialDistribution<SizeVar>(peak_index, peak_weight));
+  }
+}
+// register this benchmark
+BENCHMARK_TEMPLATE(BM_TriangleDistribution, 8);
+BENCHMARK_TEMPLATE(BM_TriangleDistribution, 16);
+BENCHMARK_TEMPLATE(BM_TriangleDistribution, 32);
+BENCHMARK_TEMPLATE(BM_TriangleDistribution, 64);
+BENCHMARK_TEMPLATE(BM_TriangleDistribution, 128);
+BENCHMARK_TEMPLATE(BM_TriangleDistribution, 256);
+BENCHMARK_TEMPLATE(BM_TriangleDistribution, 512);
