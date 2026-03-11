@@ -71,10 +71,10 @@ static void BM_BinomialDistribution(benchmark::State& state) {
   }
 }
 // register this benchmark
-BENCHMARK_TEMPLATE(BM_TriangleDistribution, 8);
-BENCHMARK_TEMPLATE(BM_TriangleDistribution, 16);
-BENCHMARK_TEMPLATE(BM_TriangleDistribution, 32);
-BENCHMARK_TEMPLATE(BM_TriangleDistribution, 64);
-BENCHMARK_TEMPLATE(BM_TriangleDistribution, 128);
-BENCHMARK_TEMPLATE(BM_TriangleDistribution, 256);
-BENCHMARK_TEMPLATE(BM_TriangleDistribution, 512);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 8);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 16);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 32);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 64);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 128);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 256);
+BENCHMARK_TEMPLATE(BM_BinomialDistribution, 512);
