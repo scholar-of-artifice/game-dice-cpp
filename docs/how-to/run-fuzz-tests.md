@@ -1,12 +1,12 @@
 # How to Run Fuzz Tests
 
-## Running `clang-format`
+## Running `fuzz tests`
 ### Build the Image
 ```
 DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-fuzzing --target fuzz-test-suite .
 ```
 
-### Run `clang-format`
+### Run `fuzz tests`
 ```
 docker run --rm -it \
     -v "$(pwd)/libfuzzer_tests/corpora/fuzz_dice:/app/build/libfuzzer_tests/corpus" \
