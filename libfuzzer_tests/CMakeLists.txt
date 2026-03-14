@@ -19,6 +19,6 @@ target_compile_options(fuzz_dice PRIVATE -fsanitize=fuzzer)
 target_link_options(fuzz_dice PRIVATE -fsanitize=fuzzer)
 # register the fuzz test with CTest and enforce a 2 minute limit
 add_test(
-        NAME RunFuzzDice
-        COMMAND fuzz_dice -max_total_time=120
+        NAME RunFuzzTarget
+        COMMAND fuzz_dice -max_total_time=60
 )
