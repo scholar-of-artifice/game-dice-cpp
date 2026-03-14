@@ -218,6 +218,8 @@ ENTRYPOINT ["./Google_benchmarks/benchmark_suite"]
 
 # build fuzz tests
 FROM base AS fuzz-test-suite
+# set the default parallel level for CTest
+ENV CTEST_PARALLEL_LEVEL=4
 # copy project source code
 COPY . .
 # create build directory
