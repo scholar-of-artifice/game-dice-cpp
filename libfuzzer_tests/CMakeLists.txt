@@ -30,10 +30,10 @@ target_compile_options(fuzz_actions_roll_dice PRIVATE -fsanitize=fuzzer)
 target_link_options(fuzz_actions_roll_dice PRIVATE -fsanitize=fuzzer)
 # register the fuzz test with CTest and enforce a 2 minute limit
 add_test(
-        NAME RunFuzzTarget
+        NAME RunFuzzDiceTarget
         COMMAND fuzz_dice -max_total_time=60
 )
 add_test(
-        NAME RunFuzzTarget
+        NAME RunFuzzActionRollDiceTarget
         COMMAND fuzz_actions_roll_dice -max_total_time=60
 )
