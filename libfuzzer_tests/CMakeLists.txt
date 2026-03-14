@@ -6,7 +6,7 @@ project(libfuzzer_tests)
 # create the executable
 add_executable(
         fuzz_dice
-        fuzz_dice.cpp
+        fuzz_tests/fuzz_dice.cpp
 )
 # link the executable to the GoogleTest library
 target_link_libraries(
