@@ -216,4 +216,18 @@ RUN cmake -S . -B build -G "Unix Makefiles" \
 WORKDIR /app/build
 ENTRYPOINT ["./Google_benchmarks/benchmark_suite"]
 
+# build fuzz tests
+FROM base AS fuzz-test-suite
+# copy project source code
+COPY . .
+# create build directory
+RUN cmake -S . -B build -G "Unix Makefiles" \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DENABLE_FUZZING=ON \
+    && cmake --build build --target fuzz_dice
+# set the default execution command
+WORKDIR /app/build
+ENTRYPOINT ["ctest", "--test-dir", "libfuzzer_tests", "--output-on-failure", "--verbose"]
+
 
