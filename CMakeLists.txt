@@ -50,3 +50,10 @@ target_link_libraries(
 # --- the tests/benchmarks live here ---
 add_subdirectory(Google_tests)
 add_subdirectory(Google_benchmarks)
+
+# --- fuzzing lives here ---
+option(ENABLE_FUZZING "Build fuzz targets" OFF)
+
+if(ENABLE_FUZZING)
+    add_subdirectory(libfuzzer_tests)
+endif ()
