@@ -5,16 +5,20 @@ project(libfuzzer_tests)
 
 # create the executable
 add_executable(
-        fuzz_target
-        fuzz_target.cpp
+        fuzz_dice
+        fuzz_dice.cpp
 )
 # link the executable to the GoogleTest library
 target_link_libraries(
-        fuzz_target
+        fuzz_dice
         PRIVATE
         game_dice_cpp
 )
 # apply the libfuzzer instrumentation flags to this specific target
-target_compile_options(fuzz_target PRIVATE -fsanitize=fuzzer)
-target_link_options(fuzz_target PRIVATE -fsanitize=fuzzer)
-
+target_compile_options(fuzz_dice PRIVATE -fsanitize=fuzzer)
+target_link_options(fuzz_dice PRIVATE -fsanitize=fuzzer)
+# register the fuzz test with CTest and enforce a 2 minute limit
+add_test(
+        NAME RunFuzzDice
+        COMMAND fuzz_dice -max_total_time=120
+)
