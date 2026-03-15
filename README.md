@@ -102,21 +102,10 @@ Continuous validation using ASan(Address), UBSan(Undefined Behavior), TSan(Threa
 
 The project includes a dedicated Dockerized Valgrind environment to ensuer absolute stability in production environments:
 
-#### Memcheck
-
-Guarantees zero memory leaks and detects illegal memory accesses.
-
-#### Massif
-
-Used for detailed heap profiling to monitor memory footprints during large-scale simulations.
-
-#### Helgrind
-
-Validates thread safety and detecs porential data races in multi-threaded game loops.
-
-#### Callgrind
-
-Provides instruction-level profiling to identify hotspots and optimize critical code paths.
+- Memcheck: Guarantees zero memory leaks and detects illegal memory accesses.
+- Massif: Used for detailed heap profiling to monitor memory footprints during large-scale simulations.
+- Helgrind: Validates thread safety and detecs porential data races in multi-threaded game loops.
+- Callgrind: Provides instruction-level profiling to identify hotspots and optimize critical code paths.
 
 #### 📊 Performance Benchmarking
 
