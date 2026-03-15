@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.31)
 # 'Google_test' is the subproject name
 project(libfuzzer_tests)
 
+# turn on testing so ctest command can be used
+enable_testing()
 # create the executables
 add_executable(
         fuzz_dice
