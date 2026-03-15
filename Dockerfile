@@ -217,9 +217,12 @@ WORKDIR /app/build
 ENTRYPOINT ["./Google_benchmarks/benchmark_suite"]
 
 # build fuzz tests
-FROM base AS fuzz-test-suite
+FROM base AS fuzz-asan-ubsan-test-suite
 # set the default parallel level for CTest
 ENV CTEST_PARALLEL_LEVEL=4
+# tell Sanitizers to print stack traces and crash if they find something
+ENV UBSAN_OPTIONS="print_stacktrace=1,halt_on_error=1"
+ENV ASAN_OPTIONS="symbolize=1,halt_on_error=1"
 # copy project source code
 COPY . .
 # create build directory
@@ -228,8 +231,8 @@ RUN cmake -S . -B build -G "Unix Makefiles" \
     -DCMAKE_CXX_COMPILER=clang++ \
     -DENABLE_FUZZING=ON \
     && cmake --build build \
-    --target fuzz_dice \
-    --target fuzz_actions_roll_dice
+    --target fuzz_asan_ubsan_dice \
+    --target fuzz_asan_ubsan_actions_roll_dice
 # set the default execution command
 WORKDIR /app/build
 ENTRYPOINT ["ctest", "--test-dir", "libfuzzer_tests", "--output-on-failure", "--verbose"]
