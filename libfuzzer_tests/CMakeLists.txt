@@ -36,6 +36,6 @@ add_test(
         COMMAND fuzz_dice -max_total_time=60
 )
 add_test(
-        NAME RunFuzzActionRollDiceTarget
+        NAME RunFuzzActionsRollDiceTarget
         COMMAND fuzz_actions_roll_dice -max_total_time=60
 )
