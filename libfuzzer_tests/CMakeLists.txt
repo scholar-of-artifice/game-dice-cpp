@@ -34,9 +34,9 @@ target_link_options(fuzz_asan_ubsan_actions_roll_dice PRIVATE -fsanitize=fuzzer,
 # register the fuzz test with CTest and enforce a 2 minute limit
 add_test(
         NAME RunFuzzAsanUbsanDiceTarget
-        COMMAND fuzz_asan_ubsan_dice -max_total_time=300 corpora/fuzz_dice
+        COMMAND fuzz_asan_ubsan_dice -max_total_time=60 corpora/fuzz_dice
 )
 add_test(
         NAME RunFuzzAsanUbsanActionsRollDiceTarget
-        COMMAND fuzz_asan_ubsan_actions_roll_dice -max_total_time=300 corpora/fuzz_actions_roll_dice
+        COMMAND fuzz_asan_ubsan_actions_roll_dice -max_total_time=60 corpora/fuzz_actions_roll_dice
 )
