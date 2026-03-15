@@ -12,7 +12,7 @@ This allows us to run complex tools such as dynamic analysis tools and profilers
 The unit test suite validates the mathematical correctness of our distrubtions and ensures edge cases (like integer overflows) are handled safely.
 We provide multiple build targets instrumented with different **Dynamic Analyzers** to catch runtime bugs that that standard tests and static analysis techniques might miss.
 
-### Address Sanitizer (ASan) + Undefined Behaviour Sanitizer (UBSan)
+### Address Sanitizer (`ASan`) + Undefined Behaviour Sanitizer (`UBSan`)
 
 Use this for general development.
 This catches memory leaks, buffer overflows and illegal math operations.
@@ -27,12 +27,12 @@ DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-asan-ubsan --
 docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-asan-ubsan
 ```
 
-### Memory Sanitizer (MSan) + Undefined Behaviour Sanitizer (UBSan)
+### Memory Sanitizer (`MSan`) + Undefined Behaviour Sanitizer (`UBSan`)
 
 Use this for detecting the use of uninitialized memory.
 This is critical for catching non-deterministic bugs in game logic.
 
-Note: This target build a custom instrumented version of `libc++`, so th initial build may take longer.
+**Note:** This target build a custom instrumented version of `libc++`, so th initial build may take longer.
 
 #### Build
 ```
@@ -44,9 +44,9 @@ DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-memsan-ubsan 
 docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-memsan-ubsan
 ```
 
-## Thread Sanitizer (TSan) + Undefined Behaviour Sanitizer (UBSan)
+## Thread Sanitizer (`TSan`) + Undefined Behaviour Sanitizer (`UBSan`)
 
-Use this for validating multi-threaded safety and detecting data races.
+Use this for validating multithreaded safety and detecting data races.
 Highly recommended if you are integrating this library into an asynchronous game engine loop.
 
 #### Build
