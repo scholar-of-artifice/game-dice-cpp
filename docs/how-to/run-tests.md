@@ -5,9 +5,9 @@ To ensure maximum reproducibility and to avoid external variables, all tests are
 This allows us to run complex tools such as dynamic analysis tools and profilers without requiring you to manually configure the LLVM toolchain on the host.
 
 ## 📋 Prerequisites
-- Docker: Ensure Docker is installed and the daemon is running.
-- Hardware: At least 4GB of RAM is recommended when building the Memory Santizer (MSan) targets, as LLVM instrumentation is resource intensive.
-🦠
+- **Docker:** Ensure Docker is installed and the daemon is running.
+- **Hardware:** At least 4GB of RAM is recommended when building the Memory Santizer (MSan) targets, as LLVM instrumentation is resource intensive.
+
 ## 🧪 Unit Testing With `GoogleTest`
 The unit test suite validates the mathematical correctness of our distrubtions and ensures edge cases (like integer overflows) are handled safely.
 We provide multiple build targets instrumented with different **Dynamic Analyzers** to catch runtime bugs that that standard tests and static analysis techniques might miss.
