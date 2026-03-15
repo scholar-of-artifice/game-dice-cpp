@@ -9,8 +9,7 @@ DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-fuzzing --target fuzz-te
 ### Run `fuzz tests`
 ```
 docker run --rm -it \
-    -v "$(pwd)/libfuzzer_tests/corpora/fuzz_dice:/app/build/libfuzzer_tests/corpus" \
-    --entrypoint ./libfuzzer_tests/fuzz_dice \
-    game-dice-cpp-fuzzing \
-    -max_total_time=60 ./libfuzzer_tests/corpus
+    --env CTEST_PARALLEL_LEVEL=4 \
+    --volume "$(pwd)/libfuzzer_tests/corpora:/app/build/libfuzzer_tests/corpora" \
+    game-dice-cpp-fuzzing
 ```
