@@ -23,39 +23,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef GAME_DICE_CPP_SRC_DICE_H
-#define GAME_DICE_CPP_SRC_DICE_H
+#include <cstdint>
+#include <cstddef>
+#include <cstring>
 
-#include <algorithm>
-#include <limits>
+#include "Actions.h"
+#include "Dice.h"
 
-namespace game_dice_cpp {
-
-// An immutable descriptor of a die geometry.
-// The Dice class represents the physical properties of a dice (number of
-// sides). It is a lightweight, data-oriented structure that contains no rolling
-// logic or mutable state.
-class Dice {
- private:
-  // The number of faces on this die.
-  int num_sides_;
-
- public:
-  // Constructs a Dice with a specified number of sides.
-  //
-  // The number of sides is automatically clamped to a safe range.
-  //
-  // sides: The number of sides.
-  //  - minimum: 2 (example: a coin)
-  //  - maximum std::numeric_limits<int>::max() - 1
-  constexpr explicit Dice(int sides)
-      : num_sides_(std::clamp(sides, 2, std::numeric_limits<int>::max() - 1)) {}
-  // Retrieves the number of sides.
-  [[nodiscard]] constexpr int GetNumSides() const noexcept {
-    return num_sides_;
+// this is the standard entry point for libFuzzer
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+  // need at least enough bytes to form the dice size and the input seed
+  if (size < sizeof(int) + sizeof(uint64_t)) {
+    return 0; // not enough data... tell libfuzzer to try again
   }
-};
+  // safely extract some data from the fuzzer result
+  int fuzz_sides;
+  std::memcpy(&fuzz_sides, data, sizeof(int));
+  uint64_t fuzz_seed;
+  std::memcpy(&fuzz_seed, data + sizeof(int), sizeof(uint64_t));
+  // feed the fuzzed data into the target input variables
+  std::mt19937_64 rand_generator(fuzz_seed);
+  game_dice_cpp::Dice dice(fuzz_sides);
+  // call the function to ensure that code path is excercised as well
+  // mark so compiler does not complain about unused variables
+  [[maybe_unused]] auto result = game_dice_cpp::Roll(dice, rand_generator);
+  // return 0 to indicate successful execution of target
+  return 0;
+}
 
-}  // namespace game_dice_cpp
-
-#endif  // GAME_DICE_CPP_SRC_DICE_H

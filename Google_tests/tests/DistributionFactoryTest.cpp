@@ -318,7 +318,7 @@ TEST(DistributionFactoryTest, BinomialDistributionCumulativelyRoundsTails) {
   // WHEN BinomialDistribution is called
   // THEN the result is correct
   auto calculated_output = game_dice_cpp::BinomialDistribution<3>(0.1, 100);
-  std::array<int, 10> expected_output = {80, 18, 2};
+  std::array<int, 3> expected_output = {80, 18, 2};
   EXPECT_EQ(calculated_output, expected_output)
       << "Mismatch found for input (3, 0.1, 100)";
 }
