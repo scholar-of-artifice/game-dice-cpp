@@ -6,6 +6,7 @@ This allows us to run complex tools such as dynamic analysis tools and profilers
 
 ## 📋 Prerequisites
 - **Docker:** Ensure Docker is installed and the daemon is running.
+  - Get Docker at: https://www.docker.com
 - **Hardware:** At least 4GB of RAM is recommended when building the Memory Santizer (MSan) targets, as LLVM instrumentation is resource intensive.
 
 ## 🧪 Unit Testing With `GoogleTest`
@@ -15,7 +16,7 @@ We provide multiple build targets instrumented with different **Dynamic Analyzer
 ### Address Sanitizer (`ASan`) + Undefined Behaviour Sanitizer (`UBSan`)
 
 Use this for general development.
-This catches memory leaks, buffer overflows and illegal math operations.
+This catches memory leaks, buffer overflows and illegal math operations while running Unit Tests.
 
 #### Build
 ```
@@ -30,9 +31,10 @@ docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-as
 ### Memory Sanitizer (`MSan`) + Undefined Behaviour Sanitizer (`UBSan`)
 
 Use this for detecting the use of uninitialized memory.
-This is critical for catching non-deterministic bugs in game logic.
+This is critical for catching non-deterministic bugs.
+In game logic, you do not want this to be sitting in a dependency.
 
-**Note:** This target build a custom instrumented version of `libc++`, so th initial build may take longer.
+**Note:** This target builds a custom instrumented version of `libc++`, so the initial build may take longer.
 
 #### Build
 ```
@@ -47,6 +49,7 @@ docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-me
 ## Thread Sanitizer (`TSan`) + Undefined Behaviour Sanitizer (`UBSan`)
 
 Use this for validating multithreaded safety and detecting data races.
+Currently, this library is single threaded and so this is not a primary test suite.
 Highly recommended if you are integrating this library into an asynchronous game engine loop.
 
 #### Build
@@ -61,7 +64,7 @@ docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-ts
 
 ### 🔍 Deep Analysis with `Valgrind`
 
-While Santizers are fast and run during testing, `Valgrind` provides a different look at how code interacts with the CPU and memory.
+While the santizers are fast and run during testing, `Valgrind` provides a different look at how code interacts with the CPU and memory.
 Use these for final production validation.
 
 #### Build
@@ -71,7 +74,7 @@ DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-valgrind --pr
 
 #### Run for Memory Leaks (`Memcheck`)
 
-The default command runs `memcheck` to guarantee every byte allocated is correctly freed.
+The default command runs `memcheck` to guarantee every byte allocated is freed correctly.
 
 ```
 docker run --rm \
@@ -80,7 +83,8 @@ docker run --rm \
 
 #### Run for Heap Profiling (`Massif`)
 
-Detailed analysis of heap memory usage over time. Essential for ensuring the library does not cause "memory spikes" during gameplay.
+Detailed analysis of heap memory usage as a function of time.
+Essential for ensuring the library does not cause "memory spikes" during gameplay.
 
 ```
 docker run --rm \
@@ -91,10 +95,11 @@ docker run --rm \
     ./Google_tests/unit_test_suite
 ```
 
-#### Run for Performance Hostspots (`Helgrind`)
+#### Run for Performance Hotspots (`Helgrind`)
 
 Specialized tool for detecting synchronization errors in C++ programs using the POSIX pthreads API.
 This is not valid for all hardware.
+Maybe you need it? idk...
 
 What it detects:
 - **Data Races:** Accessing memory from multiple threads without adequate locking.
@@ -113,7 +118,8 @@ docker run --rm \
 
 ##### Run for Performance Hostspots (`Callgrind`)
 
-Generates a profile of function calls and instruction execution. Use this to find bottlenecks in distribution lookups.
+Generates a profile of function calls and instruction execution.
+Use this to find bottlenecks in distribution lookups.
 
 ```
 docker run --rm \
