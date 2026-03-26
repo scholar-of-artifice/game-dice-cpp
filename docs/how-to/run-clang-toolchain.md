@@ -3,7 +3,12 @@
 In this article, you will learn how to run the various `clang` tools used in this project.
 The key idea with these tools is to automatically enforce your minimum standards.
 
-## Autoformatting with `clang-format`
+## 📋 Prerequisites
+- **Docker:** Ensure Docker is installed and the daemon is running.
+    - Get Docker at: https://www.docker.com
+- **Hardware:** At least 4GB of RAM is recommended when building the Memory Santizer (MSan) targets, as LLVM instrumentation is resource intensive.
+
+## 🖋️ Autoformatting with `clang-format`
 
 > Tabs versus spaces?
 > Spaces around your parenthesis?
@@ -31,7 +36,7 @@ docker run --rm \
     sh -c "find src Google_tests/tests Google_benchmarks/benchmarks -name '*.cpp' -o -name '*.h' | xargs clang-format -i -style=file"
 ```
 
-## Initial Automated Code Review with `clang-tidy`
+## 🧹 Initial Automated Code Review with `clang-tidy`
 
 `clang-tidy` presents a number of checks that are useful for making higher quality code.
 It acts as a linter and checks for:

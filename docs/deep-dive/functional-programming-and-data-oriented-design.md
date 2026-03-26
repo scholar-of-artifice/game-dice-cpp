@@ -12,15 +12,15 @@ Once a Probability Table is successfully created, its internal state is immutabl
 ## Declarative Data Pipelines
 
 ### Modern Algorithms
-The library uses `std::ranges` and `std::accumualte` with custom lambdas to process weights. This declarative approach describes what the could should do rather than how to loop over it, reducing the surface area for logic errors.
+The library uses `std::ranges` and `std::accumualte` with custom lambdas to process weights. This declarative approach describes what the code should do rather than how to loop over it, reducing the surface area for logic errors.
 
-### Composablity
+### Composability
 Internal logic uses pipelines to transform raw input weights into cumulative threshold in-place or via views, maintaining high performance without sacrificing readability.
 
 ## Policy-Based Design
 
 ### Behaviour Injection
-The `DistributionFactory` utilizes policy based deisgn for rounding. By injecting a `RoundingPolicy` as a template parameters, the library remains flexible and allows develoeprs to swap between standard floating-point rounding or some custom fixed point logic.
+The `DistributionFactory` utilizes policy based deisgn for rounding. By injecting a `RoundingPolicy` as a template parameters, the library remains flexible and allows developers to swap between standard floating-point rounding or some custom fixed point logic.
 This is important for deterministic cross-platform networking.
 
 ## Strict Decoupling of Entropy
@@ -29,4 +29,4 @@ This is important for deterministic cross-platform networking.
 Probability tables contain only the shape of the distribution. There is no knowledge of the random number generation engine.
 
 ### Entropy Injection
-By passing the `Engine` as a parameter to the `Roll` function, we treat the generator as a side-effect that is injection into a pure logic process. This makes testing very easy.
+By passing the `Engine` as a parameter to the `Roll` function, we treat the generator as a side-effect that is injected into a pure logic process. This makes testing very easy.

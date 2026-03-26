@@ -5,6 +5,11 @@ This is done to identify coding errors, security vulnerabilities, unhandled edge
 The longer, these run, the more issues they tend to find.
 Interesting inputs are then listed in a `corpus` which can then be used to make good unit test cases.
 
+## 📋 Prerequisites
+- **Docker:** Ensure Docker is installed and the daemon is running.
+    - Get Docker at: https://www.docker.com
+- **Hardware:** At least 4GB of RAM is recommended when building the Memory Santizer (MSan) targets, as LLVM instrumentation is resource intensive.
+
 ## Running `fuzz tests`
 
 All fuzz tests for this project run in a Docker container.
@@ -25,7 +30,7 @@ docker run --rm -it \
     game-dice-cpp-fuzzing
 ```
 
-### Clean Corpora
+## 🗑 Clean Corpora
 Over time, as the fuzzer runs repeatedly, the corpora folders will accumulate redundant examples.
 You need to clean these out to keep the fuzzer fast.
 

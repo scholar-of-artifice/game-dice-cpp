@@ -46,7 +46,7 @@ DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-memsan-ubsan 
 docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-memsan-ubsan
 ```
 
-## Thread Sanitizer (`TSan`) + Undefined Behaviour Sanitizer (`UBSan`)
+### Thread Sanitizer (`TSan`) + Undefined Behaviour Sanitizer (`UBSan`)
 
 Use this for validating multithreaded safety and detecting data races.
 Currently, this library is single threaded and so this is not a primary test suite.
