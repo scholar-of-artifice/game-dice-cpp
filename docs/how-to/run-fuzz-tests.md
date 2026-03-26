@@ -1,6 +1,17 @@
 # How to Run Fuzz Tests
 
+Fuzz tests (fuzzing) is an automated software testing technique that injects invalid, random, malformed data into a system.
+This is done to identify coding errors, security vulnerabilities, unhandled edge cases, and undefined behaviour.
+The longer, these run, the more issues they tend to find.
+Interesting inputs are then listed in a `corpus` which can then be used to make good unit test cases.
+
 ## Running `fuzz tests`
+
+All fuzz tests for this project run in a Docker container.
+Here are the directions to build and run the container.
+
+**Note:** More containers will be made (in future updates) to accomodate the other dynamic analysis tools.
+
 ### Build the Image
 ```
 DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-fuzzing --target fuzz-asan-ubsan-test-suite .
@@ -20,4 +31,4 @@ You need to clean these out to keep the fuzzer fast.
 
 LibFuzzer has a built-in command `-merge=1` that analyses the existing files and extracts only the unique inputs into an optimized folder.
 
-TODO directions for this
+**Note:** Directions for this will follow soon.
