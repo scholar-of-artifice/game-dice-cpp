@@ -3,87 +3,126 @@
 ![Standard](https://img.shields.io/badge/C%2B%2B-23-blue.svg?labelColor=white&logoColor=00599C&style=plastic&logo=c%2B%2B)
 ![License](https://img.shields.io/badge/license-MIT-green.svg?labelColor=white&style=plastic)
 
-**A header-only C++23 library for deterministic, weighted probability distributions.**
+**A header-only C++23 library for deterministic, type-safe, weighted probability distributions.**
 
-Designed for game developers who need a robust, zero-dependency solutions for RNG mechanics, and system engineers who
+Designed for game developers who need a robust, zero-dependency solutions for random number generation (RNG) mechanics, and system engineers who
 value compile-time safety and memory control.
 
-## 🧑‍💻Technologies
+## Why use this library?
 
+While simple `rand() % n` implementations are sufficient for prototyping, they introduce subtle bugs (like modulo bias)
+and make unit testing impossible. The STL comes with many better options in `<random>`, however, these types and
+functions often have subtle but important stipulations which may be relevent in your use case.
+
+`game-dice-cpp` is built on functional programming principles to ensure that the game's probability logic is predictable and easy to reason about.
+Learn more about this in the internal documentation: [Functional Programming & Data-Oriented Design](https://github.com/scholar-of-artifice/game-dice-cpp/blob/main/docs/deep-dive/functional-programming-and-data-oriented-design.md)
+
+## ⚡️At a Glance
+
+Define a complex distribution at compile-time and roll with any STL compatible engine.
+
+### Dice Rolling
+```cpp
+#include "game-dice-cpp/Dice.h"
+#include "game-dice-cpp/Actions.h"
+
+// 1. Create a d20 Dice
+constexpr auto d20 = game_dice_cpp::Dice(20);
+
+// 2. Inject your entropy source
+std::mt19937_64 engine(42);
+
+// 3. Roll for an outcome
+auto outcome = game_dice_cpp::Roll(d20, engine);
+```
+
+### Loot Tables
+```cpp
+#include "game-dice-cpp/StaticProbabilityTable.h"
+#include "game-dice-cpp/Actions.h"
+
+// 1. Define a loot table (Common, Uncommon, Rare, Super Rare)
+constexpr auto LootTable = game_dice_cpp::StaticProbabilityTable<3>::Make({80, 15, 4, 1}).value();
+
+// 2. Inject your entropy source
+std::mt19937_64 engine(42);
+
+// 3. Roll for an outcome
+auto outcome = game_dice_cpp::Roll(LootTable, engine);
+```
+
+## 🧑‍💻Technologies
 <!--technology badges here-->
 ![C++](https://img.shields.io/badge/C%2B%2B-blue.svg?&logo=c%2B%2B&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff)
 ![LLVM](https://img.shields.io/badge/LLVM-black?logo=llvm&logoColor=white)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white)
 
-## 🧐 Design Philosophy
+## 🚀 Features
 
-**game-dice-cpp** is a modern C++23, header only library designed to make probabilty mechanics **type-safe**, *
-*deterministic** and **testable**.
-This library addresses those pain points by adopting Data Oriented Design and Functional Programming paradigms to
-strictly decouple the *definition* of the random event from the *source* of the entropy
+### Network Ready Determinism
 
-### Why use this library?
+Decoupling the definition of an event from the source of entry ensures identical outcomes for replay systems and rollback networking.
 
-While simple `rand() % n` implementations are sufficient for prototyping, they introduce subtle bugs (like modulo bias)
-and make unit testing impossible. The STL comes with many better options in `<random>`, however, these types and
-functions often have subtle but important stipulations which may be relevent in your use case.
+### Zero-Allocation (Static Tables)
 
-#### Determinism
+`StaticProbabilityTable` uses `std::array` and `constexpr` constructors to catch configuration errors at compile time with zero heap overhead.
 
-By injecting the random number engine into every roll, you guarantee identical outcomes for replay systems, network
-sync, or regression testing..
+### Modern C++23
 
-#### Compile-Time Safety
+Leaverage `std::ranges`, `std::span`, `std::expected` and more for a type-safe, expressive and readable API.
 
-Utilizes modern C++ features to validate `StaticProbabilityTable` at build time. Can catch certain error before the game
-even launches.
+### Header Only & Zero Dependency
 
-#### Zero Dependencies
+Optimized for easy integration into Godot GDExtension, Unreal Engine or custom C++ game engines.
 
-No external libraries required. Just drop the `src/` folder into your Godot GDExtension or Unreal Engine project and
-build.
+## 🛠️Engineering & Quality Assurance
 
-## ⚡️ Quick Start
+This project is a showcase of modern C++ engineering practices designed to be production ready.
 
-### Prerequisites
-* **C++ Compiler**: Must support **C++23** (e.g., GCC 13+, Clang 16+, MSVC 19.36+).
-* **CMake**: Version **3.31** or higher.
+### Automated Testing
 
-### Method 1: CMake FetchContent (Recommended)
-The most robust way to integrate this library is via CMake's `FetchContent`.
-This ensures your project always builds with the correct version and settings.
+##### 🔎 Static Analysis
 
-- Add this to your `CMakeLists.txt`:
+`Clang-tidy` provides essential static analysis on all code with a zero-warning policy. This allows the project to maintain modern C++ standards, avoid common logic and safety issues and be more secure.
 
-```cmake
-include(FetchContent)
+#### 🧪 Unit Testing
 
-FetchContent_Declare(
-        game_dice_cpp
-        GIT_REPOSITORY [https://github.com/scholar-of-artifice/game-dice-cpp.git] (https://github.com/scholar-of-artifice/game-dice-cpp.git)
-        GIT_TAG main  # or a specific commit hash for stability
-)
-FetchContent_MakeAvailable(game_dice_cpp)
+Comprehensive suite via [GoogleTest](https://github.com/google/googletest). Covers edge cases like integer overflow and distribution symmetry.
 
-# Link it to your target (header-only, so it adds include paths automatically)
-target_link_libraries(YourGameTarget PRIVATE game_dice_cpp)
-```
+#### 🐻 Fuzz Testing
 
-### Method 2: Header-Only (Manual)
+Integrated [LibFuzzer](https://llvm.org/docs/LibFuzzer.html) to ensure the lbirary is resilient against malicious or unexpected inputs.
 
-Since `game-dice-cpp` is a pure interface library with no compiled binaries, you can simply copy the files. You will
-probably do this if you intend to compile from source.
+#### 🦠 Sanitizers
 
-- Copy the `src/` folder into your project's vendor directory (example: `ThirdParty/game-dice-cpp/`).
-- Add that folder to your include path.
+Continuous validation using ASan(Address), UBSan(Undefined Behavior), TSan(Thread), and MSan(Memory) to ensure memory safety.
 
-## 📚 Learn More
-All types are strictly scoped within the `game_dice_cpp` namespace.
-Please refer to the documentation to learn more about using the library.
-- TODO documentation here
-- Want to learn more about performance and benchmarks?
-- Want to see some usage examples?
-- Want to learn more about the Architecture of this library?
-- Want to learn more about the Design Principles of this library?
-- Want to see the future RoadMap and current limitations?
+#### 📉 Memory Profiling & Analysis (Valgrind)
+
+The project includes a dedicated Dockerized Valgrind environment to ensuer absolute stability in production environments:
+
+- Memcheck: Guarantees zero memory leaks and detects illegal memory accesses.
+- Massif: Used for detailed heap profiling to monitor memory footprints during large-scale simulations.
+- Helgrind: Validates thread safety and detecs porential data races in multi-threaded game loops.
+- Callgrind: Provides instruction-level profiling to identify hotspots and optimize critical code paths.
+
+#### 📊 Performance Benchmarking
+
+Micro-benchmarks are provided via [Google Benchmark](https://github.com/google/benchmark) to track the overhead of different RNG engiens and distribution lookups.
+You can use this to decide what is appropriate for the platforms you are targeting.
+
+#### 🐳 Dockerized Toolchain
+The engine development and test environments and toolchain are containerized for "it-just-works" reproducibility.
+
+
+## 📚 Documentation
+[Functional Programming & Data-Oriented Design](https://github.com/scholar-of-artifice/game-dice-cpp/blob/main/docs/deep-dive/functional-programming-and-data-oriented-design.md)
+
+[How to run Benchmarks](https://github.com/scholar-of-artifice/game-dice-cpp/blob/main/docs/how-to/run-benchmarks.md)
+
+[How to run Fuzz Tests](https://github.com/scholar-of-artifice/game-dice-cpp/blob/main/docs/how-to/run-fuzz-tests.md)
+
+[How to run Unit Tests](https://github.com/scholar-of-artifice/game-dice-cpp/blob/main/docs/how-to/run-tests.md)
+
+[How to run Toolchain](https://github.com/scholar-of-artifice/game-dice-cpp/blob/main/docs/how-to/run-clang-toolchain.md)

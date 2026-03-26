@@ -1,59 +1,91 @@
 # How to Run Tests
 
-In this article, you will learn how to run individual tests.
+This article explains how to build and run various test suites for `game-dice-cpp`.
+To ensure maximum reproducibility and to avoid external variables, all tests are run in Docker containers.
+This allows us to run complex tools such as dynamic analysis tools and profilers without requiring you to manually configure the LLVM toolchain on the host.
 
+## 📋 Prerequisites
+- **Docker:** Ensure Docker is installed and the daemon is running.
+  - Get Docker at: https://www.docker.com
+- **Hardware:** At least 4GB of RAM is recommended when building the Memory Santizer (MSan) targets, as LLVM instrumentation is resource intensive.
 
-## Unit Tests
+## 🧪 Unit Testing With `GoogleTest`
+The unit test suite validates the mathematical correctness of our distrubtions and ensures edge cases (like integer overflows) are handled safely.
+We provide multiple build targets instrumented with different **Dynamic Analyzers** to catch runtime bugs that that standard tests and static analysis techniques might miss.
 
-### unit tests + asan + ubsan
-#### Build the Image
+### Address Sanitizer (`ASan`) + Undefined Behaviour Sanitizer (`UBSan`)
+
+Use this for general development.
+This catches memory leaks, buffer overflows and illegal math operations while running Unit Tests.
+
+#### Build
 ```
 DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-asan-ubsan --progress=plain --target unit-test-suite-asan-ubsan .
 ```
 
-#### Run the Tests
+#### Run
 ```
 docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-asan-ubsan
 ```
 
-### unit tests + memsan + ubsan
-#### Build the Image
+### Memory Sanitizer (`MSan`) + Undefined Behaviour Sanitizer (`UBSan`)
+
+Use this for detecting the use of uninitialized memory.
+This is critical for catching non-deterministic bugs.
+In game logic, you do not want this to be sitting in a dependency.
+
+**Note:** This target builds a custom instrumented version of `libc++`, so the initial build may take longer.
+
+#### Build
 ```
 DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-memsan-ubsan --progress=plain --target unit-test-suite-memsan-ubsan .
 ```
 
-#### Run the Tests
+#### Run
 ```
 docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-memsan-ubsan
 ```
 
+### Thread Sanitizer (`TSan`) + Undefined Behaviour Sanitizer (`UBSan`)
 
-### unit tests + tsan + ubsan
-#### Build the Image
+Use this for validating multithreaded safety and detecting data races.
+Currently, this library is single threaded and so this is not a primary test suite.
+Highly recommended if you are integrating this library into an asynchronous game engine loop.
+
+#### Build
 ```
 DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-tsan-ubsan --progress=plain --target unit-test-suite-tsan-ubsan .
 ```
 
-#### Run the Tests
+#### Run
 ```
 docker run --rm --name game-dice-cpp-unit-test-suite game-dice-cpp-unit-tests-tsan-ubsan
 ```
 
-### unit tests + valgrind
-#### Build the Image
+### 🔍 Deep Analysis with `Valgrind`
+
+While the santizers are fast and run during testing, `Valgrind` provides a different look at how code interacts with the CPU and memory.
+Use these for final production validation.
+
+#### Build
 ```
 DOCKER_CONTENT_TRUST=1 docker build --tag game-dice-cpp-unit-tests-valgrind --progress=plain --target unit-test-suite-valgrind .
 ```
 
-#### Run the Tests
+#### Run for Memory Leaks (`Memcheck`)
 
-##### Run Memcheck
+The default command runs `memcheck` to guarantee every byte allocated is freed correctly.
+
 ```
 docker run --rm \
     game-dice-cpp-unit-tests-valgrind
 ```
 
-##### Run Massif
+#### Run for Heap Profiling (`Massif`)
+
+Detailed analysis of heap memory usage as a function of time.
+Essential for ensuring the library does not cause "memory spikes" during gameplay.
+
 ```
 docker run --rm \
     --entrypoint valgrind \
@@ -63,7 +95,17 @@ docker run --rm \
     ./Google_tests/unit_test_suite
 ```
 
-##### Run Helgrind
+#### Run for Performance Hotspots (`Helgrind`)
+
+Specialized tool for detecting synchronization errors in C++ programs using the POSIX pthreads API.
+This is not valid for all hardware.
+Maybe you need it? idk...
+
+What it detects:
+- **Data Races:** Accessing memory from multiple threads without adequate locking.
+- **Deadlocks:** Potential circular wait conditions in lock ordering.
+- **API Misuse:** Incorrect use of thread synchronization primitives.
+
 ```
 docker run --rm \
     --entrypoint valgrind \
@@ -74,7 +116,11 @@ docker run --rm \
 ```
 
 
-##### Run Callgrind
+##### Run for Performance Hostspots (`Callgrind`)
+
+Generates a profile of function calls and instruction execution.
+Use this to find bottlenecks in distribution lookups.
+
 ```
 docker run --rm \
     --entrypoint valgrind \
@@ -84,3 +130,6 @@ docker run --rm \
     ./Google_tests/unit_test_suite
 ```
 
+## Summary
+
+I hope this has given you a clear understanding of how to build and run the tests in this project.
