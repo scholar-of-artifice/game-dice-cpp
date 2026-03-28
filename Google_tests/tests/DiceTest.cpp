@@ -54,8 +54,8 @@ TEST(DiceTest, ConstructorLargeInputSetsSides) {
   // GIVEN an input number of sides z
   // AND z is the numeric limit of an int
   // WHEN a Dice is constructed
-  const auto dz = game_dice_cpp::Dice(std::numeric_limits<int>::max());
+  const auto dz = game_dice_cpp::Dice(std::numeric_limits<unsigned int>::max());
   // THEN there are the correct number of sides
-  EXPECT_EQ(dz.GetNumSides(), std::numeric_limits<int>::max() - 1)
+  EXPECT_EQ(dz.GetNumSides(), std::numeric_limits<unsigned int>::max() - 1)
       << "FAILURE: Unexpected number of sides for Dice(large_value).";
 }
