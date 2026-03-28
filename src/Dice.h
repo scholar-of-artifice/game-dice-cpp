@@ -38,7 +38,7 @@ namespace game_dice_cpp {
 class Dice {
  private:
   // The number of faces on this die.
-  int num_sides_;
+  unsigned int num_sides_;
 
  public:
   // Constructs a Dice with a specified number of sides.
@@ -48,10 +48,10 @@ class Dice {
   // sides: The number of sides.
   //  - minimum: 2 (example: a coin)
   //  - maximum std::numeric_limits<int>::max() - 1
-  constexpr explicit Dice(int sides)
-      : num_sides_(std::clamp(sides, 2, std::numeric_limits<int>::max() - 1)) {}
+  constexpr explicit Dice(unsigned int sides)
+      : num_sides_(std::clamp(sides, static_cast<unsigned int>(2), std::numeric_limits<unsigned int>::max() - 1)) {}
   // Retrieves the number of sides.
-  [[nodiscard]] constexpr int GetNumSides() const noexcept {
+  [[nodiscard]] constexpr unsigned int GetNumSides() const noexcept {
     return num_sides_;
   }
 };
