@@ -49,7 +49,8 @@ class Dice {
   //  - minimum: 2 (example: a coin)
   //  - maximum std::numeric_limits<int>::max() - 1
   constexpr explicit Dice(unsigned int sides)
-      : num_sides_(std::clamp(sides, static_cast<unsigned int>(2), std::numeric_limits<unsigned int>::max() - 1)) {}
+      : num_sides_(std::clamp(sides, static_cast<unsigned int>(2),
+                              std::numeric_limits<unsigned int>::max() - 1)) {}
   // Retrieves the number of sides.
   [[nodiscard]] constexpr unsigned int GetNumSides() const noexcept {
     return num_sides_;
