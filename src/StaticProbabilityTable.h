@@ -38,66 +38,79 @@ namespace game_dice_cpp {
 template <size_t NumberOfOutcomes>
 class StaticProbabilityTable {
  private:
-  std::array<int, NumberOfOutcomes> thresholds_;
+  std::array<unsigned int, NumberOfOutcomes> thresholds_;
 
   constexpr explicit StaticProbabilityTable(
-      const std::array<int, NumberOfOutcomes>& thresholds)
+      const std::array<unsigned int, NumberOfOutcomes>& thresholds)
       : thresholds_(thresholds) {}
 
  public:
   //
   [[nodiscard]] static constexpr std::optional<
       game_dice_cpp::StaticProbabilityTable<NumberOfOutcomes>>
-  Make(const std::array<int, NumberOfOutcomes>& input_weights) {
-    // create a local copy to work with
-    std::array<int, NumberOfOutcomes> weights = input_weights;
-    // transform in-place only non-negative weights
-    std::ranges::transform(weights, weights.begin(),
-                           [](int weight) { return std::max(weight, 0); });
-    // accumulate with check-as-you-go overflow check
+  Make(const std::array<unsigned int, NumberOfOutcomes>& input_weights) {
+    if constexpr (NumberOfOutcomes == 0) {
+      return std::nullopt;
+    }
+    // pre-calculate total weight with overflow protection
     // use std::optional<int> to carry the valid state through the loop
-    std::optional<int> total_weight = std::accumulate(
-        weights.begin(), weights.end(), std::optional<int>(0),
-        [](std::optional<int> accumulated, int weight) -> std::optional<int> {
+    std::optional<unsigned int> total_weight = std::accumulate(
+        input_weights.begin(), input_weights.end(),
+        std::optional<unsigned int>(0u),
+        [](std::optional<unsigned int> accumulated,
+           unsigned int weight) -> std::optional<unsigned int> {
           // if a previous step failed...
           if (!accumulated) {
             return std::nullopt;
           }
           // check for overflow before it happens
-          if (weight > std::numeric_limits<int>::max() - *accumulated) {
+          if (weight >
+              std::numeric_limits<unsigned int>::max() - *accumulated) {
             return std::nullopt;
           }
           return *accumulated + weight;
         });
-    // validation
-    if (!total_weight.has_value() || *total_weight <= 0) {
+    // validation: ensure weight is positive and did not overflow
+    if (!total_weight || *total_weight == 0u) {
       return std::nullopt;
     }
     // calculate thresholds
-    std::array<int, NumberOfOutcomes> thresholds{};
-    std::partial_sum(weights.begin(), weights.end(), thresholds.begin());
+    std::array<unsigned int, NumberOfOutcomes> thresholds{};
+    // use a partial_sum with a custom binary operation
+    std::partial_sum(
+        input_weights.begin(), input_weights.end(), thresholds.begin(),
+        [](unsigned int accumulated, unsigned int weight) {
+          // check for overflow
+          if (weight > std::numeric_limits<unsigned int>::max() - accumulated) {
+            return std::numeric_limits<unsigned int>::max();
+          }
+          return accumulated + weight;
+        });
     // check if the thresholds do not exist or sum to nothing
-    if (thresholds.empty() || thresholds.back() <= 0) {
+    if (thresholds.back() == 0u ||
+        thresholds.back() == std::numeric_limits<unsigned int>::max()) {
       return std::nullopt;
     }
     // construct and return
     return StaticProbabilityTable(thresholds);
   }
-  [[nodiscard]] constexpr int GetTotalWeight() const {
+  [[nodiscard]] constexpr unsigned int GetTotalWeight() const {
     return thresholds_.back();
   }
-  [[nodiscard]] constexpr int GetOutcomeIndex(int roll) const {
+  [[nodiscard]] constexpr unsigned int GetOutcomeIndex(
+      unsigned int roll) const {
     // small table optimization
     constexpr std::size_t linear_search_threshold{16};
     if constexpr (NumberOfOutcomes <= linear_search_threshold) {
       // linear search for the value
-      const auto iter =
-          std::find_if(thresholds_.begin(), thresholds_.end(),
-                       [roll](int threshold) { return threshold >= roll; });
+      const auto iter = std::find_if(
+          thresholds_.begin(), thresholds_.end(),
+          [roll](unsigned int threshold) { return threshold >= roll; });
       if (iter == thresholds_.end()) {
-        return static_cast<int>(thresholds_.size() - 1);
+        return static_cast<unsigned int>(thresholds_.size() - 1);
       }
-      return static_cast<int>(std::distance(thresholds_.begin(), iter));
+      return static_cast<unsigned int>(
+          std::distance(thresholds_.begin(), iter));
 
     } else {
       // binary search for the value
@@ -107,9 +120,10 @@ class StaticProbabilityTable {
       if (iter == thresholds_.end()) {
         // this case happens when the input value is greater than the
         // total_weight
-        return static_cast<int>(thresholds_.size() - 1);
+        return static_cast<unsigned int>(thresholds_.size() - 1);
       }
-      return static_cast<int>(std::distance(thresholds_.begin(), iter));
+      return static_cast<unsigned int>(
+          std::distance(thresholds_.begin(), iter));
     }
   }
 };
