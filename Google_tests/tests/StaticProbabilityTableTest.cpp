@@ -82,7 +82,6 @@ TEST(StaticProbabilityTableTest,
   const auto table_C =
       game_dice_cpp::StaticProbabilityTable<3>::Make({1, 2, 0});
   // Table A
-  EXPECT_EQ(table_A->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(1), 1);
   EXPECT_EQ(table_A->GetOutcomeIndex(2), 1);
@@ -91,7 +90,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_A->GetOutcomeIndex(5), 2);  // Table A - bound
   EXPECT_EQ(table_A->GetOutcomeIndex(6), 2);
   // Table B
-  EXPECT_EQ(table_B->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(2), 2);
@@ -100,7 +98,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_B->GetOutcomeIndex(5), 2);
   EXPECT_EQ(table_B->GetOutcomeIndex(6), 2);
   // Table C
-  EXPECT_EQ(table_C->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(2), 1);
@@ -149,7 +146,6 @@ TEST(StaticProbabilityTableTest,
   // WHEN At is called
   // the following outputs are observed...
   // Table A
-  EXPECT_EQ(table_A->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(2), 0);  // Table A - bound
@@ -174,7 +170,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_A->GetOutcomeIndex(21), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(22), 0);
   // Table B
-  EXPECT_EQ(table_B->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(2), 1);
@@ -199,7 +194,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_B->GetOutcomeIndex(21), 1);
   EXPECT_EQ(table_B->GetOutcomeIndex(22), 1);
   // Table C
-  EXPECT_EQ(table_C->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(2), 1);
@@ -224,7 +218,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_C->GetOutcomeIndex(21), 2);
   EXPECT_EQ(table_C->GetOutcomeIndex(22), 2);
   // Table D
-  EXPECT_EQ(table_D->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_D->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_D->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_D->GetOutcomeIndex(2), 1);
@@ -249,7 +242,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_D->GetOutcomeIndex(21), 3);
   EXPECT_EQ(table_D->GetOutcomeIndex(22), 3);
   // Table E
-  EXPECT_EQ(table_E->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_E->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_E->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_E->GetOutcomeIndex(2), 1);
@@ -274,7 +266,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_E->GetOutcomeIndex(21), 4);
   EXPECT_EQ(table_E->GetOutcomeIndex(22), 4);
   // Table F
-  EXPECT_EQ(table_F->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_F->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_F->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_F->GetOutcomeIndex(2), 1);
@@ -328,7 +319,6 @@ TEST(StaticProbabilityTableTest,
   // WHEN At is called
   // THEN the correct index is returned
   // Table A
-  EXPECT_EQ(table_A->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(2), 1);
@@ -336,7 +326,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_A->GetOutcomeIndex(4), 2);
   EXPECT_EQ(table_A->GetOutcomeIndex(5), 2);
   // Table B
-  EXPECT_EQ(table_B->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(2), 0);
@@ -344,7 +333,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_B->GetOutcomeIndex(4), 2);
   EXPECT_EQ(table_B->GetOutcomeIndex(5), 2);
   // Table C
-  EXPECT_EQ(table_C->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_C->GetOutcomeIndex(2), 1);
@@ -353,26 +341,11 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_C->GetOutcomeIndex(5), 2);
 }
 
-TEST(StaticProbabilityTableTest, MakeWithNegativeWeightsReturnsNullOpt) {
-  // GIVEN a table defined with unsorted negative weights
-  const auto table_A =
-      game_dice_cpp::StaticProbabilityTable<3>::Make({-1, -2, -1});
-  const auto table_B =
-      game_dice_cpp::StaticProbabilityTable<3>::Make({-2, -1, -1});
-  const auto table_C =
-      game_dice_cpp::StaticProbabilityTable<3>::Make({-1, -1, -2});
-  // WHEN GetTotalWeight is called
-  // THEN the total weight matches the sum of input values
-  EXPECT_FALSE(table_A.has_value());
-  EXPECT_FALSE(table_B.has_value());
-  EXPECT_FALSE(table_C.has_value());
-}
-
 TEST(StaticProbabilityTableTest,
      GetTotalWeightWithUnsortedMixedSignWeightsHasCorrectTotalWeight) {
   // GIVEN a table defined with unsorted mixed signed weights
   const auto table_A =
-      game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 0});
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 0, 0});
   // WHEN GetTotalWeight is called
   // THEN the total weight matches the sum of input values
   EXPECT_EQ(table_A->GetTotalWeight(), 1);
@@ -382,13 +355,12 @@ TEST(StaticProbabilityTableTest,
      GetOutcomeIndexWithUnsortedMixedSignWeightsHasCorrectIndexes) {
   // GIVEN a table defined with unsorted mixed signed weights
   const auto table_A =
-      game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 0});
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 0, 0});
   const auto table_B =
-      game_dice_cpp::StaticProbabilityTable<3>::Make({1, -2, 1});
+      game_dice_cpp::StaticProbabilityTable<3>::Make({1, 0, 1});
   // WHEN At is called
   // THEN the correct index is returned
   // Table A
-  EXPECT_EQ(table_A->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(2), 2);
@@ -396,7 +368,6 @@ TEST(StaticProbabilityTableTest,
   EXPECT_EQ(table_A->GetOutcomeIndex(4), 2);
   EXPECT_EQ(table_A->GetOutcomeIndex(5), 2);
   // Table B
-  EXPECT_EQ(table_B->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_B->GetOutcomeIndex(2), 2);
@@ -422,7 +393,6 @@ TEST(StaticProbabilityTableTest,
       {std::numeric_limits<int>::max()});
   // WHEN At is called
   // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(2147483647), 0);
@@ -448,7 +418,6 @@ TEST(StaticProbabilityTableTest,
       game_dice_cpp::StaticProbabilityTable<2>::Make({half_max, half_max});
   // WHEN At is called
   // THEN the returns the correct value from the table
-  EXPECT_EQ(table_A->GetOutcomeIndex(-1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(0), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(1), 0);
   EXPECT_EQ(table_A->GetOutcomeIndex(half_max), 0);
@@ -461,8 +430,8 @@ TEST(StaticProbabilityTableTest,
 TEST(StaticProbabilityTableTest, MakeWithOverflowWeightsDoesNotConstruct) {
   // GIVEN a table defined with known weights
   const auto table_A = game_dice_cpp::StaticProbabilityTable<4>::Make(
-      {std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
-       std::numeric_limits<int>::max(), -1230});
+      {std::numeric_limits<unsigned int>::max(), std::numeric_limits<unsigned int>::max(),
+       std::numeric_limits<unsigned int>::max(), 1});
   // WHEN Make is called
   // THEN the returns the correct value from the table
   EXPECT_FALSE(table_A.has_value());

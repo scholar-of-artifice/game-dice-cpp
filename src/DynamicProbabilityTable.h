@@ -51,11 +51,11 @@ namespace game_dice_cpp {
 class DynamicProbabilityTable {
  private:
   // Cumulative upper bounds.
-  std::vector<int> thresholds_;
+  std::vector<unsigned int> thresholds_;
 
   // Explicit Weight Initialization
   // The user must define exactly the "shape" of the probability distribution.
-  explicit DynamicProbabilityTable(std::vector<int>&& thresholds)
+  explicit DynamicProbabilityTable(std::vector<unsigned int>&& thresholds)
       : thresholds_(std::move(thresholds)) {}
 
  public:
@@ -98,18 +98,18 @@ class DynamicProbabilityTable {
     return DynamicProbabilityTable(std::move(calculated_thresholds));
   }
   // Returns the exact die size required to drive this table.
-  [[nodiscard]] int GetTotalWeight() const { return thresholds_.back(); }
+  [[nodiscard]] unsigned int GetTotalWeight() const { return thresholds_.back(); }
 
   // Maps a value (example: from a die roll) to an outcome index.
-  [[nodiscard]] int GetOutcomeIndex(int roll) const {
+  [[nodiscard]] unsigned int GetOutcomeIndex(unsigned int roll) const {
     // binary search for the value
     const auto iter = std::ranges::lower_bound(thresholds_, roll);
     // clamp value within range of table
     if (iter == thresholds_.end()) {
       // this case happens when the input value is greater than the total_weight
-      return static_cast<int>(thresholds_.size() - 1);
+      return static_cast<unsigned int>(thresholds_.size() - 1);
     }
-    return static_cast<int>(std::distance(thresholds_.begin(), iter));
+    return static_cast<unsigned int>(std::distance(thresholds_.begin(), iter));
   }
 };
 }  // namespace game_dice_cpp

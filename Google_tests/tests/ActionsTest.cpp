@@ -60,7 +60,7 @@ TEST(ActionsTest, RollAnyDieProducesValueInRange) {
   // GIVEN a random number generator
   // AND that rng is seeded with 42
   std::mt19937_64 rand_generator(42);
-  for (int sides = 2; sides < 20; sides++) {
+  for (unsigned int sides = 2; sides < 100; sides++) {
     // AND a dice...
     auto dice = game_dice_cpp::Dice(sides);
     for (int trial = 0; trial <= 1'000; trial++) {
